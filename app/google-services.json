@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "905412122108",
+    "firebase_url": "https://say-hi-chat-app-default-rtdb.firebaseio.com",
+    "project_id": "say-hi-chat-app",
+    "storage_bucket": "say-hi-chat-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:905412122108:android:7e1fd4aec340c943468e79",
+        "android_client_info": {
+          "package_name": "com.group_project.chatapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "905412122108-pj9382euehagiq86k25mqcmkln4vmhkn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvM67zHEnxwbr-lFJS-6JDfsBtF8x1dWw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "905412122108-pj9382euehagiq86k25mqcmkln4vmhkn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
