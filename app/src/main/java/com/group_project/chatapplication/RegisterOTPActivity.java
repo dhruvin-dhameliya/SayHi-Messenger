@@ -23,12 +23,7 @@ import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class RegisterOTPActivity extends AppCompatActivity {
@@ -40,6 +35,7 @@ public class RegisterOTPActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     FirebaseAuth auth;
     FirebaseDatabase database;
+    String user_name="", user_about="", user_profile_img="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,14 +125,14 @@ public class RegisterOTPActivity extends AppCompatActivity {
             @Override
             public void onComplete(@androidx.annotation.NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    DatabaseReference reference = database.getReference().child("Users_Details").child(previous_phone_number);
+                    DatabaseReference reference = database.getReference().child("Users Details").child(code+previous_phone_number);
 
-                    Model_User model_user = new Model_User(auth.getUid(), previous_phone_number);
+                    User_Model model_user = new User_Model(auth.getUid(), user_name, code+previous_phone_number, user_about, user_profile_img);
                     reference.setValue(model_user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                startActivity(new Intent(RegisterOTPActivity.this, MainActivity.class));
+                                startActivity(new Intent(RegisterOTPActivity.this, ProfileInfoActivity.class));
                                 finish();
                             } else {
                                 Toast.makeText(getApplicationContext(), "Something went wrong!!", Toast.LENGTH_LONG).show();

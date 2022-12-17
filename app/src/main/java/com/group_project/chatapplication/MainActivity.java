@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     TabLayout myTabLayout;
     TabAccessorAdapter myTabAccessorAdapter;
     FirebaseAuth auth;
+    FirebaseUser user;
     DatabaseReference databaseReference;
 
 
@@ -36,6 +38,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+
+        if (user == null) {
+            startActivity(new Intent(MainActivity.this, RegistrationActivity.class));
+            finish();
+        }
 
         mTollbar = findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mTollbar);

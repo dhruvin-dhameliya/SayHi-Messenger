@@ -9,55 +9,133 @@
     android:gravity="center"
     tools:context=".SettingsActivity">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_image"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:layout_centerHorizontal="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/img_default_person"
-        app:civ_border_color="#117864"
-        app:civ_border_width="1.5dp" />
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
-    <EditText
-        android:id="@+id/user_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/profile_image"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:background="@drawable/edit_text_border"
-        android:backgroundTint="@null"
-        android:hint="Username"
-        android:padding="20dp"
-        android:textColor="#343434"
-        android:textSize="24dp" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/profile_status"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/user_name"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/edit_text_border"
-        android:backgroundTint="@null"
-        android:hint="About"
-        android:padding="20dp"
-        android:textColor="#343434"
-        android:textSize="24sp" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:gravity="center">
 
-    <Button
-        android:id="@+id/update"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/profile_status"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:backgroundTint="@color/black"
-        android:padding="10dp"
-        android:text="Update"
-        android:textAllCaps="false"
-        android:textSize="24sp" />
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/display_profile_img"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/img_default_person"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/update_profile_img"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icon_camera"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/display_profile_img"
+                    app:layout_constraintVertical_bias="1.0" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <EditText
+                android:id="@+id/profile_user_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:background="@drawable/edittext_custom_border"
+                android:backgroundTint="@null"
+                android:fontFamily="serif-monospace"
+                android:hint="Name"
+                android:inputType="textCapSentences"
+                android:padding="@dimen/_10sdp"
+                android:textColor="#222222"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|start"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:text="This name will be visible to Say Hi contacts."
+                android:textColor="#808080" />
+
+            <EditText
+                android:id="@+id/profile_user_about"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:background="@drawable/edittext_custom_border"
+                android:backgroundTint="@null"
+                android:fontFamily="serif-monospace"
+                android:hint="About"
+                android:inputType="textCapSentences|textMultiLine|textLongMessage"
+                android:maxLines="2"
+                android:minLines="1"
+                android:padding="@dimen/_10sdp"
+                android:textColor="#222222"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|start"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:text="Add a few words about yourself"
+                android:textColor="#808080" />
+
+            <TextView
+                android:id="@+id/profile_user_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:background="@drawable/edittext_custom_border"
+                android:fontFamily="sans-serif"
+                android:padding="@dimen/_10sdp"
+                android:text="+91 9876543210"
+                android:textColor="#222222"
+                android:textSize="20sp"
+                android:textStyle="normal" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_profile_update"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_45sdp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:backgroundTint="#4CAF50"
+                android:text="Save"
+                android:textAllCaps="false"
+                android:textSize="@dimen/_18sdp"
+                app:borderWidth="0dp"
+                app:elevation="3dp"
+                app:rippleColor="#EFEFEF"
+                app:tint="@color/white" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </RelativeLayout>

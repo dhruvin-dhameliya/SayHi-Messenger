@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:layout_marginHorizontal="@dimen/_20sdp"
+    android:orientation="vertical"
+    tools:context=".ProfileInfoActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:fontFamily="serif"
+        android:gravity="center"
+        android:text="Profile info"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_20sdp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:gravity="center"
+        android:text="Please provide your name and an optional profile photo"
+        android:textSize="@dimen/_18sdp"
+        android:textStyle="normal" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/add_profile_img"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:src="@drawable/img_upload_profile" />
+
+    <EditText
+        android:id="@+id/add_user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/add_profile_img"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:inputType="textCapSentences"
+        android:background="@drawable/edit_text_border"
+        android:backgroundTint="@null"
+        android:hint="Type your name here"
+        android:padding="@dimen/_11sdp"
+        android:textColor="#343434"
+        android:textSize="@dimen/_20sdp" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_add_profile"
+        android:layout_width="@dimen/_85sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:backgroundTint="#4CAF50"
+        android:text="Next"
+        android:textAllCaps="false"
+        android:textSize="@dimen/_18sdp"
+        app:borderWidth="0dp"
+        app:elevation="3dp"
+        app:rippleColor="#EFEFEF"
+        app:tint="@color/white" />
+
+</LinearLayout>
