@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
         }
         if (item.getItemId() == R.id.option_settings) {
             startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-
         }
         if (item.getItemId() == R.id.option_logout) {
             auth.signOut();
@@ -120,5 +119,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
     }
 }

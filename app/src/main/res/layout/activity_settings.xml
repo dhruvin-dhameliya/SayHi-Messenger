@@ -61,13 +61,12 @@
                 android:layout_marginTop="@dimen/_25sdp"
                 android:background="@drawable/edittext_custom_border"
                 android:backgroundTint="@null"
-                android:fontFamily="serif-monospace"
                 android:hint="Name"
                 android:inputType="textCapSentences"
                 android:padding="@dimen/_10sdp"
                 android:textColor="#222222"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="normal" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -86,7 +85,6 @@
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:background="@drawable/edittext_custom_border"
                 android:backgroundTint="@null"
-                android:fontFamily="serif-monospace"
                 android:hint="About"
                 android:inputType="textCapSentences|textMultiLine|textLongMessage"
                 android:maxLines="2"
@@ -94,7 +92,7 @@
                 android:padding="@dimen/_10sdp"
                 android:textColor="#222222"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="normal" />
 
             <TextView
                 android:layout_width="wrap_content"

@@ -77,8 +77,14 @@ public class ProfileInfoActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent();
                 intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
+                intent.setAction(Intent.ACTION_PICK);
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), 200);
+
+                /*
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, 1);
+                */
             }
         });
 
@@ -149,6 +155,7 @@ public class ProfileInfoActivity extends AppCompatActivity {
                                                         progressDialog.dismiss();
                                                         Toast.makeText(getApplicationContext(), "Profile Uploaded.", Toast.LENGTH_SHORT).show();
                                                         startActivity(new Intent(ProfileInfoActivity.this, MainActivity.class));
+                                                        finish();
                                                     } else {
                                                         progressDialog.dismiss();
                                                         Toast.makeText(getApplicationContext(), "Profile not uploading!", Toast.LENGTH_SHORT).show();
@@ -172,6 +179,7 @@ public class ProfileInfoActivity extends AppCompatActivity {
                                                 progressDialog.dismiss();
                                                 Toast.makeText(getApplicationContext(), "Profile Uploaded.", Toast.LENGTH_SHORT).show();
                                                 startActivity(new Intent(ProfileInfoActivity.this, MainActivity.class));
+                                                finish();
                                             } else {
                                                 progressDialog.dismiss();
                                                 Toast.makeText(getApplicationContext(), "Profile not uploading!", Toast.LENGTH_SHORT).show();
@@ -190,12 +198,19 @@ public class ProfileInfoActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == 200) {
             if (data != null) {
                 updateImageUri = data.getData();
                 add_profile_img.setImageURI(updateImageUri);
             }
         }
+        /*
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+            updateImageUri = data.getData();
+            add_profile_img.setImageURI(updateImageUri);
+        }
+        */
     }
 
 }

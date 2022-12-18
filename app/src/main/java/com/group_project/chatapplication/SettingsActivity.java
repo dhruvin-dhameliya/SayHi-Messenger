@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -82,8 +83,14 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent();
                 intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
+                intent.setAction(Intent.ACTION_PICK);
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), 200);
+
+                /*
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, 1);
+                */
             }
         });
 
@@ -173,12 +180,26 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+
         if (requestCode == 200) {
             if (data != null) {
                 updateImageUri = data.getData();
                 display_profile_img.setImageURI(updateImageUri);
             }
         }
+        /*
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+            updateImageUri = data.getData();
+            display_profile_img.setImageURI(updateImageUri);
+        }
+        */
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(SettingsActivity.this, MainActivity.class));
+        finish();
+    }
 }
