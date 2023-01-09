@@ -16,7 +16,7 @@
         android:theme="@style/Theme.ChatApplication"
         tools:targetApi="31">
         <activity
-            android:name=".ContactShowActivity"
+            android:name=".Contact_Show_Activity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

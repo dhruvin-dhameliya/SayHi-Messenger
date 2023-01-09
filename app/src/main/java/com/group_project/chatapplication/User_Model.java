@@ -54,4 +54,5 @@ public class User_Model {
     public void setProfile_image(String profile_image) {
         Profile_image = profile_image;
     }
+
 }

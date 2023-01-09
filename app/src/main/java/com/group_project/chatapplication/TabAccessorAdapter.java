@@ -49,7 +49,7 @@ public class TabAccessorAdapter extends FragmentPagerAdapter {
                 return "Groups";
 
             case 2:
-                return "Contacts";
+                return "Stories";
 
             default:
                 return null;

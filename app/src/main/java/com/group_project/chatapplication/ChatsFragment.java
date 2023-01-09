@@ -30,7 +30,7 @@ public class ChatsFragment extends Fragment {
         jump_chat_screen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getContext(), ContactShowActivity.class));
+                startActivity(new Intent(getContext(), Contact_Show_Activity.class));
             }
         });
 

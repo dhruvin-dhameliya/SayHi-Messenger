@@ -3,10 +3,14 @@ package com.group_project.chatapplication;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +27,7 @@ import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.concurrent.TimeUnit;
 
@@ -35,7 +40,7 @@ public class RegisterOTPActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     FirebaseAuth auth;
     FirebaseDatabase database;
-    String user_name="", user_about="", user_profile_img="";
+    String user_name = "", user_about = "", user_profile_img = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,11 +128,10 @@ public class RegisterOTPActivity extends AppCompatActivity {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
-            public void onComplete(@androidx.annotation.NonNull Task<AuthResult> task) {
+            public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    DatabaseReference reference = database.getReference().child("Users Details").child(code+previous_phone_number);
-
-                    User_Model model_user = new User_Model(auth.getUid(), user_name, code+previous_phone_number, user_about, user_profile_img);
+                    DatabaseReference reference = database.getReference().child("Users Details").child(code + previous_phone_number);
+                    User_Model model_user = new User_Model(auth.getUid(), user_name, code + previous_phone_number, user_about, user_profile_img);
                     reference.setValue(model_user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
