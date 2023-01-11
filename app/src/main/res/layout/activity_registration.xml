@@ -77,7 +77,7 @@
                 android:layout_gravity="end|bottom"
                 android:layout_marginTop="@dimen/_50sdp"
                 android:layout_marginBottom="@dimen/_50sdp"
-                android:backgroundTint="#4CAF50"
+                android:backgroundTint="@color/colorPrimary"
                 android:contentDescription="Next"
                 android:src="@drawable/ic_baseline_arrow_forward_24"
                 app:borderWidth="0dp"

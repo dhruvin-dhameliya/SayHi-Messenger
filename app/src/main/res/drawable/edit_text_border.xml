@@ -10,6 +10,6 @@
         android:topLeftRadius="12dp"
         android:topRightRadius="12dp"/>
     <stroke
-        android:color="#009688"
+        android:color="@color/colorPrimary"
         android:width="1.5dp"/>
 </shape>

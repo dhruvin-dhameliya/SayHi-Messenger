@@ -4,12 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F2F2F2"
+    android:background="#19E1F5FE"
     tools:context=".Contact_Show_Activity">
+
+    <SearchView
+        android:id="@+id/contact_search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@drawable/custome_searchview_bg"
+        android:backgroundTint="@null"
+        android:iconifiedByDefault="false"
+        android:paddingEnd="@dimen/_8sdp"
+        android:queryHint="Search Here..." />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/contact_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/contact_search_view" />
 
 </RelativeLayout>

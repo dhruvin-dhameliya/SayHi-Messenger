@@ -123,7 +123,7 @@
                 android:layout_height="@dimen/_45sdp"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/_30sdp"
-                android:backgroundTint="#4CAF50"
+                android:backgroundTint="@color/colorPrimary"
                 android:text="Save"
                 android:textAllCaps="false"
                 android:textSize="@dimen/_18sdp"

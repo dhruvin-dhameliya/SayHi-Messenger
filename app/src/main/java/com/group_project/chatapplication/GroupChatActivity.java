@@ -20,7 +20,7 @@ public class GroupChatActivity extends AppCompatActivity {
     EditText userMessageInput;
     ScrollView mScrollView;
     TextView displayTextMessage;
-    String currentGroupName, currentUserId, currentUserName;
+    String currentGroupName;
     FirebaseAuth auth;
 
     @Override
@@ -29,12 +29,10 @@ public class GroupChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_group_chat);
 
         auth = FirebaseAuth.getInstance();
-//        currentUserId = auth.getCurrentUser().getUid();
 
-        currentGroupName = getIntent().getExtras().get("groupName").toString();
+        currentGroupName = getIntent().getExtras().get("contact_name_pass").toString();
         Toast.makeText(getApplicationContext(), currentGroupName, Toast.LENGTH_SHORT).show();
         allInitializationFields();
-        getUserInformation();
     }
 
     private void allInitializationFields() {
@@ -45,11 +43,6 @@ public class GroupChatActivity extends AppCompatActivity {
         userMessageInput = findViewById(R.id.input_group_message);
         displayTextMessage = findViewById(R.id.group_chat_text_display);
         mScrollView = findViewById(R.id.my_scroll_view);
-
-    }
-
-    private void getUserInformation() {
-
     }
 
 }

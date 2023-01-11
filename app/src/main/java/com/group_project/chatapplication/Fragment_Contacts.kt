@@ -10,29 +10,42 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
-class Contact_Show_Activity : AppCompatActivity() {
+class Fragment_Contacts : Fragment() {
+
     lateinit var name: String
     lateinit var number: String
+    lateinit var contactsFragmentView: View
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_contact_show)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
-        val contact_list = findViewById<RecyclerView>(R.id.contact_list)
-        val contact_search_view = findViewById<SearchView>(R.id.contact_search_view)
-        contact_list.layoutManager = LinearLayoutManager(this)
+        // Inflate the layout for this fragment
+        contactsFragmentView = inflater.inflate(R.layout.fragment__contacts, container, false)
+
+        val contact_list =
+            contactsFragmentView.findViewById<RecyclerView>(R.id.fragment_contact_list)
+        val contact_search_view =
+            contactsFragmentView.findViewById<SearchView>(R.id.fragment_contact_search_view)
+        contact_list.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         val contactList: MutableList<ContactDTO> = ArrayList()
 
-        val contacts = contentResolver.query(
-            ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null
+        val contacts = context?.contentResolver?.query(
+            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+            null,
+            null,
+            null,
+            null
         )
 
         if (contacts != null) {
@@ -46,9 +59,11 @@ class Contact_Show_Activity : AppCompatActivity() {
                 obj.phone_number = number
                 contactList.add(obj)
             }
-            contact_list.adapter = ContactAdapter(contactList, this)
+            contact_list.adapter = context?.let { ContactAdapter(contactList, it) }
             contacts.close()
         }
+
+        return contactsFragmentView
     }
 
     class ContactAdapter(items: MutableList<ContactDTO>, ctx: Context) :
@@ -58,7 +73,6 @@ class Contact_Show_Activity : AppCompatActivity() {
         private var context = ctx
         private lateinit var database: DatabaseReference
         private lateinit var auth: FirebaseAuth
-
 
         override fun getItemCount(): Int {
             return list.size
@@ -81,7 +95,7 @@ class Contact_Show_Activity : AppCompatActivity() {
                 database.setValue(contact_model)
 
                 val intent_id = Intent(context, GroupChatActivity::class.java)
-                intent_id.putExtra("contact_name_pass", list[position].name.trim())
+                intent_id.putExtra("contact_name_pass", list[position].name)
                 context.startActivity(intent_id)
             }
         }
@@ -97,5 +111,7 @@ class Contact_Show_Activity : AppCompatActivity() {
             val number: TextView = v.findViewById(R.id.tv_number)!!
             val contact_card_view: CardView = v.findViewById(R.id.contact_card_view)!!
         }
+
     }
+
 }

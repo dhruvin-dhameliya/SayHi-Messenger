@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -16,12 +15,15 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -31,13 +33,17 @@ import com.google.firebase.database.FirebaseDatabase;
 public class MainActivity extends AppCompatActivity {
 
     Toolbar mTollbar;
-    ViewPager myViewPager;
-    TabLayout myTabLayout;
-    TabAccessorAdapter myTabAccessorAdapter;
     FirebaseAuth auth;
     FirebaseUser user;
     DatabaseReference databaseReference;
     String fetch_phone_number;
+    BottomNavigationView bottomNavbar;
+    FloatingActionButton jump_chat_screen;
+
+    Fragment_Chats fragment_chats = new Fragment_Chats();
+    Fragment_Stories fragment_stories = new Fragment_Stories();
+    Fragment_Contacts fragment_contacts = new Fragment_Contacts();
+    Fragment_Calls fragment_calls = new Fragment_Calls();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,18 +58,48 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
+        jump_chat_screen = findViewById(R.id.jump_chat_screen);
+        jump_chat_screen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, Contact_Show_Activity.class));
+            }
+        });
+
+        bottomNavbar = findViewById(R.id.bottomNavbar);
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_chats).commit();
+
+        bottomNavbar.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.chats:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_chats).commit();
+                        jump_chat_screen.show();
+                        break;
+                    case R.id.stories:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_stories).commit();
+                        jump_chat_screen.show();
+                        break;
+                    case R.id.contacts:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_contacts).commit();
+                        jump_chat_screen.hide();
+                        break;
+                    case R.id.calls:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_calls).commit();
+                        jump_chat_screen.show();
+                        break;
+                }
+                return true;
+            }
+        });
+
         mTollbar = findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mTollbar);
         getSupportActionBar().setTitle("Say Hi");
 
-        myViewPager = findViewById(R.id.main_tabs_pager);
-        myTabAccessorAdapter = new TabAccessorAdapter(getSupportFragmentManager());
-        myViewPager.setAdapter(myTabAccessorAdapter);
-        myTabLayout = findViewById(R.id.main_tabs);
-        myTabLayout.setupWithViewPager(myViewPager);
         auth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
-//        database = FirebaseDatabase.getInstance();
 
         FirebaseUser user = auth.getCurrentUser();
         fetch_phone_number = user.getPhoneNumber();

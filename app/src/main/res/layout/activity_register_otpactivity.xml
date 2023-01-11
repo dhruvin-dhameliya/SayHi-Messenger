@@ -85,7 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_marginTop="@dimen/_20sdp"
-        android:backgroundTint="#4CAF50"
+        android:backgroundTint="@color/colorPrimary"
         android:text="Verify"
         android:textAllCaps="false"
         android:textSize="@dimen/_18sdp"
