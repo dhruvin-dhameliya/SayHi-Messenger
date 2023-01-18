@@ -2,21 +2,21 @@
     <!-- Base application theme. -->
     <style name="Theme.ChatApplication" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">#0076CE</item>
+        <item name="colorPrimaryVariant">#0071C6</item>
+        <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_200</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">#117864</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
         <!-- Customize your theme here. -->
     </style>
 
     <style name="ThemeOverlay.PopupTheme" parent="ThemeOverlay.AppCompat.Light" >
         <item name="backgroundColor">#E0F2F1</item>
-        <item name="android:textColor">#117864</item>
+        <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
 </resources>

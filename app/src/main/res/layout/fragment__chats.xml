@@ -4,16 +4,60 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
     tools:context=".Fragment_Chats">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="Chat 💬"
-        android:textColor="#FA508A"
-        android:textSize="@dimen/_24sdp" />
+        <LinearLayout
+            android:id="@+id/stories_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_add_stories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:backgroundTint="@color/colorPrimary"
+                android:contentDescription="Add Stories"
+                android:elevation="0dp"
+                android:src="@drawable/ic_selected_stories_icon"
+                app:borderWidth="0dp"
+                app:rippleColor="#EFEFEF"
+                app:tint="@color/white" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/stories_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_5sdp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_below="@+id/stories_section"
+            android:layout_marginTop="@dimen/_1sdp"
+            android:background="#b6b6b6" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/stories_section"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_100sdp"
+            android:gravity="center"
+            android:text="Chat 💬"
+            android:textColor="#FA508A"
+            android:textSize="@dimen/_24sdp" />
+
+    </RelativeLayout>
 
 </FrameLayout>

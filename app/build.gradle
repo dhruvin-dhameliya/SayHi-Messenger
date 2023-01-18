@@ -36,7 +36,7 @@ android {
 
 dependencies {
 
-    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'androidx.appcompat:appcompat:1.6.0'
     implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.firebase:firebase-auth:21.1.0'
@@ -56,4 +56,7 @@ dependencies {
     implementation 'com.hbb20:ccp:2.6.0'
     implementation 'com.google.firebase:firebase-messaging:23.1.1'
     implementation 'com.google.firebase:firebase-core:21.1.1'
+    implementation 'com.github.3llomi:CircularStatusView:V1.0.3'
+    implementation 'com.github.OMARIHAMZA:StoryView:1.0.2-alpha'
+
 }

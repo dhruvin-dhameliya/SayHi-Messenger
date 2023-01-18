@@ -17,7 +17,7 @@
 
     <style name="ThemeOverlay.PopupTheme" parent="ThemeOverlay.AppCompat.Light">
         <item name="backgroundColor">#E0F2F1</item>
-        <item name="android:textColor">#117864</item>
+        <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
     <style name="Theme.ChatApplication.NoActionBar">

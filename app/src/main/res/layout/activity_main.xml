@@ -16,7 +16,28 @@
             layout="@layout/app_bar_layout" />
 
     </com.google.android.material.appbar.AppBarLayout>
+    <!--
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/stories_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_below="@+id/appBarLayout" />
 
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_above="@id/container"
+            android:layout_marginTop="@dimen/_1sdp"
+            android:background="#b6b6b6" />
+
+
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/stories_list" />
+    -->
 
     <FrameLayout
         android:id="@+id/container"
@@ -29,31 +50,31 @@
         android:id="@+id/jump_chat_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@id/bottomNavbar"
         android:layout_alignParentEnd="true"
         android:layout_marginHorizontal="@dimen/_16sdp"
         android:layout_marginTop="@dimen/_16sdp"
         android:layout_marginBottom="@dimen/_8sdp"
         android:backgroundTint="@color/colorPrimary"
         android:contentDescription="Chats"
-        android:layout_above="@id/bottomNavbar"
         android:elevation="0dp"
         android:src="@drawable/ic_selected_chats_icon"
         app:borderWidth="0dp"
         app:rippleColor="#EFEFEF"
         app:tint="@color/white" />
 
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_12sdp"
-        android:layout_marginHorizontal="@dimen/_10sdp"
-        app:itemIconTint="@color/icons_color"
-        app:itemTextColor="@color/bottom_bar_icon_selected"
         android:layout_alignParentBottom="true"
-        app:itemRippleColor="#AFDBF5"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_12sdp"
         android:background="@drawable/round_background"
+        app:itemIconTint="@color/icons_color"
+        app:itemRippleColor="#AFDBF5"
+        app:itemTextColor="@color/icons_color"
+        app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_nav_menu" />
 
 </RelativeLayout>

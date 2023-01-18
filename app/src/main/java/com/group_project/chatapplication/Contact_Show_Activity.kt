@@ -7,6 +7,7 @@ import android.provider.ContactsContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
@@ -58,7 +59,6 @@ class Contact_Show_Activity : AppCompatActivity() {
         private var context = ctx
         private lateinit var database: DatabaseReference
         private lateinit var auth: FirebaseAuth
-
 
         override fun getItemCount(): Int {
             return list.size
