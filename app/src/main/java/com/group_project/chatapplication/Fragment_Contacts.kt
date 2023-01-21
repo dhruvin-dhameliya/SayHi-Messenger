@@ -38,7 +38,9 @@ class Fragment_Contacts : Fragment() {
             contactsFragmentView.findViewById<SearchView>(R.id.fragment_contact_search_view)
         contact_list.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
         val contactList: MutableList<ContactDTO> = ArrayList()
+        val temporaryContactList: MutableList<ContactDTO> = ArrayList()
 
         val contacts = context?.contentResolver?.query(
             ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
@@ -59,9 +61,50 @@ class Fragment_Contacts : Fragment() {
                 obj.phone_number = number
                 contactList.add(obj)
             }
-            contact_list.adapter = context?.let { ContactAdapter(contactList, it) }
+            contact_list.adapter = context?.let { ContactAdapter(temporaryContactList, it) }
             contacts.close()
         }
+        temporaryContactList.addAll(contactList)
+
+
+        contact_search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                temporaryContactList.clear()
+                val searchText = query!!
+                if (searchText.isNotEmpty()) {
+                    contactList.forEach {
+                        if (it.name.contains(searchText) || it.phone_number.contains(searchText)) {
+                            temporaryContactList.add(it)
+                        }
+                    }
+                    contact_list.adapter!!.notifyDataSetChanged()
+                } else {
+                    temporaryContactList.clear()
+                    temporaryContactList.addAll(contactList)
+                    contact_list.adapter!!.notifyDataSetChanged()
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                temporaryContactList.clear()
+                val searchText = newText!!
+                if (searchText.isNotEmpty()) {
+                    contactList.forEach {
+                        if (it.name.contains(searchText) || it.phone_number.contains(searchText)) {
+                            temporaryContactList.add(it)
+                        }
+                    }
+                    contact_list.adapter!!.notifyDataSetChanged()
+                } else {
+                    temporaryContactList.clear()
+                    temporaryContactList.addAll(contactList)
+                    contact_list.adapter!!.notifyDataSetChanged()
+                }
+                return false
+            }
+
+        })
 
         return contactsFragmentView
     }
@@ -86,12 +129,15 @@ class Fragment_Contacts : Fragment() {
                 val login_phone = auth.currentUser?.phoneNumber.toString()
 
                 var contact_model =
-                    Contact_Model(list[position].name, list[position].phone_number.trim())
+                    Contact_Model(
+                        list[position].name,
+                        list[position].phone_number.trim().replace(" ", "").replace("-", "")
+                    )
 
                 database =
                     FirebaseDatabase.getInstance().getReference("Contacts")
                         .child(login_phone.replace(" ", ""))
-                        .child(list[position].phone_number.replace(" ", ""))
+                        .child(list[position].phone_number.replace(" ", "").replace("-", ""))
                 database.setValue(contact_model)
 
                 val intent_id = Intent(context, GroupChatActivity::class.java)

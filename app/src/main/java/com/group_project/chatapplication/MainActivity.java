@@ -14,6 +14,7 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -68,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
 
@@ -97,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.stories:
                         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_stories).commit();
-                        jump_chat_screen.show();
+                        jump_chat_screen.hide();
                         break;
                     case R.id.contacts:
                         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_contacts).commit();
@@ -188,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finishAffinity();
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_chats).commit();
     }
 
     private void checkPermission() {
