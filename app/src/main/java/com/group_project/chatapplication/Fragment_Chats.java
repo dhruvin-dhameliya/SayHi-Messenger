@@ -14,6 +14,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +61,11 @@ public class Fragment_Chats extends Fragment {
     User_Model user_model;
     ActivityResultLauncher<Intent> activityResultLauncher;
     String imageUri;
+
+    Date date = new Date();
+    long date1 = 0;
+    long date2 = date.getTime();
+    int days, hours;
 
 
     @Override
@@ -133,6 +140,18 @@ public class Fragment_Chats extends Fragment {
                         userStoriesModel.setName(storySnapshot.child("name").getValue(String.class));
                         userStoriesModel.setProfileImage(storySnapshot.child("profileImage").getValue(String.class));
                         userStoriesModel.setLastupdated(storySnapshot.child("lastUpdate").getValue(Long.class));
+                        // ---------------------
+                        // Auto delete all stories after 24 hours
+                        date1 = storySnapshot.child("lastUpdate").getValue(Long.class);
+                        long difference = date2 - date1;
+                        days = (int) (difference / (1000 * 60 * 60 * 24));
+                        hours = (int) ((difference - (1000 * 60 * 60 * 24 * days)) / (1000 * 60 * 60));
+                        hours = (hours < 0 ? -hours : hours);
+                        Log.i("", "==== Hours: " + hours);
+                        if (hours >= 24) {
+                            FirebaseDatabase.getInstance().getReference().child("Stories").child(fetch_phone_number).getRef().setValue(null);
+                        }
+                        // ---------------------
                         ArrayList<Stories_Model> stories_models = new ArrayList<>();
                         for (DataSnapshot statusSnapshot : storySnapshot.child("Status").getChildren()) {
                             Stories_Model sample_status = statusSnapshot.getValue(Stories_Model.class);
@@ -190,139 +209,6 @@ public class Fragment_Chats extends Fragment {
                 }
             }
         });
-
-/*
-        // Stories uploading code ...
-        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-            @Override
-            public void onActivityResult(ActivityResult result) {
-                if (result.getData() != null) {
-                    if (result.getData().getData() != null) {
-                        progressDialog.show();
-                        FirebaseStorage storage = FirebaseStorage.getInstance();
-                        Date date = new Date();
-                        //---------------------------------------------------------------------------------------------------------------
-                        // contact with upload stories code...
-                        firebaseDatabase.getReference().child("Users Details").child(fetch_phone_number);
-                        ValueEventListener valueEventListener = new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                DatabaseReference reference = firebaseDatabase.getReference().child("Contacts").child(fetch_phone_number);
-                                ValueEventListener eventListener = new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        for (DataSnapshot ds : snapshot.getChildren()) {
-                                            String zero = ds.child("contact_name").getValue(String.class);
-                                            one = ds.child("contact_number").getValue(String.class);
-                                            Log.d("TAG", "CONNECT: " + zero + " / " + one);
-
-                                            StorageReference reference = storage.getReference().child("Contacts").child(fetch_phone_number).child(ds.child("contact_number").getValue(String.class)).child("Stories").child(fetch_phone_number).child(date.getTime() + "");
-                                            reference.putFile(result.getData().getData()).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                                    if (task.isSuccessful()) {
-                                                        reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                                            @Override
-                                                            public void onSuccess(Uri uri) {
-                                                                userStories_model.setName(user_model.getName());
-                                                                userStories_model.setProfileImage(user_model.getProfile_image());
-                                                                userStories_model.setLastupdated(date.getTime());
-                                                                HashMap<String, Object> objectsHashMap = new HashMap<>();
-                                                                objectsHashMap.put("name", userStories_model.getName());
-                                                                objectsHashMap.put("profileImage", userStories_model.getProfileImage());
-                                                                objectsHashMap.put("lastUpdate", userStories_model.getLastupdated());
-                                                                String imgURL = uri.toString();
-                                                                Stories_Model stories_model = new Stories_Model(imgURL, userStories_model.getLastupdated());
-                                                                firebaseDatabase.getReference().child("Contacts").child(fetch_phone_number).child(ds.child("contact_number").getValue(String.class)).child("Stories").child(fetch_phone_number).updateChildren(objectsHashMap);
-                                                                firebaseDatabase.getReference().child("Contacts").child(fetch_phone_number).child(ds.child("contact_number").getValue(String.class)).child("Stories").child(fetch_phone_number).child("Status").push().setValue(stories_model);
-                                                                progressDialog.dismiss();
-                                                            }
-                                                        });
-                                                    }
-                                                }
-                                            });
-
-                                            Log.d("", "AAA");
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                    }
-                                };
-                                reference.addListenerForSingleValueEvent(eventListener);
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                            }
-                        };
-                        databaseReference.addListenerForSingleValueEvent(valueEventListener);
-                        //---------------------------------------------------------------------------------------------------------------
-                    }
-                }
-            }
-        });
-
-        // TRY display with contacts stories code....
-        firebaseDatabase.getReference().child("Users Details").child(fetch_phone_number);
-        ValueEventListener valueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                DatabaseReference reference = firebaseDatabase.getReference().child("Contacts").child(fetch_phone_number);
-                ValueEventListener eventListener = new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for (DataSnapshot ds : snapshot.getChildren()) {
-                            String zero = ds.child("contact_name").getValue(String.class);
-                            one = ds.child("contact_number").getValue(String.class);
-                            Log.d("TAG", "CONNECT: " + zero + " / " + one);
-                            firebaseDatabase.getReference().child("Contacts").child(fetch_phone_number).child(ds.child("contact_number").getValue(String.class)).child("Stories").addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    if (snapshot.exists()) {
-                                        userStories_models_list.clear();
-                                        for (DataSnapshot storySnapshot : snapshot.getChildren()) {
-                                            UserStories_Model userStoriesModel = new UserStories_Model();
-                                            userStoriesModel.setName(storySnapshot.child("name").getValue(String.class));
-                                            userStoriesModel.setProfileImage(storySnapshot.child("profileImage").getValue(String.class));
-                                            userStoriesModel.setLastupdated(storySnapshot.child("lastUpdate").getValue(Long.class));
-                                            ArrayList<Stories_Model> stories_models = new ArrayList<>();
-                                            for (DataSnapshot statusSnapshot : storySnapshot.child("Status").getChildren()) {
-                                                Stories_Model sample_status = statusSnapshot.getValue(Stories_Model.class);
-                                                stories_models.add(sample_status);
-                                            }
-                                            userStoriesModel.setStatuses(stories_models);
-                                            userStories_models_list.add(userStoriesModel);
-                                        }
-                                        topStories_adapter.notifyDataSetChanged();
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
-                            Log.d("", "AAA");
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                };
-                reference.addListenerForSingleValueEvent(eventListener);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        };
-        databaseReference.addListenerForSingleValueEvent(valueEventListener);
-*/
 
         layout_upload_stories.setOnClickListener(new View.OnClickListener() {
             @Override

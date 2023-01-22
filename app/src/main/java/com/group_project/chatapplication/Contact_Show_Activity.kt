@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,10 +28,13 @@ class Contact_Show_Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contact_show)
 
-        val contact_list = findViewById<RecyclerView>(R.id.contact_list)
-        val contact_search_view = findViewById<SearchView>(R.id.contact_search_view)
+        val contact_list = findViewById<RecyclerView>(R.id.contact_list_for_activity)
+        val contact_search_view_for_activity =
+            findViewById<SearchView>(R.id.contact_search_view_for_activity)
         contact_list.layoutManager = LinearLayoutManager(this)
+
         val contactList: MutableList<ContactDTO> = ArrayList()
+        val temporaryContactList: MutableList<ContactDTO> = ArrayList()
 
         val contacts = contentResolver.query(
             ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null
@@ -47,9 +51,50 @@ class Contact_Show_Activity : AppCompatActivity() {
                 obj.phone_number = number
                 contactList.add(obj)
             }
-            contact_list.adapter = ContactAdapter(contactList, this)
+            contact_list.adapter = ContactAdapter(temporaryContactList, this)
             contacts.close()
         }
+        temporaryContactList.addAll(contactList)
+
+        contact_search_view_for_activity.setOnQueryTextListener(object :
+            SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query2: String?): Boolean {
+                temporaryContactList.clear()
+                val searchText_2 = query2!!
+                if (searchText_2.isNotEmpty()) {
+                    contactList.forEach {
+                        if (it.name.contains(searchText_2) || it.phone_number.contains(searchText_2)) {
+                            temporaryContactList.add(it)
+                        }
+                    }
+                    contact_list.adapter!!.notifyDataSetChanged()
+                } else {
+                    temporaryContactList.clear()
+                    temporaryContactList.addAll(contactList)
+                    contact_list.adapter!!.notifyDataSetChanged()
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText2: String?): Boolean {
+                temporaryContactList.clear()
+                val searchText_2 = newText2!!
+                if (searchText_2.isNotEmpty()) {
+                    contactList.forEach {
+                        if (it.name.contains(searchText_2) || it.phone_number.contains(searchText_2)) {
+                            temporaryContactList.add(it)
+                        }
+                    }
+                    contact_list.adapter!!.notifyDataSetChanged()
+                } else {
+                    temporaryContactList.clear()
+                    temporaryContactList.addAll(contactList)
+                    contact_list.adapter!!.notifyDataSetChanged()
+                }
+                return false
+            }
+        })
+
     }
 
     class ContactAdapter(items: MutableList<ContactDTO>, ctx: Context) :
@@ -71,13 +116,14 @@ class Contact_Show_Activity : AppCompatActivity() {
                 auth = FirebaseAuth.getInstance()
                 val login_phone = auth.currentUser?.phoneNumber.toString()
 
-                var contact_model =
-                    Contact_Model(list[position].name, list[position].phone_number.trim())
+                var contact_model = Contact_Model(
+                    list[position].name,
+                    list[position].phone_number.trim().replace(" ", "").replace("-", "")
+                )
 
-                database =
-                    FirebaseDatabase.getInstance().getReference("Contacts")
-                        .child(login_phone.replace(" ", ""))
-                        .child(list[position].phone_number.replace(" ", ""))
+                database = FirebaseDatabase.getInstance().getReference("Contacts")
+                    .child(login_phone.replace(" ", "").replace("-", ""))
+                    .child(list[position].phone_number.trim().replace(" ", "").replace("-", ""))
                 database.setValue(contact_model)
 
                 val intent_id = Intent(context, GroupChatActivity::class.java)

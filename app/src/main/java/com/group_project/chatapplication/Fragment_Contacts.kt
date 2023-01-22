@@ -25,8 +25,7 @@ class Fragment_Contacts : Fragment() {
     lateinit var contactsFragmentView: View
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
         // Inflate the layout for this fragment
@@ -43,11 +42,7 @@ class Fragment_Contacts : Fragment() {
         val temporaryContactList: MutableList<ContactDTO> = ArrayList()
 
         val contacts = context?.contentResolver?.query(
-            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-            null,
-            null,
-            null,
-            null
+            ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null
         )
 
         if (contacts != null) {
@@ -65,7 +60,6 @@ class Fragment_Contacts : Fragment() {
             contacts.close()
         }
         temporaryContactList.addAll(contactList)
-
 
         contact_search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -128,16 +122,14 @@ class Fragment_Contacts : Fragment() {
                 auth = FirebaseAuth.getInstance()
                 val login_phone = auth.currentUser?.phoneNumber.toString()
 
-                var contact_model =
-                    Contact_Model(
-                        list[position].name,
-                        list[position].phone_number.trim().replace(" ", "").replace("-", "")
-                    )
+                var contact_model = Contact_Model(
+                    list[position].name,
+                    list[position].phone_number.trim().replace(" ", "").replace("-", "")
+                )
 
-                database =
-                    FirebaseDatabase.getInstance().getReference("Contacts")
-                        .child(login_phone.replace(" ", ""))
-                        .child(list[position].phone_number.replace(" ", "").replace("-", ""))
+                database = FirebaseDatabase.getInstance().getReference("Contacts")
+                    .child(login_phone.replace(" ", "").replace("-", ""))
+                    .child(list[position].phone_number.replace(" ", "").replace("-", ""))
                 database.setValue(contact_model)
 
                 val intent_id = Intent(context, GroupChatActivity::class.java)

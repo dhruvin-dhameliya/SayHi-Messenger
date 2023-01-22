@@ -2,7 +2,6 @@ package com.group_project.chatapplication;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -11,10 +10,9 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -43,8 +41,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Objects;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 public class Fragment_Stories extends Fragment {
 
     View storiesFragmentView;
@@ -55,6 +51,7 @@ public class Fragment_Stories extends Fragment {
     String fetch_phone_number;
     RoundedImageView square_img_upload_story;
     TopStories_Adapter_2 topStories_adapter_2;
+    CardView card_layout_delete_all_stories;
     ArrayList<UserStories_Model> userStories_models_list;
     RecyclerView stories_list;
     ProgressDialog progressDialog;
@@ -80,6 +77,7 @@ public class Fragment_Stories extends Fragment {
         topStories_adapter_2 = new TopStories_Adapter_2(getContext(), userStories_models_list);
         stories_list = storiesFragmentView.findViewById(R.id.stories_list_2);
         square_img_upload_story = storiesFragmentView.findViewById(R.id.square_img_upload_story);
+        card_layout_delete_all_stories = storiesFragmentView.findViewById(R.id.card_layout_delete_all_stories);
 
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Story Uploading...");
@@ -197,6 +195,14 @@ public class Fragment_Stories extends Fragment {
                 intent_img.setType("image/*");
                 intent_img.setAction(Intent.ACTION_PICK);
                 activityResultLauncher.launch(intent_img);
+            }
+        });
+
+        // Delete all uploaded Stories...
+        card_layout_delete_all_stories.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseDatabase.getInstance().getReference().child("Stories").child(fetch_phone_number).getRef().setValue(null);
             }
         });
 

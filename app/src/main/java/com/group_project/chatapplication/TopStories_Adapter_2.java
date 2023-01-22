@@ -2,7 +2,6 @@ package com.group_project.chatapplication;
 
 import android.content.Context;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +57,7 @@ public class TopStories_Adapter_2 extends RecyclerView.Adapter<TopStories_Adapte
                         .setStoriesList(myStories) // Required
                         .setStoryDuration(5000) // Default is 2000 Millis (2 Seconds)
                         .setTitleText(userStories_model3.getName()) // Default is Hidden
-                        .setSubtitleText(longToDateString(lastStory.getTimestamp(), "dd/MM/yyyy")) // Default is Hidden
+                        .setSubtitleText("Today " + longToDateString(lastStory.getTimestamp(), "hh:mm a")) // Default is Hidden
                         .setTitleLogoUrl(userStories_model3.getProfileImage()) // Default is Hidden
                         .setStoryClickListeners(new StoryClickListeners() {
                             @Override
@@ -73,7 +72,6 @@ public class TopStories_Adapter_2 extends RecyclerView.Adapter<TopStories_Adapte
                         }) // Optional Listeners
                         .build() // Must be called before calling show method
                         .show();
-
             }
         });
 
