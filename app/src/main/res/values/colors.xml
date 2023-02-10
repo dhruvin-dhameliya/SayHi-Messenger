@@ -13,4 +13,7 @@
     <color name="bottom_bar_icon_selected">#1a1f71</color>
     <color name="bottom_bar_icon_unselected">#B2B1B1</color>
 
+    <!--    for chat   -->
+    <color name="themecolor">#0076CE</color>
+
 </resources>

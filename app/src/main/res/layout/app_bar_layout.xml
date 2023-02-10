@@ -8,4 +8,22 @@
     app:popupTheme="@style/ThemeOverlay.PopupTheme"
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/home_profile_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:padding="@dimen/_3sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:scaleType="centerCrop"
+        android:layout_gravity="start"
+        android:src="@drawable/img_default_person" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:text="Say Hi"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_18sdp" />
+
 </androidx.appcompat.widget.Toolbar>

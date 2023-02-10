@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/rootLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/dp_img"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_gravity="center"
+                android:src="@drawable/img_default_person"
+
+                android:layout_marginStart="@dimen/_20sdp"/>
+
+            <LinearLayout
+                android:layout_toStartOf="@+id/unseenMessages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/dp_img">
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:textSize="@dimen/_18sdp"
+                    android:text="Fullname"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/lastMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:textColor="@color/themecolor"
+                    android:textSize="@dimen/_14sdp"
+                    android:text="This is last message"
+                    android:textStyle="bold"
+                    tools:ignore="InvalidId" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/unseenMessages"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:text="1"
+                android:textSize="@dimen/_10sdp"
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:background="@drawable/notify_background"/>
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="#14000000"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

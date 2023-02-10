@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragment_Contacts">
+    tools:context=".All_Fragments.Fragment_Contacts">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#19E1F5FE"
-        tools:context=".Contact_Show_Activity">
+        tools:context=".All_Activities.Contact_Show_Activity">
 
         <SearchView
             android:id="@+id/fragment_contact_search_view"

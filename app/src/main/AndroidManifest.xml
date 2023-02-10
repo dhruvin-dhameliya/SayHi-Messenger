@@ -16,14 +16,32 @@
         android:theme="@style/Theme.ChatApplication"
         tools:targetApi="31">
         <activity
-            android:name=".Contact_Show_Activity"
+            android:name=".All_Activities.CropperActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".SplashScreenActivity"
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".All_Activities.WallPaperChatActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".All_Activities.Contact_Show_Activity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".All_Activities.SplashScreenActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,21 +54,21 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ProfileInfoActivity"
+            android:name=".All_Activities.ProfileInfoActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".RegisterOTPActivity"
+            android:name=".All_Activities.RegisterOTPActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".RegistrationActivity"
+            android:name=".All_Activities.RegistrationActivity"
             android:exported="false"
             android:theme="@style/Theme.ChatApplication.NoActionBar">
             <meta-data
@@ -58,14 +76,14 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".GroupChatActivity"
+            android:name=".All_Activities.ChatActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name=".All_Activities.SettingsActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

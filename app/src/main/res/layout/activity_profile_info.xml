@@ -7,7 +7,7 @@
     android:layout_gravity="center"
     android:layout_marginHorizontal="@dimen/_20sdp"
     android:orientation="vertical"
-    tools:context=".ProfileInfoActivity">
+    tools:context=".All_Activities.ProfileInfoActivity">
 
     <TextView
         android:layout_width="match_parent"

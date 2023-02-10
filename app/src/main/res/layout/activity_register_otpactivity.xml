@@ -7,7 +7,7 @@
     android:layout_marginHorizontal="@dimen/_20sdp"
     android:layout_marginTop="@dimen/_30sdp"
     android:orientation="vertical"
-    tools:context=".RegisterOTPActivity">
+    tools:context=".All_Activities.RegisterOTPActivity">
 
 
     <TextView

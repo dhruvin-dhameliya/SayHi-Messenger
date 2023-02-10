@@ -1,33 +1,27 @@
 package com.group_project.chatapplication;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -39,14 +33,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+import com.group_project.chatapplication.All_Activities.Contact_Show_Activity;
+import com.group_project.chatapplication.All_Activities.RegistrationActivity;
+import com.group_project.chatapplication.All_Activities.SettingsActivity;
+import com.group_project.chatapplication.All_Fragments.Fragment_Calls;
+import com.group_project.chatapplication.All_Fragments.Fragment_Chats;
+import com.group_project.chatapplication.All_Fragments.Fragment_Contacts;
+import com.group_project.chatapplication.All_Fragments.Fragment_Stories;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Objects;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -58,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     String fetch_phone_number;
     BottomNavigationView bottomNavbar;
     FloatingActionButton jump_chat_screen;
+    CircleImageView home_profile_image;
 
     Fragment_Chats fragment_chats = new Fragment_Chats();
     Fragment_Stories fragment_stories = new Fragment_Stories();
@@ -84,6 +80,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, Contact_Show_Activity.class));
+            }
+        });
+
+        home_profile_image = findViewById(R.id.home_profile_image);
+        home_profile_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,SettingsActivity.class));
             }
         });
 
@@ -125,6 +129,23 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser user = auth.getCurrentUser();
         fetch_phone_number = user.getPhoneNumber();
         checkPermission();
+
+        // Show profile image on home screen
+        databaseReference= FirebaseDatabase.getInstance().getReference().child("Users Details").child(fetch_phone_number);
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if ((snapshot.exists())  && (snapshot.hasChild("phone"))) {
+                    String retrieveProfileImage = snapshot.child("profile_image").getValue().toString();
+                    Glide.with(home_profile_image.getContext()).load(retrieveProfileImage).into(home_profile_image);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(MainActivity.this, "Profile image not get!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -140,14 +161,14 @@ public class MainActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.option_create_group) {
             RequestNewGroup();
         }
-        if (item.getItemId() == R.id.option_settings) {
+       /* if (item.getItemId() == R.id.option_settings) {
             startActivity(new Intent(MainActivity.this, SettingsActivity.class));
         }
         if (item.getItemId() == R.id.option_logout) {
             auth.signOut();
             startActivity(new Intent(MainActivity.this, RegistrationActivity.class));
             finish();
-        }
+        }*/
         return true;
     }
 

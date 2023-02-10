@@ -4,7 +4,7 @@
     <item
         android:id="@+id/chats"
         android:title="Chats"
-        android:icon="@drawable/ic_selected_chats_icon"/>
+        android:icon="@drawable/icon_chat"/>
 
     <item
         android:id="@+id/stories"
@@ -14,11 +14,11 @@
     <item
         android:id="@+id/contacts"
         android:title="Contacts"
-        android:icon="@drawable/ic_selected_contacts_icon"/>
+        android:icon="@drawable/icon_contact"/>
 
     <item
         android:id="@+id/calls"
         android:title="Call"
-        android:icon="@drawable/ic_selected_call_icon"/>
+        android:icon="@drawable/icon_call"/>
 
 </menu>

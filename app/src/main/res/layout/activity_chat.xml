@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".All_Activities.ChatActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/chat_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:titleTextColor="@color/white" />
+
+    <ImageView
+        android:id="@+id/img_chat_wallpaper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/chat_bar_layout"
+        android:background="@color/black"
+        android:scaleType="fitXY"
+        android:src="@drawable/img_default_wallpaper" />
+
+    <ScrollView
+        android:id="@+id/my_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/myLinearLayout"
+        android:layout_below="@+id/chat_bar_layout">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chat_recyclearview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/myLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="@dimen/_2sdp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/_4sdp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_50sdp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="@dimen/_100sdp"
+                app:cardElevation="0dp">
+
+                <EditText
+                    android:id="@+id/input_group_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_gravity="start|center"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:background="@null"
+                    android:ems="14"
+                    android:gravity="start|center"
+                    android:hint="Type a message"
+                    android:inputType="textCapSentences|textMultiLine|textLongMessage"
+                    android:maxLines="4"
+                    android:minLines="1"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:id="@+id/send_file"
+                    android:layout_width="@dimen/_28sdp"
+                    android:layout_height="@dimen/_28sdp"
+                    android:layout_gravity="center|end"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:src="@drawable/icon_file_attachment" />
+
+                <!-- <ImageButton
+                     android:id="@+id/send_message_button"
+                     android:layout_width="35dp"
+                     android:layout_height="35dp"
+                     android:layout_gravity="center|end"
+                     android:layout_marginEnd="@dimen/_25sdp"
+                     android:background="@drawable/icon_send_chat"
+                     android:padding="10dp" />-->
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/send_message_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/colorPrimary"
+            android:contentDescription="Chats"
+            android:src="@drawable/icon_send_chat"
+            app:borderWidth="0dp"
+            app:elevation="0dp"
+            app:rippleColor="#EFEFEF"
+            app:tint="@color/white" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

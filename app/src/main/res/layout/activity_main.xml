@@ -58,7 +58,7 @@
         android:backgroundTint="@color/colorPrimary"
         android:contentDescription="Chats"
         android:elevation="0dp"
-        android:src="@drawable/ic_selected_chats_icon"
+        android:src="@drawable/icon_contact"
         app:borderWidth="0dp"
         app:rippleColor="#EFEFEF"
         app:tint="@color/white" />

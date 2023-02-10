@@ -24,7 +24,7 @@
                 android:layout_height="@dimen/_175sdp"
                 android:background="@color/black"
                 android:scaleType="fitXY"
-                android:src="@drawable/demo_img_1"
+                android:src="@drawable/img_story_2"
                 app:riv_corner_radius="@dimen/_8sdp"
                 app:riv_mutate_background="true"
                 app:riv_oval="false" />
