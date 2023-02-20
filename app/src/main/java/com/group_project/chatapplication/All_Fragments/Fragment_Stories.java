@@ -170,9 +170,10 @@ public class Fragment_Stories extends Fragment {
                                     reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                         @Override
                                         public void onSuccess(Uri uri) {
+                                            long d1 = date.getTime();
                                             userStories_model.setName(user_model.getName());
                                             userStories_model.setProfileImage(user_model.getProfile_image());
-                                            userStories_model.setLastupdated(date.getTime());
+                                            userStories_model.setLastupdated(d1);
                                             HashMap<String, Object> objectsHashMap = new HashMap<>();
                                             objectsHashMap.put("name", userStories_model.getName());
                                             objectsHashMap.put("profileImage", userStories_model.getProfileImage());
@@ -180,7 +181,7 @@ public class Fragment_Stories extends Fragment {
                                             String imgURL = uri.toString();
                                             Stories_Model stories_model = new Stories_Model(imgURL, userStories_model.getLastupdated());
                                             firebaseDatabase.getReference().child("Stories").child(fetch_phone_number).updateChildren(objectsHashMap);
-                                            firebaseDatabase.getReference().child("Stories").child(fetch_phone_number).child("Status").push().setValue(stories_model);
+                                            firebaseDatabase.getReference().child("Stories").child(fetch_phone_number).child("Status").child(String.valueOf(d1)).setValue(stories_model);
                                             progressDialog.dismiss();
                                         }
                                     });

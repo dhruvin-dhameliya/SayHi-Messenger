@@ -29,8 +29,7 @@ class Contact_Show_Activity : AppCompatActivity() {
         setContentView(R.layout.activity_contact_show)
 
         val contact_list = findViewById<RecyclerView>(R.id.contact_list_for_activity)
-        val contact_search_view_for_activity =
-            findViewById<SearchView>(R.id.contact_search_view_for_activity)
+        val contact_search_view_for_activity = findViewById<SearchView>(R.id.contact_search_view_for_activity)
         contact_list.layoutManager = LinearLayoutManager(this)
 
         val contactList: MutableList<ContactDTO> = ArrayList()

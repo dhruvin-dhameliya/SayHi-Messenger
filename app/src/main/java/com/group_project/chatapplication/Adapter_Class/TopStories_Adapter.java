@@ -57,7 +57,7 @@ public class TopStories_Adapter extends RecyclerView.Adapter<TopStories_Adapter.
                         .setStoriesList(myStories) // Required
                         .setStoryDuration(5000) // Default is 2000 Millis (2 Seconds)
                         .setTitleText(userStories_model3.getName()) // Default is Hidden
-                        .setSubtitleText("Today " + longToDateString(lastStory.getTimestamp(), "hh:mm a")) // Default is Hidden
+                        .setSubtitleText(longToDateString(lastStory.getTimestamp(), "dd-MM-yyyy hh:mm a")) // Default is Hidden
                         .setTitleLogoUrl(userStories_model3.getProfileImage()) // Default is Hidden
                         .setStoryClickListeners(new StoryClickListeners() {
                             @Override

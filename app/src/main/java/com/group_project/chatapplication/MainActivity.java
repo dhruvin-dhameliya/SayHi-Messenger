@@ -231,11 +231,11 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Denied...", Toast.LENGTH_SHORT).show();
         }
     }
-
+/*
     @Override
     protected void onStart() {
         super.onStart();
-//        checkPermission();
     }
+*/
 
 }

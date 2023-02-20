@@ -38,6 +38,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.group_project.chatapplication.Adapter_Class.TopStories_Adapter;
+import com.group_project.chatapplication.All_Activities.ChatActivity;
 import com.group_project.chatapplication.Model_Class.Stories_Model;
 import com.group_project.chatapplication.Model_Class.UserStories_Model;
 import com.group_project.chatapplication.Model_Class.User_Model;
@@ -59,7 +60,7 @@ public class Fragment_Chats extends Fragment {
     FirebaseAuth auth;
     FirebaseUser user;
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference, referenceForUserIMG;
+    DatabaseReference databaseReference, referenceForUserIMG, databaseReferenceStories;
     String fetch_phone_number;
     ConstraintLayout layout_upload_stories;
     CircleImageView img_profile_show_stories;
@@ -70,7 +71,7 @@ public class Fragment_Chats extends Fragment {
     UserStories_Model userStories_model = new UserStories_Model();
     User_Model user_model;
     ActivityResultLauncher<Intent> activityResultLauncher;
-    String imageUri, storyOldDate = "", currentDate = "";
+    String imageUri;
 
 
     @Override
@@ -99,6 +100,9 @@ public class Fragment_Chats extends Fragment {
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
         referenceForUserIMG = FirebaseDatabase.getInstance().getReference().child("Users Details").child(fetch_phone_number);
+
+        databaseReferenceStories = FirebaseDatabase.getInstance().getReference().child("Stories");
+        automaticDeleteStory();
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
@@ -145,34 +149,6 @@ public class Fragment_Chats extends Fragment {
                         userStoriesModel.setName(storySnapshot.child("name").getValue(String.class));
                         userStoriesModel.setProfileImage(storySnapshot.child("profileImage").getValue(String.class));
                         userStoriesModel.setLastupdated(storySnapshot.child("lastUpdate").getValue(Long.class));
-                        // ---------------------------------------------------------------------------------------------------------------------------
-                        storyOldDate = longToDateString(storySnapshot.child("lastUpdate").getValue(Long.class), "dd-MM-yyyy");
-                        currentDate = longToDateString(new Date().getTime(), "dd-MM-yyyy");
-
-                        // ------------------String to Date convert -----------------------
-                        DateTimeFormatter formatter = null;
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.ENGLISH);
-                        }
-
-                        LocalDate dateOLD = null;
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            dateOLD = LocalDate.parse(storyOldDate, formatter);
-                        }
-
-                        LocalDate dateCURRENT = null;
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            dateCURRENT = LocalDate.parse(currentDate, formatter);
-                        }
-                        // --------------------------------------------------------------
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            // Auto delete all stories after 24 hours
-                            if (dateCURRENT.isBefore(dateOLD)) {
-                                FirebaseDatabase.getInstance().getReference().child("Stories").child(fetch_phone_number).getRef().setValue(null);
-                            }
-                        }
-                        // ---------------------------------------------------------------------------------------------------------------------------
-
                         ArrayList<Stories_Model> stories_models = new ArrayList<>();
                         for (DataSnapshot statusSnapshot : storySnapshot.child("Status").getChildren()) {
                             Stories_Model sample_status = statusSnapshot.getValue(Stories_Model.class);
@@ -208,9 +184,10 @@ public class Fragment_Chats extends Fragment {
                                     reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                         @Override
                                         public void onSuccess(Uri uri) {
+                                            long d1 = date.getTime();
                                             userStories_model.setName(user_model.getName());
                                             userStories_model.setProfileImage(user_model.getProfile_image());
-                                            userStories_model.setLastupdated(date.getTime());
+                                            userStories_model.setLastupdated(d1);
                                             HashMap<String, Object> objectsHashMap = new HashMap<>();
                                             objectsHashMap.put("name", userStories_model.getName());
                                             objectsHashMap.put("profileImage", userStories_model.getProfileImage());
@@ -218,14 +195,13 @@ public class Fragment_Chats extends Fragment {
                                             String imgURL = uri.toString();
                                             Stories_Model stories_model = new Stories_Model(imgURL, userStories_model.getLastupdated());
                                             firebaseDatabase.getReference().child("Stories").child(fetch_phone_number).updateChildren(objectsHashMap);
-                                            firebaseDatabase.getReference().child("Stories").child(fetch_phone_number).child("Status").push().setValue(stories_model);
+                                            firebaseDatabase.getReference().child("Stories").child(fetch_phone_number).child("Status").child(String.valueOf(d1)).setValue(stories_model);
                                             progressDialog.dismiss();
                                         }
                                     });
                                 }
                             }
                         });
-
                     }
                 }
             }
@@ -244,8 +220,34 @@ public class Fragment_Chats extends Fragment {
         return chatFragmentView;
     }
 
-    public static String longToDateString(long timestamp, String format) {
-        return DateFormat.format(format, new Date(timestamp)).toString();
+    public void automaticDeleteStory() {
+        databaseReferenceStories.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.child(fetch_phone_number).hasChild("Status")) {
+                    for (DataSnapshot storySnapshot : snapshot.child(fetch_phone_number).child("Status").getChildren()) {
+                        long storyKey = Long.parseLong(Objects.requireNonNull(storySnapshot.getKey()));
+                        long currentDate = new Date().getTime();
+                        long differenceDate = currentDate - storyKey;
+                        // for 24 hours
+                        if (differenceDate >= 86400000) {
+                            FirebaseDatabase.getInstance().getReference().child("Stories").child(fetch_phone_number).getRef().setValue(null);
+                            Log.d("", "DELETE STORY.");
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(), "Automatic stories can't delete!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        automaticDeleteStory();
+    }
 }

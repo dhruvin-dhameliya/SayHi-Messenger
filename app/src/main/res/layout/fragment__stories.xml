@@ -11,123 +11,129 @@
         android:layout_height="match_parent"
         android:layout_gravity="center">
 
-        <LinearLayout
-            android:id="@+id/stories_section"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_8sdp"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
             <LinearLayout
+                android:id="@+id/stories_section"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:orientation="vertical">
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="@dimen/_125sdp"
-                    android:layout_height="@dimen/_150sdp"
-                    android:layout_marginHorizontal="@dimen/_8sdp"
-                    android:layout_marginVertical="@dimen/_8sdp"
-                    app:cardCornerRadius="@dimen/_8sdp">
-
-                    <com.makeramen.roundedimageview.RoundedImageView
-                        android:id="@+id/square_img_upload_story"
-                        android:layout_width="@dimen/_125sdp"
-                        android:layout_height="@dimen/_150sdp"
-                        android:background="@color/black"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/img_story_1"
-                        app:riv_corner_radius="@dimen/_8sdp"
-                        app:riv_mutate_background="true"
-                        app:riv_oval="false" />
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="@dimen/_125sdp"
-                        android:layout_height="@dimen/_150sdp"
-                        android:layout_gravity="center">
-
-                        <ImageView
-                            android:id="@+id/plus_img"
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
-                            android:layout_margin="4dp"
-                            android:src="@drawable/icon_add_stories_2"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.0" />
-
-                        <TextView
-                            android:id="@+id/textView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignStart="@+id/plus_img"
-                            android:layout_marginTop="85dp"
-                            android:text="Add to story"
-                            android:textAlignment="center"
-                            android:textColor="@color/white"
-                            android:textSize="18sp"
-                            android:textStyle="normal|bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.20"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/plus_img"
-                            app:layout_constraintVertical_bias="0.700" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/card_layout_delete_all_stories"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_50sdp"
-                    android:layout_gravity="center"
-                    app:cardBackgroundColor="#191919"
-                    app:cardCornerRadius="@dimen/_8sdp">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="@dimen/_125sdp"
+                        android:layout_height="@dimen/_150sdp"
+                        android:layout_marginHorizontal="@dimen/_8sdp"
+                        android:layout_marginVertical="@dimen/_8sdp"
+                        app:cardCornerRadius="@dimen/_8sdp">
+
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:id="@+id/square_img_upload_story"
+                            android:layout_width="@dimen/_125sdp"
+                            android:layout_height="@dimen/_150sdp"
+                            android:background="@color/black"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/img_story_1"
+                            app:riv_corner_radius="@dimen/_8sdp"
+                            app:riv_mutate_background="true"
+                            app:riv_oval="false" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="@dimen/_125sdp"
+                            android:layout_height="@dimen/_150sdp"
+                            android:layout_gravity="center">
+
+                            <ImageView
+                                android:id="@+id/plus_img"
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:layout_margin="4dp"
+                                android:src="@drawable/icon_add_stories_2"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="0.0" />
+
+                            <TextView
+                                android:id="@+id/textView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignStart="@+id/plus_img"
+                                android:layout_marginTop="85dp"
+                                android:text="Add to story"
+                                android:textAlignment="center"
+                                android:textColor="@color/white"
+                                android:textSize="18sp"
+                                android:textStyle="normal|bold"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.20"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/plus_img"
+                                app:layout_constraintVertical_bias="0.700" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/card_layout_delete_all_stories"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_50sdp"
                         android:layout_gravity="center"
-                        android:padding="@dimen/_5sdp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
+                        app:cardBackgroundColor="#191919"
+                        app:cardCornerRadius="@dimen/_8sdp">
 
-                        <ImageButton
-                            android:layout_width="@dimen/_25sdp"
-                            android:layout_height="@dimen/_25sdp"
-                            android:layout_gravity="center"
-                            android:backgroundTint="@color/white"
-                            android:layout_marginEnd="@dimen/_5sdp"
-                            android:background="@drawable/icon_delete_stories" />
-
-                        <TextView
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:text="Delete your stories"
-                            android:textColor="@color/white"
-                            android:textSize="15sp"
-                            android:textStyle="normal" />
+                            android:orientation="horizontal"
+                            android:padding="@dimen/_5sdp">
 
-                    </LinearLayout>
+                            <ImageButton
+                                android:layout_width="@dimen/_25sdp"
+                                android:layout_height="@dimen/_25sdp"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="@dimen/_5sdp"
+                                android:background="@drawable/icon_delete_stories"
+                                android:backgroundTint="@color/white" />
 
-                </androidx.cardview.widget.CardView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:text="Delete your stories"
+                                android:textColor="@color/white"
+                                android:textSize="15sp"
+                                android:textStyle="normal" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/stories_list_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_5sdp" />
 
             </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/stories_list_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_5sdp" />
-
-        </LinearLayout>
+        </ScrollView>
 
     </RelativeLayout>
 

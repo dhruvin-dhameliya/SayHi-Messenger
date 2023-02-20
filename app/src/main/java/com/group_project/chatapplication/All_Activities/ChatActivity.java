@@ -96,13 +96,14 @@ public class ChatActivity extends AppCompatActivity {
         doChat();
         displayChat();
 
+        // Display Wallpaper code...
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Chat Wallpaper").child(fetch_phone_number).child("wallpaper_image");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if ((snapshot.exists())) {
-                    String retrieveWallpaperImage = snapshot.getValue(String.class);
-                    Glide.with(img_chat_wallpaper.getContext()).load(retrieveWallpaperImage).into(img_chat_wallpaper);
+                if (snapshot.exists()) {
+                        String retrieveWallpaperImage = snapshot.getValue(String.class);
+                        Glide.with(img_chat_wallpaper.getContext()).load(retrieveWallpaperImage).into(img_chat_wallpaper);
                 }
             }
 
