@@ -7,7 +7,7 @@
     android:layout_gravity="center"
     android:layout_marginHorizontal="30dp"
     android:gravity="center"
-    tools:context=".All_Activities.SettingsActivity">
+    tools:context=".commonActivities.Settings_Activity">
 
     <ScrollView
         android:layout_width="fill_parent"

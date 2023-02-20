@@ -16,7 +16,35 @@
         android:theme="@style/Theme.ChatApplication"
         tools:targetApi="31">
         <activity
-            android:name=".All_Activities.CropperActivity"
+            android:name=".groupChat.add_participant.Group_Add_Participant_Activity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".groupChat.Group_Contacts_Activity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".groupChat.group_chat_messages.Group_Chat_Messages_Activity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".groupChat.group_list.List_Of_Group_Activity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".wallPaper.Cropper_Activity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -27,21 +55,21 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".All_Activities.WallPaperChatActivity"
+            android:name=".wallPaper.Wallpaper_Chat_Activity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".All_Activities.Contact_Show_Activity"
+            android:name=".contacts.Contact_Show_Activity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".All_Activities.SplashScreenActivity"
+            android:name=".commonActivities.Splash_Screen_Activity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -54,21 +82,21 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".All_Activities.ProfileInfoActivity"
+            android:name=".registration.Profile_Info_Activity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".All_Activities.RegisterOTPActivity"
+            android:name=".registration.Register_OTP_Activity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".All_Activities.RegistrationActivity"
+            android:name=".registration.Registration_Activity"
             android:exported="false"
             android:theme="@style/Theme.ChatApplication.NoActionBar">
             <meta-data
@@ -76,14 +104,14 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".All_Activities.ChatActivity"
+            android:name=".singleChat.ChatActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".All_Activities.SettingsActivity"
+            android:name=".commonActivities.Settings_Activity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

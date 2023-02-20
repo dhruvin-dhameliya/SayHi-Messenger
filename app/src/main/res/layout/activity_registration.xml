@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".All_Activities.RegistrationActivity">
+    tools:context=".registration.Registration_Activity">
 
     <ScrollView
         android:layout_width="fill_parent"

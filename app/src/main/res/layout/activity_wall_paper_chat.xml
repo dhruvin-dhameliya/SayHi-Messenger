@@ -7,7 +7,7 @@
     android:layout_gravity="center"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".All_Activities.WallPaperChatActivity">
+    tools:context=".wallPaper.Wallpaper_Chat_Activity">
 
     <ImageView
         android:id="@+id/img_choose_wallpaper"

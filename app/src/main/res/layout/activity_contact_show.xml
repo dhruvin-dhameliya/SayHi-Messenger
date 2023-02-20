@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#19E1F5FE"
-    tools:context=".All_Activities.Contact_Show_Activity">
+    tools:context=".contacts.Contact_Show_Activity">
 
     <SearchView
         android:id="@+id/contact_search_view_for_activity"

@@ -33,13 +33,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.group_project.chatapplication.All_Activities.Contact_Show_Activity;
-import com.group_project.chatapplication.All_Activities.RegistrationActivity;
-import com.group_project.chatapplication.All_Activities.SettingsActivity;
-import com.group_project.chatapplication.All_Fragments.Fragment_Calls;
-import com.group_project.chatapplication.All_Fragments.Fragment_Chats;
-import com.group_project.chatapplication.All_Fragments.Fragment_Contacts;
-import com.group_project.chatapplication.All_Fragments.Fragment_Stories;
+import com.group_project.chatapplication.commonActivities.Fragment_Calls;
+import com.group_project.chatapplication.contacts.Contact_Show_Activity;
+import com.group_project.chatapplication.registration.Registration_Activity;
+import com.group_project.chatapplication.commonActivities.Settings_Activity;
+import com.group_project.chatapplication.singleChat.Fragment_Chats;
+import com.group_project.chatapplication.contacts.Fragment_Contacts;
+import com.group_project.chatapplication.stories.Fragment_Stories;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         user = auth.getCurrentUser();
 
         if (user == null) {
-            startActivity(new Intent(MainActivity.this, RegistrationActivity.class));
+            startActivity(new Intent(MainActivity.this, Registration_Activity.class));
             finish();
         }
 
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         home_profile_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,SettingsActivity.class));
+                startActivity(new Intent(MainActivity.this, Settings_Activity.class));
             }
         });
 
@@ -162,11 +162,11 @@ public class MainActivity extends AppCompatActivity {
             RequestNewGroup();
         }
        /* if (item.getItemId() == R.id.option_settings) {
-            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+            startActivity(new Intent(MainActivity.this, Settings_Activity.class));
         }
         if (item.getItemId() == R.id.option_logout) {
             auth.signOut();
-            startActivity(new Intent(MainActivity.this, RegistrationActivity.class));
+            startActivity(new Intent(MainActivity.this, Registration_Activity.class));
             finish();
         }*/
         return true;

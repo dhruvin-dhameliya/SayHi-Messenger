@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".wallPaper.Cropper_Activity">
+    tools:context=".groupChat.add_participant.Group_Add_Participant_Activity">
 
 </androidx.constraintlayout.widget.ConstraintLayout>
