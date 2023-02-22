@@ -20,6 +20,11 @@
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
+    <style name="Image_Preview_Theme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/black</item>
+        <item name="android:navigationBarColor">@color/black</item>
+    </style>
+
     <style name="Theme.ChatApplication.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

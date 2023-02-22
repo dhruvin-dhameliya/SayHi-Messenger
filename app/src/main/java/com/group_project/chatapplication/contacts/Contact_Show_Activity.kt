@@ -41,7 +41,7 @@ class Contact_Show_Activity : AppCompatActivity() {
         if (contacts != null) {
             while (contacts.moveToNext()) {
                 name =
-                    contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
+                    contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME_PRIMARY))
                 number =
                     contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
                 val obj = ContactDTO()

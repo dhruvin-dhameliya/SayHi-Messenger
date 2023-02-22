@@ -122,6 +122,15 @@ public class Settings_Activity extends AppCompatActivity {
             }
         });
 
+        display_profile_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentId = new Intent(Settings_Activity.this, Image_Preview_Activity.class);
+                intentId.putExtra("passSelectedImage" , imageUri);
+                startActivity(intentId);
+            }
+        });
+
         btn_profile_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -219,10 +228,10 @@ public class Settings_Activity extends AppCompatActivity {
         */
     }
 
-    @Override
+   /* @Override
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(Settings_Activity.this, MainActivity.class));
         finish();
-    }
+    }*/
 }

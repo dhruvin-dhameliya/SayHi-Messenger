@@ -15,5 +15,21 @@
 
     <!--    for chat   -->
     <color name="themecolor">#0076CE</color>
+    <color name="myGreenColor" >#009688</color>
+
+
+    <color name="c1">#fe8a8b</color>
+    <color name="c2">#55c265</color>
+    <color name="c3">#25c3dc</color>
+    <color name="c4">#736769</color>
+    <color name="c5">#7e90a4</color>
+    <color name="c6">#5697ff</color>
+    <color name="c7">#6e257e</color>
+    <color name="c8">#243640</color>
+    <color name="c9">#a52c71</color>
+    <color name="c10">#792139</color>
+    <color name="c11">#efb32f</color>
+    <color name="c12">#b6b326</color>
+
 
 </resources>

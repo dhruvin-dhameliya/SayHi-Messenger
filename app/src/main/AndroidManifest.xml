@@ -16,6 +16,21 @@
         android:theme="@style/Theme.ChatApplication"
         tools:targetApi="31">
         <activity
+            android:name=".stories.Text_Story_Activity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".commonActivities.Image_Preview_Activity"
+            android:exported="false"
+            android:theme="@style/Image_Preview_Theme">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".groupChat.add_participant.Group_Add_Participant_Activity"
             android:exported="false">
             <meta-data

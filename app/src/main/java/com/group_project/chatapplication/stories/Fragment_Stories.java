@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -61,6 +62,7 @@ public class Fragment_Stories extends Fragment {
     User_Model user_model;
     ActivityResultLauncher<Intent> activityResultLauncher;
     String imageUri;
+    FloatingActionButton add_txt_story;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,6 +82,14 @@ public class Fragment_Stories extends Fragment {
         stories_list = storiesFragmentView.findViewById(R.id.stories_list_2);
         square_img_upload_story = storiesFragmentView.findViewById(R.id.square_img_upload_story);
         card_layout_delete_all_stories = storiesFragmentView.findViewById(R.id.card_layout_delete_all_stories);
+        add_txt_story = storiesFragmentView.findViewById(R.id.add_txt_story);
+
+        add_txt_story.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), Text_Story_Activity.class));
+            }
+        });
 
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Story Uploading...");
