@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@color/black"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:gravity="center"
+    tools:context=".stories.Story_Preview_Activity">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_screen_close"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="start|bottom"
+        android:layout_marginHorizontal="@dimen/_12sdp"
+        android:layout_marginVertical="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@drawable/ic_close"
+        android:gravity="start"
+        app:backgroundTint="@color/white"
+        app:rippleColor="#57B3F8" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_crop_img"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="end|bottom"
+        android:layout_marginHorizontal="@dimen/_12sdp"
+        android:layout_marginVertical="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_65sdp"
+        android:background="@drawable/icon_crop_img"
+        android:gravity="center"
+        app:backgroundTint="@color/white"
+        app:rippleColor="#57B3F8" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_choose_color"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="end|bottom"
+        android:layout_marginHorizontal="@dimen/_12sdp"
+        android:layout_marginVertical="@dimen/_12sdp"
+        android:background="@drawable/icon_draw"
+        app:backgroundTint="@color/white"
+        app:rippleColor="#57B3F8" />
+
+    <RelativeLayout
+        android:id="@+id/final_story_img_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/story_preview_img"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/img_story_2" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/_60sdp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/story_caption_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:textAlignment="center"
+                android:visibility="gone"
+                app:cardBackgroundColor="#50000000"
+                app:cardCornerRadius="@dimen/_100sdp"
+                app:cardElevation="2dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:id="@+id/txt_story_caption"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_gravity="start|center"
+                    android:ems="14"
+                    android:gravity="center"
+                    android:text="Story caption"
+                    android:textColor="@color/white"
+                    android:textColorHint="#e2e7ed"
+                    android:textSize="20sp"
+                    tools:layout_editor_absoluteX="4dp"
+                    tools:layout_editor_absoluteY="404dp" />
+
+            </androidx.cardview.widget.CardView>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </RelativeLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/edit_txt_caption_cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/btn_upload_story"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        android:layout_marginVertical="@dimen/_2sdp"
+        app:cardBackgroundColor="#1f2c34"
+        app:cardCornerRadius="@dimen/_100sdp"
+        app:cardElevation="2dp">
+
+        <EditText
+            android:id="@+id/edit_txt_caption"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_gravity="start|center"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:background="@null"
+            android:ems="14"
+            android:gravity="start|center"
+            android:hint="Add a caption..."
+            android:imeOptions="actionDone"
+            android:inputType="textCapSentences"
+            android:maxLength="30"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="0dp"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textColorHint="#e2e7ed"
+            android:textSize="18sp" />
+
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_upload_story"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="@dimen/_12sdp"
+        android:layout_marginVertical="@dimen/_12sdp"
+        android:backgroundTint="@color/colorPrimary"
+        android:contentDescription="Uplode Story"
+        android:src="@drawable/icon_send_chat"
+        app:borderWidth="0dp"
+        app:elevation="3dp"
+        app:rippleColor="#EFEFEF"
+        app:tint="@color/white" />
+
+</RelativeLayout>

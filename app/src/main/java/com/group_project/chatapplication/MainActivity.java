@@ -40,6 +40,7 @@ import com.group_project.chatapplication.commonActivities.Settings_Activity;
 import com.group_project.chatapplication.singleChat.Fragment_Chats;
 import com.group_project.chatapplication.contacts.Fragment_Contacts;
 import com.group_project.chatapplication.stories.Fragment_Stories;
+import com.group_project.chatapplication.stories.Story_Preview_Activity;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         jump_chat_screen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, Contact_Show_Activity.class));
+                startActivity(new Intent(MainActivity.this, Story_Preview_Activity.class));
             }
         });
 
