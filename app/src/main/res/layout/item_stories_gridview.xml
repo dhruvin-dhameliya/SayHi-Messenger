@@ -56,13 +56,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|center"
-                android:gravity="end"
-                android:layout_marginTop="85dp"
-                android:text="User name"
                 android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginTop="85dp"
+                android:gravity="end"
+                android:text="User name"
                 android:textColor="@color/white"
                 android:textSize="15sp"
-                android:textStyle="normal|bold"/>
+                android:textStyle="normal|bold" />
 
         </androidx.cardview.widget.CardView>
 

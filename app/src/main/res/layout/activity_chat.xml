@@ -74,6 +74,7 @@
                     android:ems="14"
                     android:gravity="start|center"
                     android:hint="Type a message"
+                    android:imeOptions="actionNext"
                     android:inputType="textCapSentences|textMultiLine|textLongMessage"
                     android:maxLines="4"
                     android:minLines="1"

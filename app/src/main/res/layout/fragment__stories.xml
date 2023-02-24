@@ -32,6 +32,7 @@
                         android:layout_height="@dimen/_150sdp"
                         android:layout_marginHorizontal="@dimen/_8sdp"
                         android:layout_marginVertical="@dimen/_8sdp"
+                        android:foreground="?attr/selectableItemBackground"
                         app:cardCornerRadius="@dimen/_8sdp">
 
                         <com.makeramen.roundedimageview.RoundedImageView
