@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".groupChat.group_list.Create_New_Group_Activity">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/group_chat_bar_layout"
+        app:titleTextColor="@color/white"
+        app:subtitleTextColor="@color/white"
+        android:background="@color/colorPrimary">
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:layout_below="@id/group_chat_bar_layout"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:id="@+id/groupimage"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/img_upload_profile"/>
+    <EditText
+        android:id="@+id/group_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:background="@drawable/edittext_custom_border"
+        android:backgroundTint="@null"
+        android:hint=" Group Title"
+        android:inputType="textCapSentences"
+        android:padding="@dimen/_10sdp"
+        android:textColor="#222222"
+        android:layout_below="@id/groupimage"
+        android:textSize="20sp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_below="@id/group_name"
+        android:text="This will be show on your group"
+        android:textColor="#808080" />
+
+    <EditText
+        android:id="@+id/group_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:background="@drawable/edittext_custom_border"
+        android:backgroundTint="@null"
+        android:layout_below="@id/text1"
+        android:hint=" Group Description"
+        android:inputType="textCapSentences|textMultiLine|textLongMessage"
+        android:maxLines="2"
+        android:minLines="1"
+        android:padding="@dimen/_10sdp"
+        android:textColor="#222222"
+        android:textSize="20sp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/text2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_below="@id/group_desc"
+        android:text="This is optional"
+        android:textColor="#808080" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_group"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_45sdp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Create"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:textAllCaps="false"
+        android:textSize="@dimen/_18sdp"
+        android:layout_below="@id/text2"
+        app:borderWidth="0dp"
+        app:elevation="3dp"
+        app:rippleColor="#EFEFEF"
+        app:tint="@color/white" />
+</RelativeLayout>

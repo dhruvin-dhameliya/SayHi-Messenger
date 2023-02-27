@@ -62,28 +62,14 @@ public class Story_Preview_Activity extends AppCompatActivity {
             }
         });
 
-        // Close KeyBord when touch on screen...
-        edit_txt_caption.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
-
-                    edit_txt_caption_cardView.setVisibility(View.GONE);
-                    story_caption_card.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
         // Close KeyBord when press DONE button of key-bord...
         edit_txt_caption.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     fetch_caption = edit_txt_caption.getText().toString();
-
                     txt_story_caption.setText(fetch_caption);
+
                     InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
 
@@ -92,6 +78,23 @@ public class Story_Preview_Activity extends AppCompatActivity {
                     return true;
                 }
                 return false;
+            }
+        });
+
+        // Close KeyBord when touch on screen...
+        edit_txt_caption.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    fetch_caption = edit_txt_caption.getText().toString();
+                    txt_story_caption.setText(fetch_caption);
+
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+                    edit_txt_caption_cardView.setVisibility(View.GONE);
+                    story_caption_card.setVisibility(View.VISIBLE);
+                }
             }
         });
 

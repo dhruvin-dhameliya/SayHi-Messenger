@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/_100sdp"
+    android:layout_marginTop="@dimen/_10sdp"
+    android:layout_marginEnd="@dimen/_5sdp"
+    android:orientation="vertical"
+    android:id="@+id/messagelayout"
+    android:padding="@dimen/_5sdp">
+
+
+    <RelativeLayout
+        android:id="@+id/second_Rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:background="@drawable/back_right"
+        android:paddingBottom="@dimen/_5sdp"
+        android:paddingTop="@dimen/_5sdp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/nameTv"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:textColor="@color/white"
+            android:text="Name"
+            android:visibility="gone"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/messageTv"
+            android:layout_below="@id/nameTv"
+            android:padding="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:text="This message was deleted"
+            android:textColor="@color/black"/>
+        <ImageView
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="@dimen/_150sdp"
+            android:scaleType="centerCrop"
+            android:layout_centerInParent="true"
+            android:id="@+id/messageIv"
+             android:paddingBottom="@dimen/_5sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:src="@drawable/img_story_1"/>
+
+    </RelativeLayout>
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal">
+
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:id="@+id/timeTv"
+           android:textColor="#B4000000"
+           android:text="Time"
+           android:layout_marginEnd="@dimen/_10sdp"
+           android:layout_marginStart="@dimen/_5sdp"
+           android:textSize="@dimen/_8sdp"
+           android:layout_alignEnd="@id/second_Rv"/>
+       <de.hdodenhof.circleimageview.CircleImageView
+           android:layout_width="@dimen/_20sdp"
+           android:layout_height="@dimen/_20sdp"
+           android:layout_marginStart="@dimen/_70sdp"
+           android:id="@+id/message_image"
+           android:src="@drawable/img_default_person"/>
+   </LinearLayout>
+
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/isSeenTv"-->
+<!--        android:gravity="end"-->
+<!--        android:textAlignment="textEnd"-->
+<!--        android:text="delivered"/>-->
+
+
+</LinearLayout>

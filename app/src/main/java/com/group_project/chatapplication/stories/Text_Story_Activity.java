@@ -328,7 +328,7 @@ public class Text_Story_Activity extends AppCompatActivity {
 
             Toast.makeText(getApplicationContext(), "TEXT story upload.", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(Text_Story_Activity.this, MainActivity.class));
-            finish();
+            finishAffinity();
         }
     }
 }

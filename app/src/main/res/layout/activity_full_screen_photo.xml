@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".groupChat.group_chat_messages.Full_screen_photo_Activity">
+
+    <ImageView
+        android:id="@+id/download_img"
+        android:layout_width="@dimen/_41sdp"
+        android:layout_height="@dimen/_41sdp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:padding="@dimen/_5sdp"
+        android:src="@drawable/img_dowload" />
+
+    <ImageView
+        android:id="@+id/image3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/download_img"
+        android:src="@drawable/default_image_for_chat" />
+
+
+</RelativeLayout>

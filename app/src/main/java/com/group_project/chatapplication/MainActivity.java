@@ -35,6 +35,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.group_project.chatapplication.commonActivities.Fragment_Calls;
 import com.group_project.chatapplication.contacts.Contact_Show_Activity;
+import com.group_project.chatapplication.groupChat.group_list.Create_New_Group_Activity;
 import com.group_project.chatapplication.registration.Registration_Activity;
 import com.group_project.chatapplication.commonActivities.Settings_Activity;
 import com.group_project.chatapplication.singleChat.Fragment_Chats;
@@ -160,7 +161,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         super.onOptionsItemSelected(item);
         if (item.getItemId() == R.id.option_create_group) {
-            RequestNewGroup();
+//            RequestNewGroup();
+            startActivity(new Intent(MainActivity.this, Create_New_Group_Activity.class));
         }
        /* if (item.getItemId() == R.id.option_settings) {
             startActivity(new Intent(MainActivity.this, Settings_Activity.class));

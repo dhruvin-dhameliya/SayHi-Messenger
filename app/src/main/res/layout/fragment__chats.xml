@@ -61,20 +61,20 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/view_border"
             android:layout_width="wrap_content"
             android:layout_height="1dp"
             android:layout_below="@+id/stories_section"
             android:layout_marginTop="@dimen/_1sdp"
             android:background="#b6b6b6" />
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:src="@drawable/img_chat" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/groupRv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_below="@id/view_border"
+            tools:listitem="@layout/row_groupchat" />
 
     </RelativeLayout>
 

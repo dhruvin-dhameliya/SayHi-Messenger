@@ -10,6 +10,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -35,6 +36,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.group_project.chatapplication.groupChat.group_list.Adapter_Group_List;
+import com.group_project.chatapplication.groupChat.group_list.Model_Group_List;
 import com.group_project.chatapplication.stories.TopStories_Adapter;
 import com.group_project.chatapplication.stories.Stories_Model;
 import com.group_project.chatapplication.stories.UserStories_Model;
@@ -66,6 +69,10 @@ public class Fragment_Chats extends Fragment {
     User_Model user_model;
     ActivityResultLauncher<Intent> activityResultLauncher;
     String imageUri;
+    RecyclerView groupRv;
+    SearchView searchView;
+    ArrayList<Model_Group_List> groupArrayList;
+    Adapter_Group_List adapterGroupchatList;
 
 
     @Override
@@ -78,6 +85,9 @@ public class Fragment_Chats extends Fragment {
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
+
+        // searchView=chatFragmentView.findViewById(R.id.searchview);
+        groupRv=chatFragmentView.findViewById(R.id.groupRv);
 
         FirebaseUser user = auth.getCurrentUser();
         fetch_phone_number = user.getPhoneNumber();
@@ -211,8 +221,35 @@ public class Fragment_Chats extends Fragment {
             }
         });
 
+        loadGroupChatList();
+
         return chatFragmentView;
+    }//end
+
+    private void loadGroupChatList() {
+        groupArrayList=new ArrayList<>();
+        DatabaseReference reference= FirebaseDatabase.getInstance().getReference("Groups");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                groupArrayList.clear();
+                for (DataSnapshot ds:snapshot.getChildren()){
+                    if(ds.child("Participants").child(fetch_phone_number).exists()){
+                        Model_Group_List modelGroup=ds.getValue(Model_Group_List.class);
+                        groupArrayList.add(modelGroup);
+                    }
+                }
+                adapterGroupchatList=new Adapter_Group_List(getContext(),groupArrayList);
+                groupRv.setAdapter(adapterGroupchatList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
+
 
     public void automaticDeleteStory() {
         databaseReferenceStories.addValueEventListener(new ValueEventListener() {
