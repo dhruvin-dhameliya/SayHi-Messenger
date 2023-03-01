@@ -57,7 +57,7 @@ public class TopStories_Adapter_2 extends RecyclerView.Adapter<TopStories_Adapte
                 }
                 new StoryView.Builder(((MainActivity) context).getSupportFragmentManager())
                         .setStoriesList(myStories) // Required
-                        .setStoryDuration(5000) // Default is 2000 Millis (2 Seconds)
+                        .setStoryDuration(5000L) // Default is 2000 Millis (2 Seconds)
                         .setTitleText(userStories_model3.getName()) // Default is Hidden
                         .setSubtitleText(longToDateString(lastStory.getTimestamp(), "dd-MM-yyyy hh:mm a")) // Default is Hidden
                         .setTitleLogoUrl(userStories_model3.getProfileImage()) // Default is Hidden

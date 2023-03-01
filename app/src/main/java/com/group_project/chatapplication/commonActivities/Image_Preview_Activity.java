@@ -29,7 +29,7 @@ public class Image_Preview_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(Image_Preview_Activity.this, Settings_Activity.class));
-                finish();
+                finishAffinity();
             }
         });
 

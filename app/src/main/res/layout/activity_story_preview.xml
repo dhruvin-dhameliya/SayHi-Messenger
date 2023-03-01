@@ -12,50 +12,6 @@
     android:gravity="center"
     tools:context=".stories.Story_Preview_Activity">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_screen_close"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_gravity="start|bottom"
-        android:layout_marginHorizontal="@dimen/_12sdp"
-        android:layout_marginVertical="@dimen/_12sdp"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:background="@drawable/ic_close"
-        android:gravity="start"
-        app:backgroundTint="@color/white"
-        app:rippleColor="#57B3F8" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_crop_img"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_gravity="end|bottom"
-        android:layout_marginHorizontal="@dimen/_12sdp"
-        android:layout_marginVertical="@dimen/_12sdp"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_65sdp"
-        android:background="@drawable/icon_crop_img"
-        android:gravity="center"
-        app:backgroundTint="@color/white"
-        app:rippleColor="#57B3F8" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_choose_color"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_gravity="end|bottom"
-        android:layout_marginHorizontal="@dimen/_12sdp"
-        android:layout_marginVertical="@dimen/_12sdp"
-        android:background="@drawable/icon_draw"
-        app:backgroundTint="@color/white"
-        app:rippleColor="#57B3F8" />
-
     <RelativeLayout
         android:id="@+id/final_story_img_layout"
         android:layout_width="match_parent"
@@ -101,12 +57,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginHorizontal="@dimen/_5sdp"
                 android:textAlignment="center"
                 android:visibility="gone"
                 app:cardBackgroundColor="#50000000"
-                app:cardCornerRadius="@dimen/_100sdp"
-                app:cardElevation="2dp"
+                app:cardElevation="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
@@ -116,8 +70,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_gravity="start|center"
-                    android:ems="14"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
                     android:gravity="center"
+                    android:maxLength="70"
+                    android:maxLines="4"
+                    android:minLines="1"
                     android:text="Story caption"
                     android:textColor="@color/white"
                     android:textColorHint="#e2e7ed"
@@ -127,10 +84,29 @@
 
             </androidx.cardview.widget.CardView>
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </RelativeLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/btn_card_screen_close"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/_12sdp"
+        app:cardBackgroundColor="#60000000"
+        app:cardCornerRadius="100dp">
+
+        <ImageView
+            android:id="@+id/btn_screen_close"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:src="@drawable/ic_close" />
+
+    </com.google.android.material.card.MaterialCardView>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/edit_txt_caption_cardView"
@@ -155,7 +131,7 @@
             android:hint="Add a caption..."
             android:imeOptions="actionDone"
             android:inputType="textCapSentences"
-            android:maxLength="30"
+            android:maxLength="75"
             android:paddingStart="@dimen/_10sdp"
             android:paddingEnd="0dp"
             android:singleLine="true"

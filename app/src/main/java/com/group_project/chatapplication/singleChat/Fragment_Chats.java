@@ -2,7 +2,6 @@ package com.group_project.chatapplication.singleChat;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -23,9 +22,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -33,11 +29,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+import com.group_project.chatapplication.MainActivity;
 import com.group_project.chatapplication.groupChat.group_list.Adapter_Group_List;
 import com.group_project.chatapplication.groupChat.group_list.Model_Group_List;
+import com.group_project.chatapplication.stories.Story_Preview_Activity;
 import com.group_project.chatapplication.stories.TopStories_Adapter;
 import com.group_project.chatapplication.stories.Stories_Model;
 import com.group_project.chatapplication.stories.UserStories_Model;
@@ -65,12 +60,10 @@ public class Fragment_Chats extends Fragment {
     ArrayList<UserStories_Model> userStories_models_list;
     RecyclerView stories_list;
     ProgressDialog progressDialog;
-    UserStories_Model userStories_model = new UserStories_Model();
     User_Model user_model;
     ActivityResultLauncher<Intent> activityResultLauncher;
     String imageUri;
     RecyclerView groupRv;
-    SearchView searchView;
     ArrayList<Model_Group_List> groupArrayList;
     Adapter_Group_List adapterGroupchatList;
 
@@ -86,8 +79,7 @@ public class Fragment_Chats extends Fragment {
         user = auth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
 
-        // searchView=chatFragmentView.findViewById(R.id.searchview);
-        groupRv=chatFragmentView.findViewById(R.id.groupRv);
+        groupRv = chatFragmentView.findViewById(R.id.groupRv);
 
         FirebaseUser user = auth.getCurrentUser();
         fetch_phone_number = user.getPhoneNumber();
@@ -177,36 +169,19 @@ public class Fragment_Chats extends Fragment {
             public void onActivityResult(ActivityResult result) {
                 if (result.getData() != null) {
                     if (result.getData().getData() != null) {
-                        progressDialog.show();
-                        FirebaseStorage storage = FirebaseStorage.getInstance();
-                        Date date = new Date();
-                        StorageReference reference = storage.getReference().child("Stories").child(fetch_phone_number).child(date.getTime() + "");
-                        reference.putFile(result.getData().getData()).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                        @Override
-                                        public void onSuccess(Uri uri) {
-                                            long d1 = date.getTime();
-                                            userStories_model.setName(user_model.getName());
-                                            userStories_model.setProfileImage(user_model.getProfile_image());
-                                            userStories_model.setLastupdated(d1);
-                                            HashMap<String, Object> objectsHashMap = new HashMap<>();
-                                            objectsHashMap.put("name", userStories_model.getName());
-                                            objectsHashMap.put("profileImage", userStories_model.getProfileImage());
-                                            objectsHashMap.put("lastUpdate", userStories_model.getLastupdated());
-                                            String imgURL = uri.toString();
-                                            Stories_Model stories_model = new Stories_Model(imgURL, userStories_model.getLastupdated());
-                                            firebaseDatabase.getReference().child("Stories").child(fetch_phone_number).updateChildren(objectsHashMap);
-                                            firebaseDatabase.getReference().child("Stories").child(fetch_phone_number).child("Status").child(String.valueOf(d1)).setValue(stories_model);
-                                            progressDialog.dismiss();
-                                        }
-                                    });
-                                }
-                            }
-                        });
+                        assert result.getData() != null;
+                        String img = result.getData().getData().toString();
+                        Intent id = new Intent(getContext(), Story_Preview_Activity.class);
+                        id.putExtra("pass_selected_img", img);
+                        Log.d("", "IMG: " + img);
+                        startActivity(id);
+                    } else {
+                        startActivity(new Intent(getContext(), MainActivity.class));
+                        requireActivity().finishAffinity();
                     }
+                } else {
+                    startActivity(new Intent(getContext(), MainActivity.class));
+                    requireActivity().finishAffinity();
                 }
             }
         });
@@ -227,19 +202,19 @@ public class Fragment_Chats extends Fragment {
     }//end
 
     private void loadGroupChatList() {
-        groupArrayList=new ArrayList<>();
-        DatabaseReference reference= FirebaseDatabase.getInstance().getReference("Groups");
+        groupArrayList = new ArrayList<>();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Groups");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 groupArrayList.clear();
-                for (DataSnapshot ds:snapshot.getChildren()){
-                    if(ds.child("Participants").child(fetch_phone_number).exists()){
-                        Model_Group_List modelGroup=ds.getValue(Model_Group_List.class);
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    if (ds.child("Participants").child(fetch_phone_number).exists()) {
+                        Model_Group_List modelGroup = ds.getValue(Model_Group_List.class);
                         groupArrayList.add(modelGroup);
                     }
                 }
-                adapterGroupchatList=new Adapter_Group_List(getContext(),groupArrayList);
+                adapterGroupchatList = new Adapter_Group_List(getContext(), groupArrayList);
                 groupRv.setAdapter(adapterGroupchatList);
             }
 
