@@ -203,7 +203,7 @@
         android:layout_marginHorizontal="@dimen/_8sdp"
         android:layout_marginTop="@dimen/_8sdp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/row_participant_add_2" />
+        tools:listitem="@layout/row_add_participant" />
 
     <LinearLayout
         android:id="@+id/leaveGroupTv"

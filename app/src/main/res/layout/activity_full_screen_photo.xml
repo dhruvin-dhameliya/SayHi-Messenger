@@ -24,5 +24,4 @@
         android:layout_below="@id/download_img"
         android:src="@drawable/default_image_for_chat" />
 
-
 </RelativeLayout>

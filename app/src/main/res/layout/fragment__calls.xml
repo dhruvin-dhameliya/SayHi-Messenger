@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/white"
     android:layout_height="match_parent"
-    tools:context=".commonActivities.Fragment_Calls">
+    android:layout_gravity="center"
+    tools:context=".groupChat.group_list.Fragment_Groups">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:src="@drawable/img_call" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/groupRv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/row_groupchat" />
 
 </FrameLayout>

@@ -15,7 +15,7 @@
 
     <!--    for chat   -->
     <color name="themecolor">#0076CE</color>
-    <color name="myGreenColor" >#009688</color>
+    <color name="myGreenColor">#009688</color>
 
 
     <color name="c1">#fe8a8b</color>
@@ -30,6 +30,5 @@
     <color name="c10">#792139</color>
     <color name="c11">#efb32f</color>
     <color name="c12">#b6b326</color>
-
 
 </resources>

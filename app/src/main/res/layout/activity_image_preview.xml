@@ -11,9 +11,9 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="start"
-        android:gravity="top|center"
-        android:layout_height="wrap_content">
+        android:gravity="top|center">
 
         <include
             android:id="@+id/main_page_toolbar"
@@ -23,10 +23,9 @@
 
     <ImageView
         android:id="@+id/selected_img"
-        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:src="@drawable/img_story_2" />
-
 
 </LinearLayout>

@@ -3,7 +3,6 @@ package com.group_project.chatapplication.groupChat.group_chat_messages;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -19,18 +18,16 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -43,15 +40,23 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.group_project.chatapplication.R;
+import com.group_project.chatapplication.groupChat.group_chat_messages.Adapter_Group_Chat_Messages;
+import com.group_project.chatapplication.groupChat.group_chat_messages.Group_Info_Activity;
+import com.group_project.chatapplication.groupChat.group_chat_messages.Model_Group_Chat_Messages;
 
 import java.io.File;
+import java.io.IOException;
+import java.security.Permission;
+import java.security.Permissions;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Group_Chat_Messages_Activity extends AppCompatActivity {
+
     String groupId, fetch_phone_number, mypost = "";
     ImageView groupIconTv, Back_press;
     TextView groupTitleTv;
@@ -63,9 +68,11 @@ public class Group_Chat_Messages_Activity extends AppCompatActivity {
     ArrayList<Model_Group_Chat_Messages> groupChatArrayList;
     Adapter_Group_Chat_Messages adapterGroupChat;
     Uri image_uri = null;
+    Uri uri;
     String picturePath;
     int IMAGE_PICK_CAMERA_CODE = 300;
     int IMAGE_PICK_GALLERY_CODE = 400;
+    int DOCUMENT_PICK_CODE = 500;
     long length;
     int file_size;
 
@@ -73,6 +80,7 @@ public class Group_Chat_Messages_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_chat_messages);
+
         groupIconTv = findViewById(R.id.groupIconTV);
         groupTitleTv = findViewById(R.id.grouptitle);
         attachbtn = findViewById(R.id.attachbtn);
@@ -95,9 +103,10 @@ public class Group_Chat_Messages_Activity extends AppCompatActivity {
             public void onClick(View view) {
                 String message = messageET.getText().toString().trim();
                 if (TextUtils.isEmpty(message)) {
-                    Toast.makeText(Group_Chat_Messages_Activity.this, "Can't send empty message...", Toast.LENGTH_SHORT).show();
+                    messageET.setError("Type message...");
                 } else {
                     sendmessage(message);
+                    messageET.setText("");
                 }
             }
         });
@@ -132,27 +141,47 @@ public class Group_Chat_Messages_Activity extends AppCompatActivity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.bottom_sheet_layout);
 
-        LinearLayout cameralayout = dialog.findViewById(R.id.layoutcamera);
-        LinearLayout gallerylayout = dialog.findViewById(R.id.layoutgallery);
-        cameralayout.setOnClickListener(new View.OnClickListener() {
+        ImageView camera = dialog.findViewById(R.id.camera);
+        ImageView gallery = dialog.findViewById(R.id.gallery);
+        ImageView pdf = dialog.findViewById(R.id.pdf);
+
+        camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
                 pickFromCamera();
             }
         });
-        gallerylayout.setOnClickListener(new View.OnClickListener() {
+
+        gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
                 pickfromGallery();
             }
         });
+
+        pdf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                pickfromDocument();
+            }
+        });
+
         dialog.show();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialoAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
+
+    private void pickfromDocument() {
+
+        Intent intent1 = new Intent();
+        intent1.setType("application/*");
+        intent1.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent1, "Select PDF File"), DOCUMENT_PICK_CODE);
     }
 
 
@@ -183,7 +212,7 @@ public class Group_Chat_Messages_Activity extends AppCompatActivity {
         progressDialog.show();
 
         //file path
-        String filepath = "Chat_Img/" + "" + System.currentTimeMillis();
+        String filepath = "Chat_Img/" + "" + System.currentTimeMillis() + ".jpg";
         //upload
         StorageReference storageReference = FirebaseStorage.getInstance().getReference(filepath);
         storageReference.putFile(image_uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -226,7 +255,7 @@ public class Group_Chat_Messages_Activity extends AppCompatActivity {
                 Toast.makeText(Group_Chat_Messages_Activity.this, "Failed", Toast.LENGTH_SHORT).show();
             }
         });
-    }
+    }//the end
 
     private void loadGroupPost() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Groups");
@@ -284,7 +313,6 @@ public class Group_Chat_Messages_Activity extends AppCompatActivity {
             public void onSuccess(Void unused) {
                 //send
                 //clear
-                messageET.setText("");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -319,7 +347,6 @@ public class Group_Chat_Messages_Activity extends AppCompatActivity {
         });
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK) {
@@ -347,8 +374,74 @@ public class Group_Chat_Messages_Activity extends AppCompatActivity {
 
                 sendImagemessage();
 
+            } else if (requestCode == DOCUMENT_PICK_CODE) {
+                uri = data.getData();
+                sendDocument();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+    private void sendDocument() {
+        //progress
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Please wait");
+        // progressDialog.setMessage("Sending Image..");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+        //file path
+        String filepath = "Chat_Img/" + "" + System.currentTimeMillis();
+        //upload
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference(filepath);
+        storageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Task<Uri> p_uriTasl = taskSnapshot.getStorage().getDownloadUrl();
+                while (!p_uriTasl.isSuccessful()) ;
+                Uri p_downloadUri = p_uriTasl.getResult();
+                if (p_uriTasl.isSuccessful()) {
+                    String timestamp = "" + System.currentTimeMillis();
+
+                    HashMap<String, Object> hashMap = new HashMap<>();
+                    hashMap.put("sender", "" + firebaseAuth.getUid());
+                    hashMap.put("message", "" + p_downloadUri);
+                    hashMap.put("timestamp", "" + timestamp);
+                    hashMap.put("type", "" + "file");//text,image,file
+
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Groups");
+                    reference.child(groupId).child("Messages").child(timestamp).setValue(hashMap)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    //send
+                                    //clear
+                                    messageET.setText("");
+                                    progressDialog.dismiss();
+                                    Toast.makeText(Group_Chat_Messages_Activity.this, "Document", Toast.LENGTH_SHORT).show();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    progressDialog.dismiss();
+                                    Toast.makeText(Group_Chat_Messages_Activity.this, "Failed", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progressDialog.dismiss();
+                Toast.makeText(Group_Chat_Messages_Activity.this, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                double p = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
+                progressDialog.setMessage((int) p + "% Uploading...");
+            }
+        });
+    }
+
 }

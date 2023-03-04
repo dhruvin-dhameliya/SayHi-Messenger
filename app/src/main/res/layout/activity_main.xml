@@ -16,35 +16,12 @@
             layout="@layout/app_bar_layout" />
 
     </com.google.android.material.appbar.AppBarLayout>
-    <!--
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/stories_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:layout_below="@+id/appBarLayout" />
-
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="1dp"
-            android:layout_above="@id/container"
-            android:layout_marginTop="@dimen/_1sdp"
-            android:background="#b6b6b6" />
-
-
-    <FrameLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/stories_list" />
-    -->
 
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/appBarLayout" />
-
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/jump_chat_screen"
@@ -58,7 +35,7 @@
         android:backgroundTint="@color/colorPrimary"
         android:contentDescription="Chats"
         android:elevation="0dp"
-        android:src="@drawable/icon_contact"
+        android:src="@drawable/icon_chat_out_fill"
         app:borderWidth="0dp"
         app:rippleColor="#EFEFEF"
         app:tint="@color/white" />

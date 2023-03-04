@@ -100,25 +100,22 @@ public class Group_Info_Activity extends AppCompatActivity {
                     positiveButtonTitle = "LEAVE";
                 }
                 AlertDialog.Builder builder = new AlertDialog.Builder(Group_Info_Activity.this);
-                builder.setTitle(dialogTitle)
-                        .setMessage(dialogDescription)
-                        .setPositiveButton(positiveButtonTitle, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (myGroupPost.equals("creator")) {
-                                    //I am creator
-                                    deletegroup();
-                                } else {
-                                    leaveGroup();
-                                }
-                            }
-                        })
-                        .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        }).show();
+                builder.setTitle(dialogTitle).setMessage(dialogDescription).setPositiveButton(positiveButtonTitle, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (myGroupPost.equals("creator")) {
+                            //I am creator
+                            deletegroup();
+                        } else {
+                            leaveGroup();
+                        }
+                    }
+                }).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).show();
             }
         });
 
@@ -138,25 +135,22 @@ public class Group_Info_Activity extends AppCompatActivity {
                     positiveButtonTitle = "LEAVE";
                 }
                 AlertDialog.Builder builder = new AlertDialog.Builder(Group_Info_Activity.this);
-                builder.setTitle(dialogTitle)
-                        .setMessage(dialogDescription)
-                        .setPositiveButton(positiveButtonTitle, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (myGroupPost.equals("creator")) {
-                                    //I am creator
-                                    deletegroup();
-                                } else {
-                                    leaveGroup();
-                                }
-                            }
-                        })
-                        .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        }).show();
+                builder.setTitle(dialogTitle).setMessage(dialogDescription).setPositiveButton(positiveButtonTitle, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (myGroupPost.equals("creator")) {
+                            //I am creator
+                            deletegroup();
+                        } else {
+                            leaveGroup();
+                        }
+                    }
+                }).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).show();
             }
         });
 

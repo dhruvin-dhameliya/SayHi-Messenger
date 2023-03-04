@@ -56,7 +56,7 @@ class Group_Contacts_Activity : AppCompatActivity() {
                 obj.phone_number = number
                 contactList.add(obj)
             }
-            contact_list.adapter =  ContactAdapter(temporaryContactList, this,groupId)
+            contact_list.adapter = ContactAdapter(temporaryContactList, this, groupId)
             contacts.close()
         }
         temporaryContactList.addAll(contactList)
@@ -116,17 +116,13 @@ class Group_Contacts_Activity : AppCompatActivity() {
             holder.name.text = list[position].name
             holder.number.text = list[position].phone_number
             holder.contact_card_view.setOnClickListener {
-
                 //not exists/not participant-add
-
                 //get data
-
                 var contact_model =
                     Contact_Model(
                         list[position].name,
                         list[position].phone_number.trim().replace(" ", "").replace("-", "")
                     )
-
 
                 //not exists/not participant-add
                 val builder = AlertDialog.Builder(context)
@@ -141,11 +137,12 @@ class Group_Contacts_Activity : AppCompatActivity() {
                         hashMap["timestamp"] = "" + timestamp
                         hashMap["name"] = contact_model.contact_name
                         //add that user in Groups<groupId>Participant
-                        //add that user in Groups<groupId>Participant
                         val reference = FirebaseDatabase.getInstance().getReference("Groups")
-                        reference.child(groupID).child("Participants").child(contact_model.contact_number).setValue(hashMap)
+                        reference.child(groupID).child("Participants")
+                            .child(contact_model.contact_number).setValue(hashMap)
                             .addOnSuccessListener { //add success
-                                Toast.makeText(context, "Added successfully", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, "Added successfully", Toast.LENGTH_SHORT)
+                                    .show()
                             }.addOnFailureListener { //failed
                                 Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
                             }
@@ -155,7 +152,6 @@ class Group_Contacts_Activity : AppCompatActivity() {
                     ) { dialogInterface, _ -> dialogInterface.dismiss() }.show()
             }
         }
-
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             return ViewHolder(
@@ -169,5 +165,4 @@ class Group_Contacts_Activity : AppCompatActivity() {
             val contact_card_view: CardView = v.findViewById(R.id.contact_card_view)!!
         }
     }
-
 }

@@ -1,52 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bottom_sheet_dialog">
+    android:background="@drawable/bottom_sheet_dialog"
+    android:orientation="vertical">
 
     <TextView
+        android:id="@+id/choosetxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/choosetxt"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:text="Choose Options"
         android:textAlignment="center"
         android:textColor="@color/black"
-        android:layout_marginTop="@dimen/_5sdp"
         android:textSize="@dimen/_20sdp"
-        android:textStyle="bold"
-        android:text="Choose Options"/>
-    <LinearLayout
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:id="@+id/layout_option"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/layoutcamera"
-        android:orientation="horizontal"
-        android:padding="@dimen/_8sdp">
-      <ImageView
-          android:layout_width="@dimen/_30sdp"
-          android:layout_height="@dimen/_30sdp"
-          android:src="@drawable/icon_camera"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Camera"
-            android:layout_marginLeft="@dimen/_30sdp"
-            android:textSize="@dimen/_18sdp"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/layoutgallery"
-        android:orientation="horizontal"
-        android:padding="@dimen/_8sdp">
+        android:layout_marginTop="@dimen/_10sdp">
+
         <ImageView
+            android:id="@+id/camera"
             android:layout_width="@dimen/_30sdp"
             android:layout_height="@dimen/_30sdp"
-            android:src="@drawable/picture"/>
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:src="@drawable/icon_camera" />
+
+        <ImageView
+            android:id="@+id/gallery"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/icon_gallery" />
+
+        <ImageView
+            android:id="@+id/pdf"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:src="@drawable/icon_pdf" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutgallery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_8sdp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:text="Camera"
+            android:textSize="@dimen/_15sdp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:text="Gallery"
-            android:layout_marginLeft="@dimen/_30sdp"
-            android:textSize="@dimen/_18sdp"/>
-    </LinearLayout>
+            android:textSize="@dimen/_15sdp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="PDF"
+            android:textSize="@dimen/_15sdp" />
+
+    </RelativeLayout>
+
 </LinearLayout>

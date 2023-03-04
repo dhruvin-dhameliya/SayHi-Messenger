@@ -1,12 +1,10 @@
 package com.group_project.chatapplication.stories;
 
-import com.group_project.chatapplication.stories.Stories_Model;
-
 import java.util.ArrayList;
 
 public class UserStories_Model {
 
-    String name,profileImage;
+    String name, profileImage;
     long lastupdated;
     ArrayList<Stories_Model> statuses;
 

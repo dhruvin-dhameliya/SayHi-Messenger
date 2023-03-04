@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/messagelayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/_100sdp"
     android:layout_marginTop="@dimen/_10sdp"
     android:layout_marginEnd="@dimen/_5sdp"
     android:orientation="vertical"
-    android:id="@+id/messagelayout"
     android:padding="@dimen/_5sdp">
-
 
     <RelativeLayout
         android:id="@+id/second_Rv"
@@ -17,68 +16,74 @@
         android:layout_gravity="end"
         android:layout_marginEnd="@dimen/_15sdp"
         android:background="@drawable/back_right"
-        android:paddingBottom="@dimen/_5sdp"
-        android:paddingTop="@dimen/_5sdp">
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_5sdp">
+
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/nameTv"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:textColor="@color/white"
-            android:text="Name"
-            android:visibility="gone"
-            android:textStyle="bold"/>
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/messageTv"
-            android:layout_below="@id/nameTv"
-            android:padding="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_5sdp"
             android:layout_marginStart="@dimen/_5sdp"
+            android:text="Name"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/messageTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/nameTv"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:padding="@dimen/_5sdp"
             android:text="This message was deleted"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black" />
+
         <ImageView
+            android:id="@+id/messageIv"
             android:layout_width="@dimen/_150sdp"
             android:layout_height="@dimen/_150sdp"
-            android:scaleType="centerCrop"
             android:layout_centerInParent="true"
-            android:id="@+id/messageIv"
-             android:paddingBottom="@dimen/_5sdp"
             android:paddingTop="@dimen/_5sdp"
-            android:src="@drawable/img_story_1"/>
+            android:paddingBottom="@dimen/_5sdp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/img_story_1" />
+
+        <ImageView
+            android:id="@+id/messagefile"
+            android:layout_width="@dimen/_160sdp"
+            android:layout_height="@dimen/_155sdp"
+            android:layout_centerInParent="true"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/icon_sended_documents" />
 
     </RelativeLayout>
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:orientation="horizontal">
 
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:id="@+id/timeTv"
-           android:textColor="#B4000000"
-           android:text="Time"
-           android:layout_marginEnd="@dimen/_10sdp"
-           android:layout_marginStart="@dimen/_5sdp"
-           android:textSize="@dimen/_8sdp"
-           android:layout_alignEnd="@id/second_Rv"/>
-       <de.hdodenhof.circleimageview.CircleImageView
-           android:layout_width="@dimen/_20sdp"
-           android:layout_height="@dimen/_20sdp"
-           android:layout_marginStart="@dimen/_70sdp"
-           android:id="@+id/message_image"
-           android:src="@drawable/img_default_person"/>
-   </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-<!--    <TextView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:id="@+id/isSeenTv"-->
-<!--        android:gravity="end"-->
-<!--        android:textAlignment="textEnd"-->
-<!--        android:text="delivered"/>-->
+        <TextView
+            android:id="@+id/timeTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/second_Rv"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:text="Time"
+            android:textColor="#B4000000"
+            android:textSize="@dimen/_8sdp" />
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/message_image"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_marginStart="@dimen/_70sdp"
+            android:src="@drawable/img_default_person" />
+    </LinearLayout>
 
 </LinearLayout>

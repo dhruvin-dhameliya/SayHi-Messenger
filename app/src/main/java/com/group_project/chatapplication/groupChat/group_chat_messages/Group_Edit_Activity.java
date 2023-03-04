@@ -44,6 +44,7 @@ import java.util.Locale;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Group_Edit_Activity extends AppCompatActivity {
+
     String groupId;
     ActionBar actionBar;
     Toolbar toolbar;
@@ -64,12 +65,14 @@ public class Group_Edit_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_edit);
+
         toolbar = findViewById(R.id.group_chat_bar_layout);
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setTitle("Create Group");
+        actionBar.setTitle("Group settings");
+
         groupId = getIntent().getStringExtra("groupId");
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Please wait");
@@ -80,20 +83,21 @@ public class Group_Edit_Activity extends AppCompatActivity {
         editdesc = findViewById(R.id.group_desc);
         btn_update = findViewById(R.id.btn_group_update);
 
-
         auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
         fetch_phone_number = user.getPhoneNumber();
 
-
         checkUser();
+
         loadGroupInfo();
+
         groupimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showPickDialog();
             }
         });
+
         btn_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -109,7 +113,7 @@ public class Group_Edit_Activity extends AppCompatActivity {
 
         //validate
         if (TextUtils.isEmpty(groupTitle)) {
-            Toast.makeText(this, "Group Title is required", Toast.LENGTH_SHORT).show();
+            editname.setError("Type group title");
             return;
         }
         progressDialog.setMessage("Updating Group Info...");
@@ -117,8 +121,6 @@ public class Group_Edit_Activity extends AppCompatActivity {
 
         if (image_uri == null) {
             //update without icon
-
-
             HashMap<String, Object> hashMap = new HashMap<>();
             hashMap.put("groupTitle", groupTitle);
             hashMap.put("groupDescription", groupDescription);

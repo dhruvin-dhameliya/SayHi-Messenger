@@ -37,7 +37,6 @@
                 android:text="Please confirm your country code \n and enter your phone number."
                 android:textSize="@dimen/_12sdp" />
 
-
             <com.hbb20.CountryCodePicker
                 android:id="@+id/regSelectCountryCode"
                 android:layout_width="match_parent"

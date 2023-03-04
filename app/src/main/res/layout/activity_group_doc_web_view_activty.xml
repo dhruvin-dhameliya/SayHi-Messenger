@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".groupChat.group_chat_messages.Group_Doc_WebView_Activty">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/group_chat_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:subtitleTextColor="@color/white"
+        app:titleTextColor="@color/white">
+
+        <ImageView
+            android:id="@+id/doc_download"
+            android:layout_width="@dimen/_28sdp"
+            android:layout_height="@dimen/_28sdp"
+            android:layout_gravity="end"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:src="@drawable/img_dowload" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <WebView
+        android:id="@+id/webview_pdf"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/group_chat_bar_layout" />
+
+</RelativeLayout>

@@ -46,7 +46,6 @@ public class Register_OTP_Activity extends AppCompatActivity {
         previous_phone_number = getIntent().getExtras().get("lastPhoneNumber").toString();
         code = getIntent().getExtras().get("countryCode").toString();
 
-
         display_phone = findViewById(R.id.display_phone);
         display_phone.setText(code + " " + previous_phone_number + ".");
 

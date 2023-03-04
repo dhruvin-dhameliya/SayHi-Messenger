@@ -53,6 +53,15 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/img_story_2" />
 
+            <ImageView
+                android:id="@+id/messagefile"
+                android:layout_width="@dimen/_150sdp"
+                android:layout_height="@dimen/_150sdp"
+                android:layout_below="@id/nameTv"
+                android:layout_centerInParent="true"
+                android:paddingBottom="@dimen/_5sdp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/icon_sended_documents" />
 
         </RelativeLayout>
 

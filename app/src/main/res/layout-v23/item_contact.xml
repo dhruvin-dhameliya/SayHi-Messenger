@@ -38,7 +38,6 @@
                 android:orientation="vertical"
                 android:padding="@dimen/_10sdp">
 
-
                 <TextView
                     android:id="@+id/tv_name"
                     android:layout_width="match_parent"
@@ -50,7 +49,6 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/_15sdp"
                     android:textStyle="bold" />
-
 
                 <TextView
                     android:id="@+id/tv_number"

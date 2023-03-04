@@ -61,6 +61,7 @@
             android:singleLine="true"
             android:text="13:70 AM "
             android:textColor="#999898" />
+
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

@@ -14,7 +14,7 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="ThemeOverlay.PopupTheme" parent="ThemeOverlay.AppCompat.Light" >
+    <style name="ThemeOverlay.PopupTheme" parent="ThemeOverlay.AppCompat.Light">
         <item name="backgroundColor">#E0F2F1</item>
         <item name="android:textColor">@color/colorPrimary</item>
     </style>

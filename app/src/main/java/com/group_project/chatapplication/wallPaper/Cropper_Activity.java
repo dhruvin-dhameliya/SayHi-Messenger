@@ -14,6 +14,7 @@ import java.io.File;
 import java.util.UUID;
 
 public class Cropper_Activity extends AppCompatActivity {
+
     String result;
     Uri fileuri;
 
@@ -23,6 +24,7 @@ public class Cropper_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_cropper);
 
         readIntent();
+
         String dest_uri = new StringBuilder(UUID.randomUUID().toString()).append(".jpg").toString();
         UCrop.Options options = new UCrop.Options();
 
@@ -57,6 +59,5 @@ public class Cropper_Activity extends AppCompatActivity {
             startActivity(new Intent(Cropper_Activity.this, Wallpaper_Chat_Activity.class));
             finish();
         }
-
     }
 }

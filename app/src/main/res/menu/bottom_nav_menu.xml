@@ -3,22 +3,22 @@
 
     <item
         android:id="@+id/chats"
-        android:title="Chats"
-        android:icon="@drawable/icon_chat"/>
+        android:icon="@drawable/icon_chat"
+        android:title="Chats" />
 
     <item
         android:id="@+id/stories"
-        android:title="Stories"
-        android:icon="@drawable/ic_selected_stories_icon"/>
+        android:icon="@drawable/ic_selected_stories_icon"
+        android:title="Stories" />
+
+    <item
+        android:id="@+id/groups"
+        android:icon="@drawable/icon_group"
+        android:title="Groups" />
 
     <item
         android:id="@+id/contacts"
-        android:title="Contacts"
-        android:icon="@drawable/icon_contact"/>
-
-    <item
-        android:id="@+id/calls"
-        android:title="Call"
-        android:icon="@drawable/icon_call"/>
+        android:icon="@drawable/icon_contact"
+        android:title="Contacts" />
 
 </menu>

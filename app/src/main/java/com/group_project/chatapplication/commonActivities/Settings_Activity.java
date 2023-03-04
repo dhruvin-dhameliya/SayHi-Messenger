@@ -91,12 +91,6 @@ public class Settings_Activity extends AppCompatActivity {
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_PICK);
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), 200);
-
-                /*
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, 1);
-                */
             }
         });
 
@@ -126,7 +120,7 @@ public class Settings_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intentId = new Intent(Settings_Activity.this, Image_Preview_Activity.class);
-                intentId.putExtra("passSelectedImage" , imageUri);
+                intentId.putExtra("passSelectedImage", imageUri);
                 startActivity(intentId);
             }
         });
@@ -220,18 +214,5 @@ public class Settings_Activity extends AppCompatActivity {
                 display_profile_img.setImageURI(updateImageUri);
             }
         }
-        /*
-        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
-            updateImageUri = data.getData();
-            display_profile_img.setImageURI(updateImageUri);
-        }
-        */
     }
-
-   /* @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        startActivity(new Intent(Settings_Activity.this, MainActivity.class));
-        finish();
-    }*/
 }

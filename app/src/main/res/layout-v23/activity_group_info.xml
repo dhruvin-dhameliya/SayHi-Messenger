@@ -102,9 +102,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:gravity="center"
                     android:layout_marginHorizontal="@dimen/_12sdp"
                     android:layout_marginBottom="@dimen/_2sdp"
+                    android:gravity="center"
                     android:orientation="vertical">
 
                     <TextView
@@ -266,7 +266,7 @@
                 android:layout_marginHorizontal="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/row_participant_add_2" />
+                tools:listitem="@layout/row_add_participant" />
 
             <View
                 android:id="@id/view_border3"

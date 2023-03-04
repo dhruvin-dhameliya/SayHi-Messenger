@@ -64,8 +64,6 @@ public class Fragment_Chats extends Fragment {
     ActivityResultLauncher<Intent> activityResultLauncher;
     String imageUri;
     RecyclerView groupRv;
-    ArrayList<Model_Group_List> groupArrayList;
-    Adapter_Group_List adapterGroupchatList;
 
 
     @Override
@@ -134,6 +132,29 @@ public class Fragment_Chats extends Fragment {
             }
         });
 
+        // Normal stories uploading code ...
+        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if (result.getData() != null) {
+                    if (result.getData().getData() != null) {
+                        assert result.getData() != null;
+                        String img = result.getData().getData().toString();
+                        Intent id = new Intent(getContext(), Story_Preview_Activity.class);
+                        id.putExtra("pass_selected_img", img);
+                        Log.d("", "IMG: " + img);
+                        startActivity(id);
+                    } else {
+                        startActivity(new Intent(getContext(), MainActivity.class));
+                        requireActivity().finishAffinity();
+                    }
+                } else {
+                    startActivity(new Intent(getContext(), MainActivity.class));
+                    requireActivity().finishAffinity();
+                }
+            }
+        });
+
         // Normal display stories code....
         firebaseDatabase.getReference().child("Stories").addValueEventListener(new ValueEventListener() {
             @Override
@@ -163,29 +184,6 @@ public class Fragment_Chats extends Fragment {
             }
         });
 
-        // Normal stories uploading code ...
-        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-            @Override
-            public void onActivityResult(ActivityResult result) {
-                if (result.getData() != null) {
-                    if (result.getData().getData() != null) {
-                        assert result.getData() != null;
-                        String img = result.getData().getData().toString();
-                        Intent id = new Intent(getContext(), Story_Preview_Activity.class);
-                        id.putExtra("pass_selected_img", img);
-                        Log.d("", "IMG: " + img);
-                        startActivity(id);
-                    } else {
-                        startActivity(new Intent(getContext(), MainActivity.class));
-                        requireActivity().finishAffinity();
-                    }
-                } else {
-                    startActivity(new Intent(getContext(), MainActivity.class));
-                    requireActivity().finishAffinity();
-                }
-            }
-        });
-
         layout_upload_stories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -196,34 +194,8 @@ public class Fragment_Chats extends Fragment {
             }
         });
 
-        loadGroupChatList();
-
         return chatFragmentView;
     }//end
-
-    private void loadGroupChatList() {
-        groupArrayList = new ArrayList<>();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Groups");
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                groupArrayList.clear();
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    if (ds.child("Participants").child(fetch_phone_number).exists()) {
-                        Model_Group_List modelGroup = ds.getValue(Model_Group_List.class);
-                        groupArrayList.add(modelGroup);
-                    }
-                }
-                adapterGroupchatList = new Adapter_Group_List(getContext(), groupArrayList);
-                groupRv.setAdapter(adapterGroupchatList);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
 
 
     public void automaticDeleteStory() {

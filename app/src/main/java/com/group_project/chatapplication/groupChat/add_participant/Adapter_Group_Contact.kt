@@ -23,7 +23,7 @@ class Adapter_Group_Contact(items: MutableList<ContactDTO>, ctx: Context) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.name.text = list[position].name
         holder.number.text = list[position].phone_number
-        holder.contact_card_view.setOnClickListener {}//the end
+        holder.contact_card_view.setOnClickListener {}
     }
 
 

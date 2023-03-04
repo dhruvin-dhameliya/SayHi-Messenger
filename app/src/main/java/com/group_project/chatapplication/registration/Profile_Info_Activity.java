@@ -81,12 +81,6 @@ public class Profile_Info_Activity extends AppCompatActivity {
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_PICK);
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), 200);
-
-                /*
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, 1);
-                */
             }
         });
 
@@ -112,7 +106,6 @@ public class Profile_Info_Activity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(getApplicationContext(), "Database error...", Toast.LENGTH_SHORT).show();
-
             }
         });
 
@@ -134,6 +127,7 @@ public class Profile_Info_Activity extends AppCompatActivity {
                                     progressDialog.dismiss();
                                     Toast.makeText(getApplicationContext(), "Profile Uploaded.", Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(Profile_Info_Activity.this, MainActivity.class));
+                                    finishAffinity();
                                 } else {
                                     progressDialog.dismiss();
                                     Toast.makeText(getApplicationContext(), "Profile not uploading!", Toast.LENGTH_SHORT).show();
@@ -157,7 +151,7 @@ public class Profile_Info_Activity extends AppCompatActivity {
                                                         progressDialog.dismiss();
                                                         Toast.makeText(getApplicationContext(), "Profile Uploaded.", Toast.LENGTH_SHORT).show();
                                                         startActivity(new Intent(Profile_Info_Activity.this, MainActivity.class));
-                                                        finish();
+                                                        finishAffinity();
                                                     } else {
                                                         progressDialog.dismiss();
                                                         Toast.makeText(getApplicationContext(), "Profile not uploading!", Toast.LENGTH_SHORT).show();
@@ -181,7 +175,7 @@ public class Profile_Info_Activity extends AppCompatActivity {
                                                 progressDialog.dismiss();
                                                 Toast.makeText(getApplicationContext(), "Profile Uploaded.", Toast.LENGTH_SHORT).show();
                                                 startActivity(new Intent(Profile_Info_Activity.this, MainActivity.class));
-                                                finish();
+                                                finishAffinity();
                                             } else {
                                                 progressDialog.dismiss();
                                                 Toast.makeText(getApplicationContext(), "Profile not uploading!", Toast.LENGTH_SHORT).show();
@@ -207,12 +201,6 @@ public class Profile_Info_Activity extends AppCompatActivity {
                 add_profile_img.setImageURI(updateImageUri);
             }
         }
-        /*
-        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
-            updateImageUri = data.getData();
-            add_profile_img.setImageURI(updateImageUri);
-        }
-        */
     }
 
 }

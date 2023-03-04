@@ -46,10 +46,10 @@
         android:layout_below="@id/add_profile_img"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/_25sdp"
-        android:inputType="textCapSentences"
         android:background="@drawable/edit_text_border"
         android:backgroundTint="@null"
         android:hint="Type your name here"
+        android:inputType="textCapSentences"
         android:padding="@dimen/_11sdp"
         android:textColor="#343434"
         android:textSize="@dimen/_20sdp" />

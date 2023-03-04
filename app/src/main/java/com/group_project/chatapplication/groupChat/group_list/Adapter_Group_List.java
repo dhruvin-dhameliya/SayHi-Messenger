@@ -26,6 +26,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class Adapter_Group_List extends RecyclerView.Adapter<Adapter_Group_List.HolderGroupchatList> {
+
     Context context;
     ArrayList<Model_Group_List> groupArrayList;
 

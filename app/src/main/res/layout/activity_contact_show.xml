@@ -7,19 +7,42 @@
     android:background="#19E1F5FE"
     tools:context=".contacts.Contact_Show_Activity">
 
+    <!--
+        <SearchView
+            android:id="@+id/contact_search_view_for_activity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:background="@drawable/custome_searchview_bg"
+            android:backgroundTint="@null"
+            android:iconifiedByDefault="false"
+            android:inputType="textCapWords|textPhonetic"
+            android:paddingEnd="@dimen/_8sdp"
+            android:queryHint="Search Here..." />
+    -->
+
     <SearchView
         android:id="@+id/contact_search_view_for_activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
-        android:background="@drawable/custome_searchview_bg"
-        android:backgroundTint="@null"
-        android:inputType="textCapWords|textPhonetic"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/search_user_background"
+        android:foregroundGravity="center"
         android:iconifiedByDefault="false"
-        android:paddingEnd="@dimen/_8sdp"
-        android:queryHint="Search Here..." />
+        android:inputType="textCapSentences"
+        android:paddingStart="0dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="2dp"
+        android:queryBackground="@null"
+        android:queryHint="Search" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/contact_list_for_activity"

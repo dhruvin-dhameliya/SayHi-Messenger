@@ -46,13 +46,12 @@ import java.util.HashMap;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Create_New_Group_Activity extends AppCompatActivity {
+
     ActionBar actionBar;
     FirebaseAuth auth;
     CircleImageView groupimage;
     EditText editname, editdesc;
     MaterialButton btncreate;
-    final int CAMERA_REQUEST_CODE = 100;
-    final int STORAGE_REQUEST_CODE = 200;
     int IMAGE_PICK_CAMERA_CODE = 300;
     int IMAGE_PICK_GALLERY_CODE = 400;
     String[] cameraPermission;
@@ -69,6 +68,7 @@ public class Create_New_Group_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_group);
+
         toolbar = findViewById(R.id.group_chat_bar_layout);
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
@@ -88,12 +88,14 @@ public class Create_New_Group_Activity extends AppCompatActivity {
         fetch_phone_number = user.getPhoneNumber();
 
         checkUser();
+
         groupimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showPickDialog();
             }
         });
+
         btncreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,8 +146,6 @@ public class Create_New_Group_Activity extends AppCompatActivity {
     }
 
     private void createGroup1(String g_timestamp, String grouptitle, String groupDescription, String groupIcon) {
-
-
         //setup
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("groupId", "" + g_timestamp);
@@ -168,6 +168,7 @@ public class Create_New_Group_Activity extends AppCompatActivity {
 
             }
         });
+
         //create
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Groups");
         reference.child(g_timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -239,13 +240,10 @@ public class Create_New_Group_Activity extends AppCompatActivity {
     }
 
 
-
     private void checkUser() {
         FirebaseUser user = auth.getCurrentUser();
-
         if (user != null) {
             actionBar.setSubtitle(user.getPhoneNumber());
-
         }
     }
 

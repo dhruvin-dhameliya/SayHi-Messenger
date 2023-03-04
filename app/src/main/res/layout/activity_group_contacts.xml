@@ -16,8 +16,8 @@
         android:layout_marginBottom="@dimen/_10sdp"
         android:background="@drawable/custome_searchview_bg"
         android:backgroundTint="@null"
-        android:inputType="textCapWords|textPhonetic"
         android:iconifiedByDefault="false"
+        android:inputType="textCapWords|textPhonetic"
         android:paddingEnd="@dimen/_8sdp"
         android:queryHint="Search Here..." />
 

@@ -123,6 +123,29 @@ public class Fragment_Stories extends Fragment {
             }
         });
 
+        // Normal stories uploading code ...
+        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if (result.getData() != null) {
+                    if (result.getData().getData() != null) {
+                        assert result.getData() != null;
+                        String img = result.getData().getData().toString();
+                        Intent id = new Intent(getContext(), Story_Preview_Activity.class);
+                        id.putExtra("pass_selected_img", img);
+                        Log.d("", "IMG: " + img);
+                        startActivity(id);
+                    } else {
+                        startActivity(new Intent(getContext(), MainActivity.class));
+                        requireActivity().finishAffinity();
+                    }
+                } else {
+                    startActivity(new Intent(getContext(), MainActivity.class));
+                    requireActivity().finishAffinity();
+                }
+            }
+        });
+
         // Normal display stories code....
         firebaseDatabase.getReference().child("Stories").addValueEventListener(new ValueEventListener() {
             @Override
@@ -149,29 +172,6 @@ public class Fragment_Stories extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
-
-        // Normal stories uploading code ...
-        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-            @Override
-            public void onActivityResult(ActivityResult result) {
-                if (result.getData() != null) {
-                    if (result.getData().getData() != null) {
-                        assert result.getData() != null;
-                        String img = result.getData().getData().toString();
-                        Intent id = new Intent(getContext(), Story_Preview_Activity.class);
-                        id.putExtra("pass_selected_img", img);
-                        Log.d("", "IMG: " + img);
-                        startActivity(id);
-                    } else {
-                        startActivity(new Intent(getContext(), MainActivity.class));
-                        requireActivity().finishAffinity();
-                    }
-                } else {
-                    startActivity(new Intent(getContext(), MainActivity.class));
-                    requireActivity().finishAffinity();
-                }
             }
         });
 

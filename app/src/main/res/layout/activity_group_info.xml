@@ -143,11 +143,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/group_description_section"
                 android:layout_gravity="center"
-                android:paddingTop="@dimen/_15sdp"
-                android:paddingBottom="@dimen/_8sdp"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingTop="@dimen/_15sdp"
+                android:paddingBottom="@dimen/_8sdp">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -196,12 +196,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/view_border1"
-                android:paddingTop="@dimen/_12sdp"
-                android:paddingBottom="@dimen/_8sdp"
                 android:layout_gravity="center"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingTop="@dimen/_12sdp"
+                android:paddingBottom="@dimen/_8sdp">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -264,10 +264,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/participantTv"
-                android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginHorizontal="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_8sdp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/row_participant_add_2" />
+                tools:listitem="@layout/row_add_participant" />
 
             <LinearLayout
                 android:id="@+id/leaveGroupTv"

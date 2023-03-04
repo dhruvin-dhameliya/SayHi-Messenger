@@ -30,10 +30,10 @@ public class Registration_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        auth=FirebaseAuth.getInstance();
-        user=auth.getCurrentUser();
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
 
-        if(user!=null){
+        if (user != null) {
             startActivity(new Intent(Registration_Activity.this, MainActivity.class));
             finish();
         }

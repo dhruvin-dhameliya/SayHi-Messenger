@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.group_project.chatapplication.singleChat.ChatActivity
+import com.group_project.chatapplication.singleChat.Chat_Activity
 import com.group_project.chatapplication.R
 
 class Contact_Show_Activity : AppCompatActivity() {
@@ -28,7 +28,8 @@ class Contact_Show_Activity : AppCompatActivity() {
         setContentView(R.layout.activity_contact_show)
 
         val contact_list = findViewById<RecyclerView>(R.id.contact_list_for_activity)
-        val contact_search_view_for_activity = findViewById<SearchView>(R.id.contact_search_view_for_activity)
+        val contact_search_view_for_activity =
+            findViewById<SearchView>(R.id.contact_search_view_for_activity)
         contact_list.layoutManager = LinearLayoutManager(this)
 
         val contactList: MutableList<ContactDTO> = ArrayList()
@@ -125,7 +126,7 @@ class Contact_Show_Activity : AppCompatActivity() {
                     .child(list[position].phone_number.trim().replace(" ", "").replace("-", ""))
                 database.setValue(contact_model)
 
-                val intent_id = Intent(context, ChatActivity::class.java)
+                val intent_id = Intent(context, Chat_Activity::class.java)
                 intent_id.putExtra("contact_name_pass", list[position].name.trim())
                 intent_id.putExtra("contact_number_pass", list[position].phone_number.trim())
                 context.startActivity(intent_id)

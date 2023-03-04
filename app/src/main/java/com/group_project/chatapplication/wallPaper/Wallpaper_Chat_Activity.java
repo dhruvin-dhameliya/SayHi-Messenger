@@ -87,7 +87,6 @@ public class Wallpaper_Chat_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 progressDialog.show();
-//                uploadimage();
                 uploadWallpaper();
             }
         });
@@ -107,66 +106,7 @@ public class Wallpaper_Chat_Activity extends AppCompatActivity {
                 Toast.makeText(Wallpaper_Chat_Activity.this, "Failed", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
-/*
-    private void uploadimage() {
-        StorageReference storageReference = firebaseStorage.getReference().child("Wallpaper Image").child(Objects.requireNonNull(fetch_phone_number));
-        if (uri != null) {
-            // ------------
-            // upload wallpaper - Realtime_DB
-            wallpaper = uri.toString();
-            Wallpaper_Model wallModel = new Wallpaper_Model(auth.getUid(), wallpaper);
-            databaseReference.setValue(wallModel).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        progressDialog.dismiss();
-                        startActivity(new Intent(Wallpaper_Chat_Activity.this, MainActivity.class));
-                        finish();
-                        Toast.makeText(Wallpaper_Chat_Activity.this, "success", Toast.LENGTH_SHORT).show();
-                    } else {
-                        progressDialog.dismiss();
-                        Toast.makeText(Wallpaper_Chat_Activity.this, "Failed", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-            // ------------
-            // upload wallpaper - Firebase STORAGE
-            storageReference.putFile(uri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                    Toast.makeText(Wallpaper_Chat_Activity.this, "Success!", Toast.LENGTH_SHORT).show();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(Wallpaper_Chat_Activity.this, "Failed", Toast.LENGTH_SHORT).show();
-                }
-            });
-            // ------------
-        }
-        // upload DEFAULT wallpaper - Realtime_DB
-        else {
-            wallpaper = "https://firebasestorage.googleapis.com/v0/b/say-hi-chat-app.appspot.com/o/default_wallpaper_img.jpeg?alt=media&token=b6d3532b-ca12-4488-a18c-5a61b3540d63";
-            Wallpaper_Model wallModel = new Wallpaper_Model(auth.getUid(), wallpaper);
-            databaseReference.setValue(wallModel).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        progressDialog.dismiss();
-                        Toast.makeText(Wallpaper_Chat_Activity.this, "success", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(Wallpaper_Chat_Activity.this, MainActivity.class));
-                        finish();
-                    } else {
-                        progressDialog.dismiss();
-                        Toast.makeText(Wallpaper_Chat_Activity.this, "Failed-2", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        }
-    }
-*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -180,7 +120,6 @@ public class Wallpaper_Chat_Activity extends AppCompatActivity {
             img_choose_wallpaper.setImageURI(uri);
         }
     }
-
 
     private void uploadWallpaper() {
         StorageReference storageReference = firebaseStorage.getReference().child("Wallpaper Image").child(Objects.requireNonNull(fetch_phone_number));
@@ -255,6 +194,5 @@ public class Wallpaper_Chat_Activity extends AppCompatActivity {
             }
         }
     }
-
 
 }

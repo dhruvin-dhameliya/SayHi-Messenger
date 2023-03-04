@@ -33,7 +33,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.group_project.chatapplication.commonActivities.Fragment_Calls;
+import com.group_project.chatapplication.groupChat.group_list.Fragment_Groups;
 import com.group_project.chatapplication.contacts.Contact_Show_Activity;
 import com.group_project.chatapplication.groupChat.group_list.Create_New_Group_Activity;
 import com.group_project.chatapplication.registration.Registration_Activity;
@@ -41,7 +41,6 @@ import com.group_project.chatapplication.commonActivities.Settings_Activity;
 import com.group_project.chatapplication.singleChat.Fragment_Chats;
 import com.group_project.chatapplication.contacts.Fragment_Contacts;
 import com.group_project.chatapplication.stories.Fragment_Stories;
-import com.group_project.chatapplication.stories.Story_Preview_Activity;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -60,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     Fragment_Chats fragment_chats = new Fragment_Chats();
     Fragment_Stories fragment_stories = new Fragment_Stories();
     Fragment_Contacts fragment_contacts = new Fragment_Contacts();
-    Fragment_Calls fragment_calls = new Fragment_Calls();
+    Fragment_Groups fragment_groups = new Fragment_Groups();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,15 +105,17 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.stories:
                         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_stories).commit();
-                        jump_chat_screen.hide();
+                        jump_chat_screen.show();
                         break;
+
+                    case R.id.groups:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_groups).commit();
+                        jump_chat_screen.show();
+                        break;
+
                     case R.id.contacts:
                         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_contacts).commit();
                         jump_chat_screen.hide();
-                        break;
-                    case R.id.calls:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_calls).commit();
-                        jump_chat_screen.show();
                         break;
                 }
                 return true;
@@ -133,11 +134,11 @@ public class MainActivity extends AppCompatActivity {
         checkPermission();
 
         // Show profile image on home screen
-        databaseReference= FirebaseDatabase.getInstance().getReference().child("Users Details").child(fetch_phone_number);
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users Details").child(fetch_phone_number);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if ((snapshot.exists())  && (snapshot.hasChild("phone"))) {
+                if ((snapshot.exists()) && (snapshot.hasChild("phone"))) {
                     String retrieveProfileImage = snapshot.child("profile_image").getValue().toString();
                     Glide.with(home_profile_image.getContext()).load(retrieveProfileImage).into(home_profile_image);
                 }
@@ -215,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_chats).commit();
+//        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_chats).commit();
     }
 
     private void checkPermission() {
@@ -234,11 +235,5 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Denied...", Toast.LENGTH_SHORT).show();
         }
     }
-/*
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-*/
 
 }
