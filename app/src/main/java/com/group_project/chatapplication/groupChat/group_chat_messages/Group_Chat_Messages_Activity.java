@@ -103,7 +103,7 @@ public class Group_Chat_Messages_Activity extends AppCompatActivity {
             public void onClick(View view) {
                 String message = messageET.getText().toString().trim();
                 if (TextUtils.isEmpty(message)) {
-                    messageET.setError("Type message...");
+                    Toast.makeText(getApplicationContext(), "Can't send empty message", Toast.LENGTH_SHORT).show();
                 } else {
                     sendmessage(message);
                     messageET.setText("");

@@ -3,7 +3,6 @@ package com.group_project.chatapplication.singleChat;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,8 +21,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.group_project.chatapplication.R;
-import com.group_project.chatapplication.groupChat.group_chat_messages.Adapter_Group_Chat_Messages;
-import com.group_project.chatapplication.groupChat.group_chat_messages.Group_Chat_Messages_Activity;
 import com.group_project.chatapplication.registration.User_Model;
 
 import java.util.ArrayList;
@@ -72,15 +68,9 @@ public class Chat_Activity extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Chat");
 
         chattingRecycleView = findViewById(R.id.chat_recyclearview);
-        /*chattingRecycleView.setHasFixedSize(true);
-        chattingRecycleView.setLayoutManager(new LinearLayoutManager(Chat_Activity.this));*/
 
         chatAd = new ChatAd(chatModel, this);
-
         chattingRecycleView.setAdapter(chatAd);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        chattingRecycleView.setLayoutManager(layoutManager);
 
         senderRoom = myMobileNo + receiverMobileNo;
         receiverRoom = receiverMobileNo + myMobileNo;
@@ -92,7 +82,7 @@ public class Chat_Activity extends AppCompatActivity {
         display_chat_messages();
     }
 
-        //send message
+    //send message
     public void do_chat_messages() {
         sendMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override

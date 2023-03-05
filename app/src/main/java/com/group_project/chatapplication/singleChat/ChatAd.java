@@ -36,10 +36,10 @@ public class ChatAd extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == SENDER_VIEW_TYPE) {
-            View view = LayoutInflater.from(context).inflate(R.layout.sender_layout, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.sender_message_ui, parent, false);
             return new SenderViewHolder(view);
         } else {
-            View view = LayoutInflater.from(context).inflate(R.layout.receiver_layout, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.reciver_message_ui, parent, false);
             return new RecieverViewHolder(view);
         }
     }
@@ -66,11 +66,11 @@ public class ChatAd extends RecyclerView.Adapter {
         Chatmodel chatmodel = chatmodels.get(position);
         if (holder.getClass() == SenderViewHolder.class) {
             ((SenderViewHolder) holder).senderMsg.setText(chatmodel.getMessage());
-            String senderMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "dd-MM-yyyy hh:mm");
+            String senderMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "hh:mm a");
             ((SenderViewHolder) holder).senderTime.setText(senderMsgTime);
         } else {
             ((RecieverViewHolder) holder).receiverMsg.setText(chatmodel.getMessage());
-            String reciverMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "dd-MM-yyyy hh:mm");
+            String reciverMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "hh:mm a");
             ((RecieverViewHolder) holder).receiverTime.setText(reciverMsgTime);
         }
     }
