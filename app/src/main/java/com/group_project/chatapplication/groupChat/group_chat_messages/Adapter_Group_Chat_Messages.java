@@ -135,47 +135,16 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
             });
         }
 
+        if (message.equals("This message was deleted")) {
+            holder.user_txt_msg.setVisibility(View.VISIBLE);
+            holder.user_txt_msg.setText(modelGroupChat.getMessage());
+            holder.user_img_msg.setVisibility(View.GONE);
+            holder.user_img_msg_layout.setVisibility(View.GONE);
+            holder.user_doc_msg.setVisibility(View.GONE);
+            holder.user_doc_msg_layout.setVisibility(View.GONE);
+        }
 
         // Delete Text, Image & Documents messages...
-        holder.user_img_msg_layout.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Delete");
-                builder.setMessage("Are you sure to Delete this message?");
-                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String msgTimestamp = modelGroupChats.get(position).getTimestamp();
-                        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Groups").child(groupId);
-                        Query query = dbref.child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
-                        query.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                for (DataSnapshot ds : snapshot.getChildren()) {
-                                    HashMap<String, Object> hashMap = new HashMap<>();
-                                    hashMap.put("message", "This message was deleted");
-                                    ds.getRef().updateChildren(hashMap);
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                builder.create().show();
-                return false;
-            }
-        });
         holder.user_img_msg.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -192,9 +161,14 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 for (DataSnapshot ds : snapshot.getChildren()) {
-                                    HashMap<String, Object> hashMap = new HashMap<>();
-                                    hashMap.put("message", "This message was deleted");
-                                    ds.getRef().updateChildren(hashMap);
+                                    String msg = ds.child("message").getValue().toString();
+                                    if (msg.equals("This message was deleted")) {
+                                        ds.getRef().removeValue();
+                                    } else {
+                                        HashMap<String, Object> hashMap = new HashMap<>();
+                                        hashMap.put("message", "This message was deleted");
+                                        ds.getRef().updateChildren(hashMap);
+                                    }
                                 }
                             }
 
@@ -203,6 +177,7 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
 
                             }
                         });
+
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -215,8 +190,7 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
                 return false;
             }
         });
-
-        holder.user_doc_msg_layout.setOnLongClickListener(new View.OnLongClickListener() {
+        holder.user_img_msg_layout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -232,7 +206,14 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 for (DataSnapshot ds : snapshot.getChildren()) {
-                                    ds.getRef().removeValue();
+                                    String msg = ds.child("message").getValue().toString();
+                                    if (msg.equals("This message was deleted")) {
+                                        ds.getRef().removeValue();
+                                    } else {
+                                        HashMap<String, Object> hashMap = new HashMap<>();
+                                        hashMap.put("message", "This message was deleted");
+                                        ds.getRef().updateChildren(hashMap);
+                                    }
                                 }
                             }
 
@@ -241,6 +222,7 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
 
                             }
                         });
+
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -269,7 +251,14 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 for (DataSnapshot ds : snapshot.getChildren()) {
-                                    ds.getRef().removeValue();
+                                    String msg = ds.child("message").getValue().toString();
+                                    if (msg.equals("This message was deleted")) {
+                                        ds.getRef().removeValue();
+                                    } else {
+                                        HashMap<String, Object> hashMap = new HashMap<>();
+                                        hashMap.put("message", "This message was deleted");
+                                        ds.getRef().updateChildren(hashMap);
+                                    }
                                 }
                             }
 
@@ -278,6 +267,7 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
 
                             }
                         });
+
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -290,7 +280,51 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
                 return false;
             }
         });
+        holder.user_doc_msg_layout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Delete");
+                builder.setMessage("Are you sure to Delete this message?");
+                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String msgTimestamp = modelGroupChats.get(position).getTimestamp();
+                        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Groups").child(groupId);
+                        Query query = dbref.child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
+                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for (DataSnapshot ds : snapshot.getChildren()) {
+                                    String msg = ds.child("message").getValue().toString();
+                                    if (msg.equals("This message was deleted")) {
+                                        ds.getRef().removeValue();
+                                    } else {
+                                        HashMap<String, Object> hashMap = new HashMap<>();
+                                        hashMap.put("message", "This message was deleted");
+                                        ds.getRef().updateChildren(hashMap);
+                                    }
+                                }
+                            }
 
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.create().show();
+                return false;
+            }
+        });
         holder.outer_message_layout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -337,187 +371,6 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
             }
         });
 
-
-/*
-
-        if (messageType.equals("text")) {
-            //text message
-            holder.messageIv.setVisibility(View.GONE);
-            holder.messageTv.setVisibility(View.VISIBLE);
-            holder.messagefile.setVisibility(View.GONE);
-            holder.messageTv.setText(message);
-        } else if (messageType.equals("file")) {
-            //document message
-            holder.messagefile.setVisibility(View.VISIBLE);
-            holder.messageIv.setVisibility(View.GONE);
-            //Document click event
-            holder.messagefile.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, Group_Doc_WebView_Activty.class);
-                    intent.putExtra("pass_pdf_url", message);
-                    intent.putExtra("sender", senderUid);
-                    context.startActivity(intent);
-                }
-            });
-
-            //document delete
-            holder.messagefile.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Delete");
-                    builder.setMessage("Are you sure to Detele this message?");
-                    builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            String msgTimestamp = modelGroupChats.get(position).getTimestamp();
-                            DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Groups").child(groupId);
-                            Query query = dbref.child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
-                            query.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    for (DataSnapshot ds : snapshot.getChildren()) {
-                                        String msg = ds.child("message").getValue().toString();
-                                        ds.getRef().removeValue();
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
-                        }
-                    });
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    builder.create().show();
-                    return false;
-                }
-            });
-        } else {
-            //image message
-            if (message.equals("This message was deleted")) {
-                holder.messageIv.setVisibility(View.GONE);
-                holder.messageTv.setVisibility(View.VISIBLE);
-                holder.messagefile.setVisibility(View.GONE);
-            } else {
-                holder.messageIv.setVisibility(View.VISIBLE);
-                holder.messageTv.setVisibility(View.GONE);
-                holder.messagefile.setVisibility(View.GONE);
-            }
-
-            try {
-                Glide.with(holder.messageIv).load(message).into(holder.messageIv);
-            } catch (Exception e) {
-                holder.messageIv.setImageResource(R.drawable.default_image_for_chat);
-            }
-
-            holder.messageIv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, Full_screen_photo_Activity.class);
-                    intent.putExtra("image", message);
-                    intent.putExtra("sender", senderUid);
-                    context.startActivity(intent);
-                }
-            });
-        }
-
-        holder.messageIv.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Delete");
-                builder.setMessage("Are you sure to Delete this message?");
-                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String msgTimestamp = modelGroupChats.get(position).getTimestamp();
-                        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Groups").child(groupId);
-                        Query query = dbref.child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
-                        query.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                for (DataSnapshot ds : snapshot.getChildren()) {
-                                    HashMap<String, Object> hashMap = new HashMap<>();
-                                    hashMap.put("message", "This message was deleted");
-                                    ds.getRef().updateChildren(hashMap);
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                builder.create().show();
-                return false;
-            }
-        });
-
-        holder.timetv.setText(dateTime);
-
-        holder.messageLayout.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Delete");
-                builder.setMessage("Are you sure to Detele this message?");
-                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String msgTimestamp = modelGroupChats.get(position).getTimestamp();
-                        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Groups").child(groupId);
-                        Query query = dbref.child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
-                        query.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                for (DataSnapshot ds : snapshot.getChildren()) {
-                                    String msg = ds.child("message").getValue().toString();
-                                    if (msg.equals("This message was deleted")) {
-                                        ds.getRef().removeValue();
-                                    } else {
-                                        HashMap<String, Object> hashMap = new HashMap<>();
-                                        hashMap.put("message", "This message was deleted");
-                                        ds.getRef().updateChildren(hashMap);
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
-
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                builder.create().show();
-                return false;
-            }
-        });
-
- */
         setUsername(modelGroupChat, holder);
         holder.msg_time.setText(dateTime);
     }

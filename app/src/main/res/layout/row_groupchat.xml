@@ -3,9 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/_1sdp"
+    android:layout_marginBottom="@dimen/_12sdp"
+    android:elevation="0dp"
     app:cardBackgroundColor="@color/white"
-    app:contentPadding="@dimen/_3sdp">
+    app:cardElevation="0dp"
+    app:cardMaxElevation="0dp"
+    app:contentPadding="@dimen/_2sdp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -13,9 +16,9 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/groupicon"
-            android:layout_width="@dimen/_65sdp"
-            android:layout_height="@dimen/_65sdp"
-            android:paddingLeft="@dimen/_10sdp"
+            android:layout_width="@dimen/_55sdp"
+            android:layout_height="@dimen/_55sdp"
+            android:layout_marginStart="@dimen/_10sdp"
             android:src="@drawable/img_default_group" />
 
         <TextView
@@ -23,9 +26,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_4sdp"
-            android:layout_marginLeft="@dimen/_4sdp"
             android:layout_toEndOf="@id/groupicon"
-            android:paddingLeft="@dimen/_10sdp"
+            android:paddingStart="@dimen/_10sdp"
             android:text="Group Title"
             android:textColor="@color/black"
             android:textSize="@dimen/_18sdp" />
@@ -37,15 +39,17 @@
             android:layout_below="@id/grouptitle"
             android:layout_marginStart="@dimen/_4sdp"
             android:layout_toEndOf="@id/groupicon"
-            android:paddingLeft="@dimen/_10sdp"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="0dp"
             android:text="Sender name" />
 
         <TextView
             android:id="@+id/messageTv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/grouptitle"
             android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
             android:layout_toEndOf="@id/groupTv"
             android:singleLine="true"
             android:text="The message"

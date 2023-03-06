@@ -34,7 +34,7 @@ public class Fragment_Groups extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        groupFragment = inflater.inflate(R.layout.fragment__calls, container, false);
+        groupFragment = inflater.inflate(R.layout.fragment__groups, container, false);
 
         groupRv = groupFragment.findViewById(R.id.groupRv);
         auth = FirebaseAuth.getInstance();

@@ -91,10 +91,12 @@ public class Adapter_Group_List extends RecyclerView.Adapter<Adapter_Group_List.
                             //convert time
                             Calendar cal = Calendar.getInstance(Locale.ENGLISH);
                             cal.setTimeInMillis(Long.parseLong(timestamp));
-                            String dateTime = DateFormat.format("dd/MM/yyyy hh : mm aa", cal).toString();
+                            String dateTime = DateFormat.format("dd/MM/yy hh:mm aa", cal).toString();
 
                             if (messageType.equals("image")) {
                                 holder.messageTv.setText("Sent Photo");
+                            } else if (messageType.equals("file")) {
+                                holder.messageTv.setText("Sent Document");
                             } else {
                                 holder.messageTv.setText(message);
                             }
@@ -103,13 +105,13 @@ public class Adapter_Group_List extends RecyclerView.Adapter<Adapter_Group_List.
 
                             //get info
                             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users Details");
-                            reference.orderByChild("uid").equalTo(sender)
+                            reference.orderByChild("id").equalTo(sender)
                                     .addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                                             for (DataSnapshot ds : snapshot.getChildren()) {
-                                                String name = "" + ds.child("name").getValue();
-                                                holder.groupTv.setText(name);
+                                                String name = "" + ds.child("name").getValue().toString().trim();
+                                                holder.groupTv.setText(name + ":");
                                             }
                                         }
 
