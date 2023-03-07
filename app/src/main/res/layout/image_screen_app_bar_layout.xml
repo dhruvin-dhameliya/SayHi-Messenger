@@ -11,9 +11,22 @@
         android:layout_width="28dp"
         android:layout_height="28dp"
         android:layout_gravity="start"
-        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
         android:background="@drawable/img_back_arow"
         android:backgroundTint="@color/white"
         android:padding="@dimen/_3sdp" />
+
+    <TextView
+        android:id="@+id/current_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:gravity="center"
+        android:padding="@dimen/_3sdp"
+        android:text="@string/app_name"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_18sdp"
+        android:textStyle="bold" />
 
 </androidx.appcompat.widget.Toolbar>

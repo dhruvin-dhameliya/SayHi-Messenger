@@ -28,6 +28,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.group_project.chatapplication.MainActivity;
 import com.group_project.chatapplication.R;
+import com.group_project.chatapplication.commonActivities.Image_Preview_Activity;
+import com.group_project.chatapplication.commonActivities.Settings_Activity;
 import com.group_project.chatapplication.contacts.ContactDTO;
 import com.group_project.chatapplication.groupChat.add_participant.Adapter_Group_Contact;
 import com.group_project.chatapplication.groupChat.add_participant.Group_Contacts_Activity;
@@ -47,7 +49,7 @@ public class Group_Info_Activity extends AppCompatActivity {
     RelativeLayout jump_add_participent_iner, jump_group_chat_iner;
     RecyclerView participantsRv;
 
-    String groupId, fetch_phone_number;
+    String groupId, fetch_phone_number, groupIcon, groupTitle;
     String myGroupPost = "";
     FirebaseAuth firebaseAuth;
     ArrayList<ContactDTO> userModelArrayList;
@@ -81,6 +83,16 @@ public class Group_Info_Activity extends AppCompatActivity {
 
         loadGroupInfo();
         loadGroupPost();
+
+        groupIconIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentId = new Intent(Group_Info_Activity.this, Image_Preview_Activity.class);
+                intentId.putExtra("passSelectedImage", groupIcon);
+                intentId.putExtra("pass_current_name", groupTitle.trim());
+                startActivity(intentId);
+            }
+        });
 
         jump_group_chat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -208,6 +220,7 @@ public class Group_Info_Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
 
     private void leaveGroup() {
@@ -284,9 +297,9 @@ public class Group_Info_Activity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     String groupId = "" + ds.child("groupId").getValue();
-                    String groupTitle = "" + ds.child("groupTitle").getValue();
+                    groupTitle = "" + ds.child("groupTitle").getValue();
                     String groupDescription = "" + ds.child("groupDescription").getValue();
-                    String groupIcon = "" + ds.child("groupIcon").getValue();
+                    groupIcon = "" + ds.child("groupIcon").getValue();
                     String createdBy = "" + ds.child("createBy").getValue();
                     String timestamp = "" + ds.child("timestamp").getValue();
 

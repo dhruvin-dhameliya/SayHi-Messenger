@@ -121,6 +121,7 @@ public class Settings_Activity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intentId = new Intent(Settings_Activity.this, Image_Preview_Activity.class);
                 intentId.putExtra("passSelectedImage", imageUri);
+                intentId.putExtra("pass_current_name", profile_user_name.getText().toString().trim());
                 startActivity(intentId);
             }
         });
