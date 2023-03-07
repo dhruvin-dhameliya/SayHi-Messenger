@@ -6,13 +6,14 @@
     android:layout_height="match_parent"
     android:layout_gravity="center">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_21sdp">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -64,6 +65,7 @@
                         android:layout_gravity="center"
                         android:layout_marginHorizontal="@dimen/_12sdp"
                         android:background="@drawable/icon_draw"
+                        android:foreground="?android:attr/selectableItemBackground"
                         app:backgroundTint="#1f2c34" />
 
                 </RelativeLayout>
@@ -90,15 +92,18 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/top_section"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_31sdp"
+                android:layout_marginTop="@dimen/_30sdp"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingVertical="@dimen/_4sdp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_2sdp"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -106,7 +111,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginHorizontal="@dimen/_8sdp"
                         android:gravity="start"
                         android:text="INFO"
                         android:textColor="#808080"
@@ -118,7 +122,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginHorizontal="@dimen/_8sdp"
                         android:layout_marginTop="@dimen/_6sdp"
                         android:gravity="start"
                         android:text="Group discription"
@@ -146,10 +149,10 @@
                 android:foreground="?android:attr/selectableItemBackground"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingTop="@dimen/_15sdp"
-                android:paddingBottom="@dimen/_8sdp">
+                android:paddingVertical="@dimen/_12sdp">
 
                 <RelativeLayout
+                    android:id="@+id/jump_group_chat_iner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -166,6 +169,7 @@
                         android:backgroundTint="#1f2c34" />
 
                     <TextView
+                        android:id="@+id/jump_group_chat_iner_txt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -188,7 +192,6 @@
                 android:layout_height="1dp"
                 android:layout_below="@+id/jump_group_chat"
                 android:layout_marginHorizontal="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_8sdp"
                 android:background="#b6b6b6" />
 
             <LinearLayout
@@ -200,10 +203,10 @@
                 android:foreground="?android:attr/selectableItemBackground"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingTop="@dimen/_12sdp"
-                android:paddingBottom="@dimen/_8sdp">
+                android:paddingVertical="@dimen/_12sdp">
 
                 <RelativeLayout
+                    android:id="@+id/jump_add_participent_iner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -220,6 +223,7 @@
                         android:backgroundTint="#1f2c34" />
 
                     <TextView
+                        android:id="@+id/jump_add_participent_iner_txt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -242,7 +246,6 @@
                 android:layout_height="1dp"
                 android:layout_below="@+id/participantaddTv"
                 android:layout_marginHorizontal="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_8sdp"
                 android:background="#b6b6b6" />
 
             <TextView
@@ -269,24 +272,26 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/row_add_participant" />
 
+            <View
+                android:id="@id/view_border3"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_below="@+id/participantsRv"
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="#b6b6b6" />
+
             <LinearLayout
                 android:id="@+id/leaveGroupTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/participantsRv"
+                android:layout_below="@+id/view_border3"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_8sdp"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:gravity="center"
-                android:orientation="vertical">
-
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:layout_below="@+id/jump_chat_section"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:background="#b6b6b6" />
+                android:orientation="vertical"
+                android:paddingVertical="@dimen/_12sdp">
 
                 <TextView
                     android:id="@+id/txt_leave"
@@ -306,6 +311,6 @@
 
         </RelativeLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </RelativeLayout>

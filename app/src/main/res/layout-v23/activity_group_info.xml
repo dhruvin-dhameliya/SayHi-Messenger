@@ -152,6 +152,7 @@
                 android:paddingVertical="@dimen/_12sdp">
 
                 <RelativeLayout
+                    android:id="@+id/jump_group_chat_iner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -168,6 +169,7 @@
                         android:backgroundTint="#1f2c34" />
 
                     <TextView
+                        android:id="@+id/jump_group_chat_iner_txt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -204,6 +206,7 @@
                 android:paddingVertical="@dimen/_12sdp">
 
                 <RelativeLayout
+                    android:id="@+id/jump_add_participent_iner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -220,6 +223,7 @@
                         android:backgroundTint="#1f2c34" />
 
                     <TextView
+                        android:id="@+id/jump_add_participent_iner_txt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"

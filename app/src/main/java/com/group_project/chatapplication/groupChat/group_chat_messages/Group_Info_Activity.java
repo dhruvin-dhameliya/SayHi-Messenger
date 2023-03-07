@@ -7,6 +7,7 @@ import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,8 +42,9 @@ public class Group_Info_Activity extends AppCompatActivity {
 
     CircleImageView groupIconIv;
     ImageButton editGroupTv;
-    TextView group_name, createdBy, descriptionTv, participantTv, txt_leave;
-    LinearLayout participantaddTv, leaveGroupTv;
+    TextView group_name, createdBy, descriptionTv, participantTv, txt_leave, jump_group_chat_iner_txt, jump_add_participent_iner_txt;
+    LinearLayout participantaddTv, leaveGroupTv, jump_group_chat;
+    RelativeLayout jump_add_participent_iner, jump_group_chat_iner;
     RecyclerView participantsRv;
 
     String groupId, fetch_phone_number;
@@ -62,6 +64,11 @@ public class Group_Info_Activity extends AppCompatActivity {
         createdBy = findViewById(R.id.createdBy);
         editGroupTv = findViewById(R.id.editGroupTv);
         participantaddTv = findViewById(R.id.participantaddTv);
+        jump_add_participent_iner = findViewById(R.id.jump_add_participent_iner);
+        jump_group_chat_iner_txt = findViewById(R.id.jump_group_chat_iner_txt);
+        jump_group_chat = findViewById(R.id.jump_group_chat);
+        jump_add_participent_iner_txt = findViewById(R.id.jump_add_participent_iner_txt);
+        jump_group_chat_iner = findViewById(R.id.jump_group_chat_iner);
         participantTv = findViewById(R.id.participantTv);
         leaveGroupTv = findViewById(R.id.leaveGroupTv);
         participantsRv = findViewById(R.id.participantsRv);
@@ -74,6 +81,45 @@ public class Group_Info_Activity extends AppCompatActivity {
 
         loadGroupInfo();
         loadGroupPost();
+
+        jump_group_chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        jump_group_chat_iner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        jump_group_chat_iner_txt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        jump_add_participent_iner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Group_Info_Activity.this, Group_Contacts_Activity.class);
+                intent.putExtra("groupId", groupId);
+                startActivity(intent);
+            }
+        });
+
+        jump_add_participent_iner_txt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Group_Info_Activity.this, Group_Contacts_Activity.class);
+                intent.putExtra("groupId", groupId);
+                startActivity(intent);
+            }
+        });
 
         participantaddTv.setOnClickListener(new View.OnClickListener() {
             @Override

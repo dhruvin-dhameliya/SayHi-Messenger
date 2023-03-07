@@ -22,8 +22,8 @@
 
             <ImageView
                 android:id="@+id/iv_img"
-                android:layout_width="@dimen/_51sdp"
-                android:layout_height="@dimen/_51sdp"
+                android:layout_width="@dimen/_48sdp"
+                android:layout_height="@dimen/_48sdp"
                 android:layout_gravity="center"
                 android:padding="@dimen/_4sdp"
                 android:src="@drawable/img_contact_user" />
@@ -32,9 +32,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_4sdp"
                 android:gravity="start"
-                android:orientation="vertical"
-                android:padding="@dimen/_10sdp">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tv_name"
@@ -45,20 +45,7 @@
                     android:focusable="true"
                     android:text="Participant name"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_13sdp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:gravity="center"
-                    android:text="Status"
-                    android:textColor="#999898"
-                    android:textSize="@dimen/_12sdp"
+                    android:textSize="@dimen/_17sdp"
                     android:textStyle="normal" />
 
             </LinearLayout>

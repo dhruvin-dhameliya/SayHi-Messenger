@@ -22,20 +22,18 @@ class Adapter_Group_Contact(items: MutableList<ContactDTO>, ctx: Context) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.name.text = list[position].name
-        holder.number.text = list[position].phone_number
         holder.contact_card_view.setOnClickListener {}
     }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            LayoutInflater.from(context).inflate(R.layout.item_contact, parent, false)
+            LayoutInflater.from(context).inflate(R.layout.row_add_participant, parent, false)
         )
     }
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val name: TextView = v.findViewById(R.id.tv_name)!!
-        val number: TextView = v.findViewById(R.id.tv_number)!!
         val contact_card_view: CardView = v.findViewById(R.id.contact_card_view)!!
     }
 }
