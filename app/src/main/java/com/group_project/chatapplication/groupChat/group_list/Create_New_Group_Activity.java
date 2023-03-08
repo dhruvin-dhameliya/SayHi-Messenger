@@ -120,7 +120,7 @@ public class Create_New_Group_Activity extends AppCompatActivity {
         String g_timestamp = "" + System.currentTimeMillis();
         if (image_uri == null) {
             //without image
-            String default_image_url = "https://firebasestorage.googleapis.com/v0/b/quick-learning-androidfire.appspot.com/o/profile_image.png?alt=media&token=4593c56f-8927-46d6-aeb9-2807aae56bfc";
+            String default_image_url = "https://firebasestorage.googleapis.com/v0/b/say-hi-chat-app.appspot.com/o/default_group_img.png?alt=media&token=dd4d218c-a9a7-4444-bfdb-7a7dbc1544bd";
             createGroup1("" + g_timestamp, "" + grouptitle, "" + groupDescription, default_image_url);
         } else {
             //with image

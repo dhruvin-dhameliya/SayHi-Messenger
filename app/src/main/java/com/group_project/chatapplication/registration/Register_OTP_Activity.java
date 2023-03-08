@@ -36,7 +36,7 @@ public class Register_OTP_Activity extends AppCompatActivity {
     ProgressDialog progressDialog;
     FirebaseAuth auth;
     FirebaseDatabase database;
-    String user_name = "", user_about = "", user_profile_img = "";
+    String user_name = "", user_about = "Hey there! I am using Say Hi.", user_profile_img = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

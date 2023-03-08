@@ -50,6 +50,7 @@
         android:backgroundTint="@null"
         android:hint="Type your name here"
         android:inputType="textCapSentences"
+        android:maxLength="25"
         android:padding="@dimen/_11sdp"
         android:textColor="#343434"
         android:textSize="@dimen/_20sdp" />

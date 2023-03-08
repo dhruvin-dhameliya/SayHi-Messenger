@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:foreground="?android:attr/selectableItemBackground"
-        android:paddingVertical="@dimen/_8sdp">
+        android:paddingVertical="@dimen/_4sdp">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/groupicon"
