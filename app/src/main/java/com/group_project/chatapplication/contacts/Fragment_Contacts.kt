@@ -135,8 +135,8 @@ class Fragment_Contacts : Fragment() {
                 database.setValue(contact_model)
 
                 val intent_id = Intent(context, Chat_Activity::class.java)
-                intent_id.putExtra("contact_name_pass", list[position].name.trim())
-                intent_id.putExtra("contact_number_pass", list[position].phone_number.trim())
+                intent_id.putExtra("pass_receiver_name", list[position].name.trim())
+                intent_id.putExtra("pass_receiver_number", list[position].phone_number.trim())
                 context.startActivity(intent_id)
             }
         }

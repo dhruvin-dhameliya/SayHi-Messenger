@@ -12,22 +12,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.group_project.chatapplication.R;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-public class ChatAd extends RecyclerView.Adapter {
+public class Chat_Adapter extends RecyclerView.Adapter {
 
     ArrayList<Chatmodel> chatmodels;
     Context context;
     int SENDER_VIEW_TYPE = 1;
     int RECEIVER_VIEW_TYPE = 2;
 
-    public ChatAd(ArrayList<Chatmodel> chatmodels, Context context) {
+    public Chat_Adapter(ArrayList<Chatmodel> chatmodels, Context context) {
         this.chatmodels = chatmodels;
         this.context = context;
     }
@@ -54,7 +51,7 @@ public class ChatAd extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (chatmodels.get(position).getUid().equals(myMobileNo)) {
+        if (chatmodels.get(position).getSender().equals(myMobileNo)) {
             return SENDER_VIEW_TYPE;
         } else {
             return RECEIVER_VIEW_TYPE;

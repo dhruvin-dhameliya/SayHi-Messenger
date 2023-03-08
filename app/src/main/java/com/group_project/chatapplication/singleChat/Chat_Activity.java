@@ -10,8 +10,11 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,11 +36,13 @@ public class Chat_Activity extends AppCompatActivity {
     Toolbar mToolbar;
     ImageButton sendMessageButton;
     EditText userMessageInput;
+    ImageView back_press, profile_img;
+    TextView user_name;
     String currentContactName, myMobileNo, receiverMobileNo, getName, senderRoom, receiverRoom;
     RecyclerView chattingRecycleView;
-    ChatAd chatAd;
+    Chat_Adapter chatAd;
     User_Model user_model;
-    Msg_Model msg_model = new Msg_Model();
+    Receiver_info_Model msg_model = new Receiver_info_Model();
     ArrayList<Chatmodel> chatModel = new ArrayList<>();
     FirebaseAuth auth;
     FirebaseDatabase firebaseDatabase;
@@ -48,16 +53,16 @@ public class Chat_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        back_press = findViewById(R.id.back_press);
+        profile_img = findViewById(R.id.profile_img);
+        user_name = findViewById(R.id.user_name);
         sendMessageButton = findViewById(R.id.send_message_button);
         userMessageInput = findViewById(R.id.input_group_message);
 
-        currentContactName = getIntent().getExtras().get("contact_name_pass").toString().trim();
-        receiverMobileNo = getIntent().getExtras().get("contact_number_pass").toString().replace(" ", "").replace("-", "").replace("+91", "");
+        currentContactName = getIntent().getExtras().get("pass_receiver_name").toString().trim();
+        receiverMobileNo = getIntent().getExtras().get("pass_receiver_number").toString().replace(" ", "").replace("-", "").replace("+91", "");
 
         mToolbar = findViewById(R.id.chat_bar_layout);
-        setSupportActionBar(mToolbar);
-        Objects.requireNonNull(getSupportActionBar()).setTitle(currentContactName);
-        getSupportActionBar().setSubtitle(receiverMobileNo);
 
         auth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -69,16 +74,23 @@ public class Chat_Activity extends AppCompatActivity {
 
         chattingRecycleView = findViewById(R.id.chat_recyclearview);
 
-        chatAd = new ChatAd(chatModel, this);
+        chatAd = new Chat_Adapter(chatModel, this);
         chattingRecycleView.setAdapter(chatAd);
 
         senderRoom = myMobileNo + receiverMobileNo;
         receiverRoom = receiverMobileNo + myMobileNo;
 
+        back_press.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         check_number_exist_or_not();
+        loadChatInfo();
 
         do_chat_messages();
-
         display_chat_messages();
     }
 
@@ -87,8 +99,8 @@ public class Chat_Activity extends AppCompatActivity {
         sendMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String getTxtMessage = userMessageInput.getText().toString();
-                final Chatmodel chatmodel = new Chatmodel(myMobileNo, getTxtMessage);
+                String getTxtMessage = userMessageInput.getText().toString().trim();
+                final Chatmodel chatmodel = new Chatmodel(myMobileNo, getTxtMessage, "text");
 
                 if (TextUtils.isEmpty(getTxtMessage)) {
                     Toast.makeText(getApplicationContext(), "Can't send empty message", Toast.LENGTH_SHORT).show();
@@ -116,7 +128,6 @@ public class Chat_Activity extends AppCompatActivity {
                             });
                     userMessageInput.setText("");
                 }
-
             }
         });
 
@@ -151,6 +162,8 @@ public class Chat_Activity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     // fetch values from User Details table
+
+                    // Upload receiver details in our room id
                     firebaseDatabase.getReference().child("Users Details").child("+91" + receiverMobileNo).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -159,15 +172,17 @@ public class Chat_Activity extends AppCompatActivity {
                             msg_model.setReceiverName(user_model.getName());
                             msg_model.setReceiverProfileImg(user_model.getProfile_image());
                             msg_model.setReceiverInfo(user_model.getAbout());
+                            msg_model.setRoomId(senderRoom);
 
                             HashMap<String, Object> objectsHashMap = new HashMap<>();
                             objectsHashMap.put("receiver_no", msg_model.getReceiverNo());
                             objectsHashMap.put("receiver_name", msg_model.getReceiverName());
                             objectsHashMap.put("receiver_profileImage", msg_model.getReceiverProfileImg());
                             objectsHashMap.put("receiver_info", msg_model.getReceiverInfo());
+                            objectsHashMap.put("room_id", msg_model.getRoomId());
                             firebaseDatabase.getReference().child("Chat").child(myMobileNo).child(senderRoom).updateChildren(objectsHashMap);
 
-                            Toast.makeText(getApplicationContext(), "Transfer completed !!!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Transfer Receiver data!!!", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -175,6 +190,35 @@ public class Chat_Activity extends AppCompatActivity {
 
                         }
                     });
+
+                    // Upload sender details in receiver room id
+                    firebaseDatabase.getReference().child("Users Details").child("+91" + myMobileNo).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            user_model = snapshot.getValue(User_Model.class);
+                            msg_model.setReceiverNo(user_model.getPhone());
+                            msg_model.setReceiverName(user_model.getName());
+                            msg_model.setReceiverProfileImg(user_model.getProfile_image());
+                            msg_model.setReceiverInfo(user_model.getAbout());
+                            msg_model.setRoomId(receiverRoom);
+
+                            HashMap<String, Object> objectsHashMap = new HashMap<>();
+                            objectsHashMap.put("receiver_no", msg_model.getReceiverNo());
+                            objectsHashMap.put("receiver_name", msg_model.getReceiverName());
+                            objectsHashMap.put("receiver_profileImage", msg_model.getReceiverProfileImg());
+                            objectsHashMap.put("receiver_info", msg_model.getReceiverInfo());
+                            objectsHashMap.put("room_id", msg_model.getRoomId());
+                            firebaseDatabase.getReference().child("Chat").child(receiverMobileNo).child(receiverRoom).updateChildren(objectsHashMap);
+
+                            Toast.makeText(getApplicationContext(), "Transfer sender data...", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
                 } else {
                     Toast.makeText(getApplicationContext(), "Not Exist.", Toast.LENGTH_SHORT).show();
                 }
@@ -185,6 +229,32 @@ public class Chat_Activity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void loadChatInfo() {
+
+        databaseReference.child(myMobileNo).child(senderRoom)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot ds) {
+                        String title = "" + ds.child("receiver_name").getValue();
+                        String mobile = "" + ds.child("receiver_no").getValue();
+                        String profileImage = "" + ds.child("receiver_profileImage").getValue();
+                        String about = "" + ds.child("receiver_info").getValue();
+
+                        user_name.setText(title);
+                        try {
+                            Glide.with(profile_img).load(profileImage).into(profile_img);
+                        } catch (Exception e) {
+                            profile_img.setImageResource(R.drawable.img_default_person);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 
 }

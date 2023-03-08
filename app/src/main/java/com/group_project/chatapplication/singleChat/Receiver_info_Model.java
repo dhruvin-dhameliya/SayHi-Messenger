@@ -1,18 +1,21 @@
 package com.group_project.chatapplication.singleChat;
 
-public class Msg_Model {
+public class Receiver_info_Model {
 
-    String receiverNo, receiverName, receiverProfileImg, receiverInfo;
+    String receiverNo, receiverName, receiverProfileImg, receiverInfo, roomId;
 
-    public Msg_Model() {
+
+    public Receiver_info_Model() {
     }
 
-    public Msg_Model(String receiverNo, String receiverName, String receiverProfileImg, String receiverInfo) {
+    public Receiver_info_Model(String receiverNo, String receiverName, String receiverProfileImg, String receiverInfo, String roomId) {
         this.receiverNo = receiverNo;
         this.receiverName = receiverName;
         this.receiverProfileImg = receiverProfileImg;
         this.receiverInfo = receiverInfo;
+        this.roomId = roomId;
     }
+
 
     public String getReceiverNo() {
         return receiverNo;
@@ -44,5 +47,13 @@ public class Msg_Model {
 
     public void setReceiverInfo(String receiverInfo) {
         this.receiverInfo = receiverInfo;
+    }
+
+    public String getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
     }
 }

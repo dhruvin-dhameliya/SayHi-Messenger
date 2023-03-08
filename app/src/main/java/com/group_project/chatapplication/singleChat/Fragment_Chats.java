@@ -1,5 +1,6 @@
 package com.group_project.chatapplication.singleChat;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -52,16 +53,18 @@ public class Fragment_Chats extends Fragment {
     FirebaseAuth auth;
     FirebaseUser user;
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference, referenceForUserIMG, databaseReferenceStories;
-    String fetch_phone_number;
+    DatabaseReference databaseReference, referenceForUserIMG, databaseReferenceStories, referenceForList;
+    String fetch_phone_number, fetch_phone_without_91;
     ConstraintLayout layout_upload_stories;
     CircleImageView img_profile_show_stories;
     TopStories_Adapter topStories_adapter;
     ArrayList<UserStories_Model> userStories_models_list;
-    RecyclerView stories_list;
+    RecyclerView stories_list, chatlistRv;
     ProgressDialog progressDialog;
     User_Model user_model;
     ActivityResultLauncher<Intent> activityResultLauncher;
+    ArrayList<Chat_List_Model> list;
+    Chat_List_Adapter chat_list_adapter;
     String imageUri;
     RecyclerView groupRv;
 
@@ -81,12 +84,14 @@ public class Fragment_Chats extends Fragment {
 
         FirebaseUser user = auth.getCurrentUser();
         fetch_phone_number = user.getPhoneNumber();
+        fetch_phone_without_91 = user.getPhoneNumber().replace("+91","");
 
         userStories_models_list = new ArrayList<>();
         topStories_adapter = new TopStories_Adapter(getContext(), userStories_models_list);
         stories_list = chatFragmentView.findViewById(R.id.stories_list);
         layout_upload_stories = chatFragmentView.findViewById(R.id.layout_upload_stories);
         img_profile_show_stories = chatFragmentView.findViewById(R.id.img_profile_show_stories);
+        chatlistRv = chatFragmentView.findViewById(R.id.chatlistRv);
 
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Story Uploading...");
@@ -102,6 +107,18 @@ public class Fragment_Chats extends Fragment {
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
         stories_list.setLayoutManager(linearLayoutManager);
         stories_list.setAdapter(topStories_adapter);
+
+        //for display chat list in recyclerview
+        referenceForList = FirebaseDatabase.getInstance().getReference().child("Chat");
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        chatlistRv.setLayoutManager(layoutManager);
+
+        list = new ArrayList<>();
+        chat_list_adapter = new Chat_List_Adapter(getContext(), list); // wait
+        chatlistRv.setAdapter(chat_list_adapter);
+
+        displayChatUserList();
 
         // Fetch profile images for show/add Stories
         referenceForUserIMG.addValueEventListener(new ValueEventListener() {
@@ -219,6 +236,28 @@ public class Fragment_Chats extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(getContext(), "Automatic stories can't delete!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void displayChatUserList() {
+        referenceForList.child(fetch_phone_without_91).addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list.clear();
+                for (DataSnapshot dataSnapshot1 : snapshot.getChildren()) {
+                    if (dataSnapshot1.hasChild("Messages")) {
+                        Chat_List_Model listmodel = dataSnapshot1.getValue(Chat_List_Model.class);
+                        list.add(listmodel);
+                    }
+                }
+                chat_list_adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }

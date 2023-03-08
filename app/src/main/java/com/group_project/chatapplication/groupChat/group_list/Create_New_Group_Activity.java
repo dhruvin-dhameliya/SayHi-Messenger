@@ -120,7 +120,8 @@ public class Create_New_Group_Activity extends AppCompatActivity {
         String g_timestamp = "" + System.currentTimeMillis();
         if (image_uri == null) {
             //without image
-            createGroup1("" + g_timestamp, "" + grouptitle, "" + groupDescription, "");
+            String default_image_url = "https://firebasestorage.googleapis.com/v0/b/quick-learning-androidfire.appspot.com/o/profile_image.png?alt=media&token=4593c56f-8927-46d6-aeb9-2807aae56bfc";
+            createGroup1("" + g_timestamp, "" + grouptitle, "" + groupDescription, default_image_url);
         } else {
             //with image
             String fileNameandPath = "Group_Img/" + "image" + g_timestamp;

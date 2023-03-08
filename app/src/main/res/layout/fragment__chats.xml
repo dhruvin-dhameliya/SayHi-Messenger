@@ -67,16 +67,14 @@
             android:layout_below="@+id/stories_section"
             android:layout_marginTop="@dimen/_1sdp"
             android:background="#b6b6b6" />
-        <!--
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/groupRv"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    android:layout_below="@id/view_border"
-                    tools:listitem="@layout/row_groupchat" />
-        -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chatlistRv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/view_border"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/row_singlechat" />
 
     </RelativeLayout>
 
