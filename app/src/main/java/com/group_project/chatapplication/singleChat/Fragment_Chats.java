@@ -84,7 +84,7 @@ public class Fragment_Chats extends Fragment {
 
         FirebaseUser user = auth.getCurrentUser();
         fetch_phone_number = user.getPhoneNumber();
-        fetch_phone_without_91 = user.getPhoneNumber().replace("+91","");
+        fetch_phone_without_91 = user.getPhoneNumber().replace("+91", "");
 
         userStories_models_list = new ArrayList<>();
         topStories_adapter = new TopStories_Adapter(getContext(), userStories_models_list);

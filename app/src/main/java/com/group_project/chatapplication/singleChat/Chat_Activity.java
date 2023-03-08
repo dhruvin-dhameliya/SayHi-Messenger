@@ -6,7 +6,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -37,7 +39,7 @@ public class Chat_Activity extends AppCompatActivity {
     ImageButton sendMessageButton;
     EditText userMessageInput;
     ImageView back_press, profile_img;
-    TextView user_name;
+    TextView user_name, user_online_or_not_txt;
     String currentContactName, myMobileNo, receiverMobileNo, getName, senderRoom, receiverRoom;
     RecyclerView chattingRecycleView;
     Chat_Adapter chatAd;
@@ -56,6 +58,7 @@ public class Chat_Activity extends AppCompatActivity {
         back_press = findViewById(R.id.back_press);
         profile_img = findViewById(R.id.profile_img);
         user_name = findViewById(R.id.user_name);
+        user_online_or_not_txt = findViewById(R.id.user_online_or_not_txt);
         sendMessageButton = findViewById(R.id.send_message_button);
         userMessageInput = findViewById(R.id.input_group_message);
 
@@ -87,11 +90,71 @@ public class Chat_Activity extends AppCompatActivity {
             }
         });
 
+        //for typing on edit text
+        userMessageInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() == 0) {
+                    checkTypingStatus("noOne");
+                } else {
+                    checkTypingStatus(myMobileNo);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
         check_number_exist_or_not();
         loadChatInfo();
 
         do_chat_messages();
         display_chat_messages();
+    }
+
+    //Checking user is online & typing
+    public void checkOnlineStatus(String status) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users Details").child("+91" + myMobileNo);
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("onlineStatus", status);
+        reference.updateChildren(hashMap);
+    }
+
+    public void checkTypingStatus(String typing) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users Details").child("+91" + myMobileNo);
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("typingStatus", typing);
+        reference.updateChildren(hashMap);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        checkOnlineStatus("online");
+        user_online_or_not_txt.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        String timestamp = String.valueOf(System.currentTimeMillis());
+        checkOnlineStatus(timestamp);
+        checkTypingStatus("noOne");
+        user_online_or_not_txt.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkOnlineStatus("online");
+        user_online_or_not_txt.setVisibility(View.VISIBLE);
     }
 
     //send message
@@ -173,6 +236,8 @@ public class Chat_Activity extends AppCompatActivity {
                             msg_model.setReceiverProfileImg(user_model.getProfile_image());
                             msg_model.setReceiverInfo(user_model.getAbout());
                             msg_model.setRoomId(senderRoom);
+                            msg_model.setOnlineStatus(user_model.getOnlineStatus());
+                            msg_model.setTypingStatus(user_model.getTypingStatus());
 
                             HashMap<String, Object> objectsHashMap = new HashMap<>();
                             objectsHashMap.put("receiver_no", msg_model.getReceiverNo());
@@ -180,6 +245,9 @@ public class Chat_Activity extends AppCompatActivity {
                             objectsHashMap.put("receiver_profileImage", msg_model.getReceiverProfileImg());
                             objectsHashMap.put("receiver_info", msg_model.getReceiverInfo());
                             objectsHashMap.put("room_id", msg_model.getRoomId());
+                            objectsHashMap.put("onlineStatus", msg_model.getOnlineStatus());
+                            objectsHashMap.put("typingStatus", msg_model.getTypingStatus());
+
                             firebaseDatabase.getReference().child("Chat").child(myMobileNo).child(senderRoom).updateChildren(objectsHashMap);
                         }
 
@@ -206,6 +274,8 @@ public class Chat_Activity extends AppCompatActivity {
                             objectsHashMap.put("receiver_profileImage", msg_model.getReceiverProfileImg());
                             objectsHashMap.put("receiver_info", msg_model.getReceiverInfo());
                             objectsHashMap.put("room_id", msg_model.getRoomId());
+                            objectsHashMap.put("onlineStatus", msg_model.getOnlineStatus());
+                            objectsHashMap.put("typingStatus", msg_model.getTypingStatus());
                             firebaseDatabase.getReference().child("Chat").child(receiverMobileNo).child(receiverRoom).updateChildren(objectsHashMap);
                         }
 
@@ -228,15 +298,23 @@ public class Chat_Activity extends AppCompatActivity {
     }
 
     public void loadChatInfo() {
-
         databaseReference.child(myMobileNo).child(senderRoom)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot ds) {
                         String title = "" + ds.child("receiver_name").getValue();
-                        String mobile = "" + ds.child("receiver_no").getValue();
                         String profileImage = "" + ds.child("receiver_profileImage").getValue();
-                        String about = "" + ds.child("receiver_info").getValue();
+
+                        //get value of online & typing status
+                        String online = "" + ds.child("onlineStatus").getValue();
+                        String typing = "" + ds.child("typingStatus").getValue();
+                        if (typing.equals(receiverMobileNo)) {
+                            user_online_or_not_txt.setVisibility(View.VISIBLE);
+                            user_online_or_not_txt.setText("typing...");
+                        } else if (online.equals("online")) {
+                            user_online_or_not_txt.setVisibility(View.VISIBLE);
+                            user_online_or_not_txt.setText(online);
+                        }
 
                         user_name.setText(title);
                         try {

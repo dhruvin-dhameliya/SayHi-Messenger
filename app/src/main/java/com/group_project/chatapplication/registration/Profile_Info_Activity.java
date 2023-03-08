@@ -119,7 +119,7 @@ public class Profile_Info_Activity extends AppCompatActivity {
                     progressDialog.show();
                     if (updateImageUri == null) {
                         String finalUpdate_ImageUri = "https://firebasestorage.googleapis.com/v0/b/say-hi-chat-app.appspot.com/o/default_person_img.png?alt=media&token=f917e2d6-2bee-41ce-a1c3-6b584b095b16";
-                        usersModel = new User_Model(auth.getUid(), profileName, phoneNumber, about, finalUpdate_ImageUri);
+                        usersModel = new User_Model(auth.getUid(), profileName, phoneNumber, about, finalUpdate_ImageUri, "", "");
                         databaseReference.setValue(usersModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
@@ -143,7 +143,7 @@ public class Profile_Info_Activity extends AppCompatActivity {
                                         @Override
                                         public void onSuccess(Uri uri) {
                                             String finalUpdate_ImageUri = uri.toString();
-                                            usersModel = new User_Model(auth.getUid(), profileName, phoneNumber, about, finalUpdate_ImageUri);
+                                            usersModel = new User_Model(auth.getUid(), profileName, phoneNumber, about, finalUpdate_ImageUri, "", "");
                                             databaseReference.setValue(usersModel).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void unused) {
@@ -167,7 +167,7 @@ public class Profile_Info_Activity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     String finalUpdate_ImageUri = uri.toString();
-                                    usersModel = new User_Model(auth.getUid(), profileName, phoneNumber, about, finalUpdate_ImageUri);
+                                    usersModel = new User_Model(auth.getUid(), profileName, phoneNumber, about, finalUpdate_ImageUri, "", "");
                                     databaseReference.setValue(usersModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
