@@ -181,8 +181,6 @@ public class Chat_Activity extends AppCompatActivity {
                             objectsHashMap.put("receiver_info", msg_model.getReceiverInfo());
                             objectsHashMap.put("room_id", msg_model.getRoomId());
                             firebaseDatabase.getReference().child("Chat").child(myMobileNo).child(senderRoom).updateChildren(objectsHashMap);
-
-                            Toast.makeText(getApplicationContext(), "Transfer Receiver data!!!", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -209,8 +207,6 @@ public class Chat_Activity extends AppCompatActivity {
                             objectsHashMap.put("receiver_info", msg_model.getReceiverInfo());
                             objectsHashMap.put("room_id", msg_model.getRoomId());
                             firebaseDatabase.getReference().child("Chat").child(receiverMobileNo).child(receiverRoom).updateChildren(objectsHashMap);
-
-                            Toast.makeText(getApplicationContext(), "Transfer sender data...", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override

@@ -65,7 +65,9 @@
             android:layout_width="wrap_content"
             android:layout_height="1dp"
             android:layout_below="@+id/stories_section"
-            android:layout_marginTop="@dimen/_1sdp"
+            android:layout_marginHorizontal="@dimen/_3sdp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_marginBottom="@dimen/_2sdp"
             android:background="#b6b6b6" />
 
         <androidx.recyclerview.widget.RecyclerView
