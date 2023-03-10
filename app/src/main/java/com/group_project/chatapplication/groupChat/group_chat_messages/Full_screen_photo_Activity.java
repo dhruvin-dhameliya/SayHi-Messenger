@@ -24,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class Full_screen_photo_Activity extends AppCompatActivity {
+
     ImageView back_group_msg_page, get_image, img_download;
     String image, senderid;
     Bitmap bitmap;

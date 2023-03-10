@@ -12,10 +12,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.TextUtils;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -31,7 +28,6 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,7 +41,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.group_project.chatapplication.MainActivity;
 import com.group_project.chatapplication.R;
-import com.group_project.chatapplication.groupChat.group_list.Create_New_Group_Activity;
 import com.group_project.chatapplication.registration.User_Model;
 
 import java.io.ByteArrayOutputStream;
@@ -107,15 +102,13 @@ public class Story_Preview_Activity extends AppCompatActivity {
         btn_screen_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Story_Preview_Activity.this, MainActivity.class));
-                finishAffinity();
+                onBackPressed();
             }
         });
         btn_card_screen_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Story_Preview_Activity.this, MainActivity.class));
-                finishAffinity();
+                onBackPressed();
             }
         });
 
@@ -136,17 +129,6 @@ public class Story_Preview_Activity extends AppCompatActivity {
             }
         });
 
-/*
-        // close preview screen code...
-        btn_screen_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Story_Preview_Activity.this, MainActivity.class));
-                finish();
-            }
-        });
-*/
-
         // Close KeyBord when press DONE button of key-bord...
         edit_txt_caption.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -154,7 +136,7 @@ public class Story_Preview_Activity extends AppCompatActivity {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     fetch_caption = edit_txt_caption.getText().toString().trim();
                     if (fetch_caption.length() >= 75) {
-                        edit_txt_caption.setError("Story caption maximum 30 character.");
+                        edit_txt_caption.setError("Story caption maximum 75 character.");
                     } else {
                         txt_story_caption.setText(fetch_caption);
 
@@ -177,7 +159,7 @@ public class Story_Preview_Activity extends AppCompatActivity {
                 if (!hasFocus) {
                     fetch_caption = edit_txt_caption.getText().toString().trim();
                     if (fetch_caption.length() >= 75) {
-                        edit_txt_caption.setError("Story caption maximum 30 character.");
+                        edit_txt_caption.setError("Story caption maximum 75 character.");
                     } else {
                         txt_story_caption.setText(fetch_caption);
 
@@ -217,7 +199,7 @@ public class Story_Preview_Activity extends AppCompatActivity {
     private void saveImage() {
         fetch_caption = edit_txt_caption.getText().toString().trim();
         if (fetch_caption.length() >= 75) {
-            edit_txt_caption.setError("Story caption maximum 30 character.");
+            edit_txt_caption.setError("Story caption maximum 75 character.");
         } else {
             edit_txt_caption.setFocusable(false);
             // preserve layout as image

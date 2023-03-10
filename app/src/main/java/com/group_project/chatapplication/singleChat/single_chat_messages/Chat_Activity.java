@@ -56,7 +56,7 @@ public class Chat_Activity extends AppCompatActivity {
     Toolbar mToolbar;
     ImageButton sendMessageButton;
     EditText userMessageInput;
-    ImageView back_press, profile_img, attachbtn;
+    ImageView back_press, profile_img, attachbtn, img_chat_wallpaper;
     TextView user_name;
     String currentContactName, myMobileNo, receiverMobileNo, getName, senderRoom, receiverRoom;
     RecyclerView chattingRecycleView;
@@ -88,6 +88,7 @@ public class Chat_Activity extends AppCompatActivity {
         attachbtn = findViewById(R.id.send_file);
         sendMessageButton = findViewById(R.id.send_message_button);
         userMessageInput = findViewById(R.id.input_message);
+        img_chat_wallpaper = findViewById(R.id.img_chat_wallpaper);
 
         currentContactName = getIntent().getExtras().get("pass_receiver_name").toString().trim();
         receiverMobileNo = getIntent().getExtras().get("pass_receiver_number").toString().replace(" ", "").replace("-", "").replace("+91", "");
@@ -121,6 +122,23 @@ public class Chat_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showDialog();
+            }
+        });
+
+        // Wallpaper display code...
+        DatabaseReference dbwallpaper = FirebaseDatabase.getInstance().getReference().child("Chat Wallpaper").child("+91" + myMobileNo).child("wallpaper_image");
+        dbwallpaper.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if ((snapshot.exists())) {
+                    String retrieveWallpaperImage = snapshot.getValue(String.class);
+                    Glide.with(img_chat_wallpaper).load(retrieveWallpaperImage).into(img_chat_wallpaper);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getApplicationContext(), "Wallpaper not set!", Toast.LENGTH_SHORT).show();
             }
         });
 

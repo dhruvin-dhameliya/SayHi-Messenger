@@ -58,7 +58,7 @@ import java.util.HashMap;
 public class Group_Chat_Messages_Activity extends AppCompatActivity {
 
     String groupId, fetch_phone_number, mypost = "";
-    ImageView groupIconTv, Back_press;
+    ImageView groupIconTv, Back_press, img_group_chat_wallpaper;
     TextView groupTitleTv;
     ImageButton attachbtn;
     FloatingActionButton senbtn;
@@ -88,12 +88,31 @@ public class Group_Chat_Messages_Activity extends AppCompatActivity {
         messageET = findViewById(R.id.messageEt);
         chatRv = findViewById(R.id.chatRv);
         Back_press = findViewById(R.id.back_press);
+        img_group_chat_wallpaper = findViewById(R.id.img_group_chat_wallpaper);
 
         Intent intent = getIntent();
         groupId = intent.getStringExtra("groupId");
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
         fetch_phone_number = user.getPhoneNumber();
+
+        // Wallpaper display code...
+        DatabaseReference dbwallpaper = FirebaseDatabase.getInstance().getReference().child("Chat Wallpaper").child(fetch_phone_number).child("wallpaper_image");
+        dbwallpaper.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if ((snapshot.exists())) {
+                    String retrieveWallpaperImage = snapshot.getValue(String.class);
+                    Glide.with(img_group_chat_wallpaper).load(retrieveWallpaperImage).into(img_group_chat_wallpaper);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getApplicationContext(), "Wallpaper not set!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         loadgroupInfo();
         loadgroupmessage();
         loadGroupPost();
@@ -212,7 +231,7 @@ public class Group_Chat_Messages_Activity extends AppCompatActivity {
         progressDialog.show();
 
         //file path
-        String filepath = "Chat_Img/" + "" + System.currentTimeMillis() + ".jpg";
+        String filepath = "Single User Messages/" + fetch_phone_number + "/" + "Images/" + System.currentTimeMillis() + ".jpg";
         //upload
         StorageReference storageReference = FirebaseStorage.getInstance().getReference(filepath);
         storageReference.putFile(image_uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -391,7 +410,7 @@ public class Group_Chat_Messages_Activity extends AppCompatActivity {
         progressDialog.show();
 
         //file path
-        String filepath = "Chat_Img/" + "" + System.currentTimeMillis();
+        String filepath = "Group Messages/" + fetch_phone_number + "/" + "Documents/" + System.currentTimeMillis();
         //upload
         StorageReference storageReference = FirebaseStorage.getInstance().getReference(filepath);
         storageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

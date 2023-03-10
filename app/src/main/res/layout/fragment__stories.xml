@@ -93,43 +93,23 @@
                         android:gravity="center"
                         android:orientation="vertical">
 
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/card_layout_delete_all_stories"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_50sdp"
-                            android:layout_gravity="center"
-                            app:cardBackgroundColor="#191919"
-                            app:cardCornerRadius="@dimen/_8sdp">
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:gravity="center"
-                                android:orientation="horizontal"
-                                android:padding="@dimen/_5sdp">
-
-                                <ImageButton
-                                    android:layout_width="@dimen/_25sdp"
-                                    android:layout_height="@dimen/_25sdp"
-                                    android:layout_gravity="center"
-                                    android:layout_marginEnd="@dimen/_5sdp"
-                                    android:background="@drawable/icon_delete_stories"
-                                    android:backgroundTint="@color/white" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:gravity="center"
-                                    android:text="Delete your stories"
-                                    android:textColor="@color/white"
-                                    android:textSize="15sp"
-                                    android:textStyle="normal" />
-
-                            </LinearLayout>
-
-                        </androidx.cardview.widget.CardView>
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_delete_your_stories"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/_75sdp"
+                            android:backgroundTint="#EBF5FB"
+                            android:text="Delete your story"
+                            android:textAlignment="center"
+                            android:textAllCaps="false"
+                            android:textColor="#036fdc"
+                            android:textSize="@dimen/_12sdp"
+                            app:borderWidth="0dp"
+                            app:cornerRadius="@dimen/_11sdp"
+                            app:icon="@drawable/icon_delete_stories"
+                            app:iconGravity="textTop"
+                            app:iconSize="@dimen/_21sdp"
+                            app:iconTint="@color/colorPrimary"
+                            app:rippleColor="#dbe2e8" />
 
                         <com.google.android.material.floatingactionbutton.FloatingActionButton
                             android:id="@+id/add_txt_story"

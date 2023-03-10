@@ -1,6 +1,7 @@
 package com.group_project.chatapplication.stories;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -9,6 +10,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -21,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,6 +31,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.group_project.chatapplication.MainActivity;
 import com.group_project.chatapplication.registration.User_Model;
@@ -35,6 +39,7 @@ import com.group_project.chatapplication.R;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class Fragment_Stories extends Fragment {
@@ -47,7 +52,7 @@ public class Fragment_Stories extends Fragment {
     String fetch_phone_number;
     RoundedImageView square_img_upload_story;
     TopStories_Adapter_2 topStories_adapter_2;
-    CardView card_layout_delete_all_stories;
+    MaterialButton btn_delete_your_stories;
     ArrayList<UserStories_Model> userStories_models_list;
     RecyclerView stories_list;
     ProgressDialog progressDialog;
@@ -73,7 +78,7 @@ public class Fragment_Stories extends Fragment {
         topStories_adapter_2 = new TopStories_Adapter_2(getContext(), userStories_models_list);
         stories_list = storiesFragmentView.findViewById(R.id.stories_list_2);
         square_img_upload_story = storiesFragmentView.findViewById(R.id.square_img_upload_story);
-        card_layout_delete_all_stories = storiesFragmentView.findViewById(R.id.card_layout_delete_all_stories);
+        btn_delete_your_stories = storiesFragmentView.findViewById(R.id.btn_delete_your_stories);
         add_txt_story = storiesFragmentView.findViewById(R.id.add_txt_story);
 
         add_txt_story.setOnClickListener(new View.OnClickListener() {
@@ -186,10 +191,26 @@ public class Fragment_Stories extends Fragment {
         });
 
         // Delete all uploaded Stories...
-        card_layout_delete_all_stories.setOnClickListener(new View.OnClickListener() {
+        btn_delete_your_stories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseDatabase.getInstance().getReference().child("Stories").child(fetch_phone_number).getRef().setValue(null);
+                AlertDialog.Builder builder = new AlertDialog.Builder(storiesFragmentView.getContext());
+                builder.setTitle("Delete");
+                builder.setMessage("Are you sure to Delete your stories?");
+                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        FirebaseDatabase.getInstance().getReference().child("Stories").child(fetch_phone_number).getRef().setValue(null);
+                        Toast.makeText(getContext(), "Stories Deleted!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.create().show();
             }
         });
 
