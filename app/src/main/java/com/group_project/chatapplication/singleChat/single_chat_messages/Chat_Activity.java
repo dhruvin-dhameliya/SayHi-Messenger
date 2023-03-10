@@ -1,4 +1,4 @@
-package com.group_project.chatapplication.singleChat;
+package com.group_project.chatapplication.singleChat.single_chat_messages;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

@@ -1,4 +1,4 @@
-package com.group_project.chatapplication.singleChat;
+package com.group_project.chatapplication.singleChat.single_chat_messages;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -26,7 +26,7 @@ import java.io.IOException;
 
 public class Single_Chat_full_screen_photo_Activity extends AppCompatActivity {
 
-    ImageView download_receiver_img, full_img;
+    ImageView back_page, download_receiver_img, full_img;
     String image, senderid;
     Bitmap bitmap;
     BitmapDrawable bitmapDrawable;
@@ -40,6 +40,7 @@ public class Single_Chat_full_screen_photo_Activity extends AppCompatActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(this.getResources().getColor(R.color.black));
 
+        back_page = findViewById(R.id.back_page);
         download_receiver_img = findViewById(R.id.download_receiver_img);
         full_img = findViewById(R.id.full_img);
 
@@ -54,6 +55,13 @@ public class Single_Chat_full_screen_photo_Activity extends AppCompatActivity {
         } else {
             download_receiver_img.setVisibility(View.VISIBLE);
         }
+
+        back_page.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         download_receiver_img.setOnClickListener(new View.OnClickListener() {
             @Override

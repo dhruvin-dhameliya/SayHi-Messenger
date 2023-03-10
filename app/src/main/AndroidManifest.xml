@@ -17,28 +17,28 @@
         android:theme="@style/Theme.ChatApplication"
         tools:targetApi="31">
         <activity
-            android:name=".singleChat.Single_Chat_full_screen_photo_Activity"
+            android:name=".singleChat.single_chat_messages.Single_Chat_full_screen_photo_Activity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".singleChat.Single_Chat_Doc_WebView_Activity"
+            android:name=".singleChat.single_chat_messages.Single_Chat_Doc_WebView_Activity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".singleChat.Single_Chat_Info_Activity"
+            android:name=".singleChat.single_chat_messages.Single_Chat_Info_Activity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".singleChat.Chat_Activity"
+            android:name=".singleChat.single_chat_messages.Chat_Activity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

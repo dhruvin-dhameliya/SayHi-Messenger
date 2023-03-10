@@ -6,21 +6,42 @@
     android:layout_height="match_parent"
     tools:context=".groupChat.group_chat_messages.Group_Doc_WebView_Activty">
 
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/group_chat_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
+        android:gravity="center"
         app:subtitleTextColor="@color/white"
         app:titleTextColor="@color/white">
 
         <ImageView
-            android:id="@+id/doc_download"
+            android:id="@+id/back_to_group_chat"
             android:layout_width="@dimen/_28sdp"
             android:layout_height="@dimen/_28sdp"
+            android:layout_gravity="start"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="@drawable/img_back_arow"
+            android:backgroundTint="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Document"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_18sdp"
+            android:textStyle="normal|bold" />
+
+        <ImageView
+            android:id="@+id/doc_download"
+            android:layout_width="@dimen/_24sdp"
+            android:layout_height="@dimen/_24sdp"
             android:layout_gravity="end"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:src="@drawable/img_dowload" />
+            android:background="@drawable/img_download"
+            android:backgroundTint="@color/white" />
+
     </androidx.appcompat.widget.Toolbar>
 
     <WebView

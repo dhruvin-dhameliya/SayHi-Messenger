@@ -8,20 +8,31 @@
     tools:context=".groupChat.group_chat_messages.Full_screen_photo_Activity">
 
     <ImageView
-        android:id="@+id/download_img"
-        android:layout_width="@dimen/_41sdp"
-        android:layout_height="@dimen/_41sdp"
+        android:id="@+id/full_screen_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/default_image_for_chat" />
+
+    <ImageView
+        android:id="@+id/back_group_msg_page"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@drawable/img_back_arow"
+        android:backgroundTint="@color/white"
+        android:padding="@dimen/_5sdp" />
+
+    <ImageView
+        android:id="@+id/download_group_receiver_img"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
-        android:padding="@dimen/_5sdp"
-        android:src="@drawable/img_dowload" />
-
-    <ImageView
-        android:id="@+id/image3"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/download_img"
-        android:src="@drawable/default_image_for_chat" />
+        android:background="@drawable/img_download"
+        android:backgroundTint="@color/white"
+        android:padding="@dimen/_5sdp" />
 
 </RelativeLayout>

@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.group_project.chatapplication.singleChat.Chat_Activity
+import com.group_project.chatapplication.singleChat.single_chat_messages.Chat_Activity
 import com.group_project.chatapplication.R
 
 class Contact_Show_Activity : AppCompatActivity() {

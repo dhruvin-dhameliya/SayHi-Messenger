@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -22,7 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class Full_screen_photo_Activity extends AppCompatActivity {
-    ImageView get_image, img_download;
+    ImageView back_group_msg_page, get_image, img_download;
     String image, senderid;
     Bitmap bitmap;
     BitmapDrawable bitmapDrawable;
@@ -32,8 +34,13 @@ public class Full_screen_photo_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_full_screen_photo);
 
-        get_image = findViewById(R.id.image3);
-        img_download = findViewById(R.id.download_img);
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(this.getResources().getColor(R.color.black));
+
+        back_group_msg_page = findViewById(R.id.back_group_msg_page);
+        get_image = findViewById(R.id.full_screen_img);
+        img_download = findViewById(R.id.download_group_receiver_img);
         Intent intent = getIntent();
         image = intent.getStringExtra("image");
         senderid = intent.getStringExtra("sender");
@@ -45,6 +52,13 @@ public class Full_screen_photo_Activity extends AppCompatActivity {
         } else {
             img_download.setVisibility(View.VISIBLE);
         }
+
+        back_group_msg_page.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         img_download.setOnClickListener(new View.OnClickListener() {
             @Override

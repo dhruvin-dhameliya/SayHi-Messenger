@@ -1,4 +1,4 @@
-package com.group_project.chatapplication.singleChat;
+package com.group_project.chatapplication.singleChat.single_chat_messages;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -49,7 +49,7 @@ public class Single_Chat_Doc_WebView_Activity extends AppCompatActivity {
         senderid = intent.getStringExtra("sender");
 
         webview_document.setWebViewClient(new WebViewClient());
-        webview_document.getSettings().setSupportZoom(true);
+        webview_document.getSettings().setBuiltInZoomControls(true);
         webview_document.getSettings().setJavaScriptEnabled(true);
         webview_document.getSettings().setLoadWithOverviewMode(true);
         webview_document.getSettings().setUseWideViewPort(true);

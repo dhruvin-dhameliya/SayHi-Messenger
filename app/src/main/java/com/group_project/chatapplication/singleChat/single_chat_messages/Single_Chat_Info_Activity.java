@@ -1,4 +1,4 @@
-package com.group_project.chatapplication.singleChat;
+package com.group_project.chatapplication.singleChat.single_chat_messages;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.group_project.chatapplication.R;
 import com.group_project.chatapplication.commonActivities.Image_Preview_Activity;
-import com.group_project.chatapplication.groupChat.group_chat_messages.Group_Info_Activity;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 

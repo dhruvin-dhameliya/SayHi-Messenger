@@ -1,4 +1,4 @@
-package com.group_project.chatapplication.singleChat;
+package com.group_project.chatapplication.singleChat.single_chat_list;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -10,7 +10,6 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,8 +30,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.group_project.chatapplication.MainActivity;
-import com.group_project.chatapplication.groupChat.group_list.Adapter_Group_List;
-import com.group_project.chatapplication.groupChat.group_list.Model_Group_List;
 import com.group_project.chatapplication.stories.Story_Preview_Activity;
 import com.group_project.chatapplication.stories.TopStories_Adapter;
 import com.group_project.chatapplication.stories.Stories_Model;
@@ -42,7 +39,6 @@ import com.group_project.chatapplication.R;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
