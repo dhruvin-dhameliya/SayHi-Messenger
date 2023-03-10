@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".singleChat.Single_Chat_full_screen_photo_Activity">
+
+    <ImageView
+        android:id="@+id/back_page"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:background="@drawable/img_back_arow"
+        android:backgroundTint="@color/white"
+        android:padding="@dimen/_5sdp" />
+
+    <ImageView
+        android:id="@+id/download_receiver_img"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:background="@drawable/img_download"
+        android:backgroundTint="@color/white"
+        android:padding="@dimen/_5sdp" />
+
+    <ImageView
+        android:id="@+id/full_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/download_receiver_img"
+        android:src="@drawable/default_image_for_chat" />
+
+</RelativeLayout>

@@ -144,7 +144,7 @@ public class Settings_Activity extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(Uri uri) {
                                         String finalUpdate_ImageUri = uri.toString();
-                                        usersModel = new User_Model(auth.getUid(), profileName, phoneNumber, profileAbout, finalUpdate_ImageUri, "", "");
+                                        usersModel = new User_Model(auth.getUid(), profileName, phoneNumber, profileAbout, finalUpdate_ImageUri);
                                         databaseReference.setValue(usersModel).addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void unused) {
@@ -166,7 +166,7 @@ public class Settings_Activity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Uri uri) {
                                 String finalUpdate_ImageUri = uri.toString();
-                                usersModel = new User_Model(auth.getUid(), profileName, phoneNumber, profileAbout, finalUpdate_ImageUri, "", "");
+                                usersModel = new User_Model(auth.getUid(), profileName, phoneNumber, profileAbout, finalUpdate_ImageUri);
                                 databaseReference.setValue(usersModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {

@@ -13,37 +13,37 @@
         android:text="Choose Options"
         android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="@dimen/_20sdp"
+        android:textSize="@dimen/_18sdp"
         android:textStyle="bold" />
 
     <RelativeLayout
         android:id="@+id/layout_option"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp">
+        android:layout_marginTop="@dimen/_28sdp">
 
         <ImageView
             android:id="@+id/camera"
-            android:layout_width="@dimen/_30sdp"
-            android:layout_height="@dimen/_30sdp"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
             android:layout_alignParentStart="true"
             android:layout_marginStart="@dimen/_15sdp"
             android:src="@drawable/icon_camera" />
 
         <ImageView
             android:id="@+id/gallery"
-            android:layout_width="@dimen/_30sdp"
-            android:layout_height="@dimen/_30sdp"
+            android:layout_width="@dimen/_38sdp"
+            android:layout_height="@dimen/_38sdp"
             android:layout_centerHorizontal="true"
             android:src="@drawable/icon_gallery" />
 
         <ImageView
             android:id="@+id/pdf"
-            android:layout_width="@dimen/_30sdp"
-            android:layout_height="@dimen/_30sdp"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:src="@drawable/icon_pdf" />
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:src="@drawable/icon_file" />
 
     </RelativeLayout>
 
@@ -51,12 +51,13 @@
         android:id="@+id/layoutgallery"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/_8sdp">
+        android:padding="@dimen/_3sdp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
+            android:layout_marginLeft="@dimen/_2sdp"
             android:text="Camera"
             android:textSize="@dimen/_15sdp" />
 
@@ -71,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:text="PDF"
+            android:text="Document"
             android:textSize="@dimen/_15sdp" />
 
     </RelativeLayout>

@@ -33,8 +33,7 @@ public class Image_Preview_Activity extends AppCompatActivity {
         back_to_home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Image_Preview_Activity.this, Settings_Activity.class));
-                finishAffinity();
+                onBackPressed();
             }
         });
 
