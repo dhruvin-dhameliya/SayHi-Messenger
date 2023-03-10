@@ -53,12 +53,12 @@ public class Full_screen_photo_Activity extends AppCompatActivity {
                 bitmap = bitmapDrawable.getBitmap();
                 FileOutputStream fileOutputStream = null;
                 File sdCard = Environment.getExternalStorageDirectory();
-                File Directory = new File(sdCard.getAbsolutePath() + "/Download");
+                File Directory = new File(sdCard.getAbsolutePath() + "/Pictures/Say Hi");
                 Directory.mkdir();
 
-                String filename = String.format("Say_Hi.jpg", System.currentTimeMillis());
+                String filename = String.format("IMG-" + System.currentTimeMillis() + ".jpg", System.currentTimeMillis());
                 File outfile = new File(Directory, filename);
-                Toast.makeText(Full_screen_photo_Activity.this, "Download", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Full_screen_photo_Activity.this, "Download Successfully", Toast.LENGTH_SHORT).show();
                 try {
                     fileOutputStream = new FileOutputStream(outfile);
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);

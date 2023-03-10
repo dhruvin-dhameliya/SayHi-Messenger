@@ -55,20 +55,19 @@ public class Single_Chat_full_screen_photo_Activity extends AppCompatActivity {
             download_receiver_img.setVisibility(View.VISIBLE);
         }
 
-// henil
         download_receiver_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bitmapDrawable = (BitmapDrawable) download_receiver_img.getDrawable();
-                bitmap = bitmapDrawable.getBitmap();
-                FileOutputStream fileOutputStream = null;
+                bitmapDrawable = (BitmapDrawable) full_img.getDrawable();
+                bitmap = Bitmap.createBitmap(bitmapDrawable.getBitmap());
+                FileOutputStream fileOutputStream;
                 File sdCard = Environment.getExternalStorageDirectory();
-                File Directory = new File(sdCard.getAbsolutePath() + "/Download");
+                File Directory = new File(sdCard.getAbsolutePath() + "/Pictures/Say Hi");
                 Directory.mkdir();
 
-                String filename = String.format("Say_Hi.jpg", System.currentTimeMillis());
+                String filename = String.format("IMG-" + System.currentTimeMillis() + ".jpg", System.currentTimeMillis());
                 File outfile = new File(Directory, filename);
-                Toast.makeText(Single_Chat_full_screen_photo_Activity.this, "Download", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Download Successfully", Toast.LENGTH_SHORT).show();
                 try {
                     fileOutputStream = new FileOutputStream(outfile);
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);

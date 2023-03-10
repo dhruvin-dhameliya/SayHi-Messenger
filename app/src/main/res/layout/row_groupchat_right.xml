@@ -48,6 +48,7 @@
                 android:layout_below="@id/user_name"
                 android:layout_marginStart="@dimen/_4sdp"
                 android:layout_marginTop="@dimen/_1sdp"
+                android:maxWidth="@dimen/_201sdp"
                 android:paddingStart="0dp"
                 android:paddingEnd="@dimen/_15sdp"
                 android:text="The message"

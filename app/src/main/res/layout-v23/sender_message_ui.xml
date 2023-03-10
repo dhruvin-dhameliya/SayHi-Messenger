@@ -37,6 +37,7 @@
                 android:layout_marginTop="@dimen/_1sdp"
                 android:paddingStart="0dp"
                 android:paddingEnd="@dimen/_15sdp"
+                android:maxWidth="@dimen/_201sdp"
                 android:text="The message"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sdp"
