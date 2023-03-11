@@ -105,7 +105,7 @@
         android:layout_below="@+id/chat_bar_layout"
         android:layout_centerInParent="true"
         android:background="@color/white"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/img_invite"
@@ -134,7 +134,7 @@
                 android:padding="@dimen/_10sdp"
                 android:paddingStart="@dimen/_28sdp"
                 android:paddingEnd="@dimen/_28sdp"
-                android:text="Set wallpaper"
+                android:text="Invite"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/_18sdp"
                 android:textStyle="bold" />

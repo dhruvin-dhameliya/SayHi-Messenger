@@ -1,5 +1,6 @@
 package com.group_project.chatapplication.userSettings;
 
+import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -29,6 +30,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.group_project.chatapplication.wallPaper.Default_Wallpaper_Preview_Activity;
 import com.group_project.chatapplication.R;
 import com.group_project.chatapplication.commonActivities.Image_Preview_Activity;
 import com.group_project.chatapplication.registration.Registration_Activity;
@@ -46,8 +48,10 @@ public class Profile_Activity extends AppCompatActivity {
     TextView user_name_txt, user_about_txt, jump_to_edit_profile_txt, jump_to_set_wallpaper_txt, txt_logout;
     MaterialButton btn1, btn2, btn3, btn4;
     RelativeLayout jump_to_edit_profile_layout, jump_to_set_wallpaper_layout;
-    ActivityResultLauncher<String> mGetContent;
+    //    ActivityResultLauncher<String> mGetContent;
+    ActivityResultLauncher<Intent> activityResultLauncher;
     String currentLoginUserId, name, phoneNumber, about, imageUri;
+    Uri updateImageUri;
     User_Model usersModel;
     FirebaseAuth auth;
     FirebaseDatabase firebaseDatabase;
@@ -130,31 +134,38 @@ public class Profile_Activity extends AppCompatActivity {
         jump_to_edit_profile_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mGetContent.launch("image/*");
+                startActivity(new Intent(Profile_Activity.this, Edit_Profile_Activity.class));
             }
         });
 
         jump_to_set_wallpaper_txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mGetContent.launch("image/*");
+                showPickDialog();
             }
         });
 
         jump_to_set_wallpaper_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Profile_Activity.this, Cropper_Preview_Wallpaper_Activity.class));
+                showPickDialog();
             }
         });
 
-        mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
+        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
-            public void onActivityResult(Uri result) {
-                Intent intent = new Intent(Profile_Activity.this, Cropper_Preview_Wallpaper_Activity.class);
-                intent.putExtra("DATA", result.toString());
-                startActivity(intent);
-
+            public void onActivityResult(ActivityResult result) {
+                if (result.getData() != null) {
+                    if (result.getData().getData() != null) {
+                        assert result.getData() != null;
+                        String img = result.getData().getData().toString();
+                        Intent id = new Intent(getApplicationContext(), Cropper_Preview_Wallpaper_Activity.class);
+                        id.putExtra("DATA", img);
+                        startActivity(id);
+                    } else {
+                        onBackPressed();
+                    }
+                }
             }
         });
 
@@ -218,13 +229,33 @@ public class Profile_Activity extends AppCompatActivity {
                     }
                 }
             });
-
         });
         builder.setNegativeButton("Cancel", (DialogInterface.OnClickListener) (dialog, which) -> {
             dialog.cancel();
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    private void showPickDialog() {
+        String[] options = {"Default Wallpaper", "Custom Wallpaper"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Wallpaper")
+                .setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (i == 0) {
+                            //Default Wallpaper
+                            startActivity(new Intent(Profile_Activity.this, Default_Wallpaper_Preview_Activity.class));
+                        } else {
+                            //Custom Wallpaper
+                            Intent intent_img = new Intent();
+                            intent_img.setType("image/*");
+                            intent_img.setAction(Intent.ACTION_PICK);
+                            activityResultLauncher.launch(intent_img);
+                        }
+                    }
+                }).show();
     }
 
 }

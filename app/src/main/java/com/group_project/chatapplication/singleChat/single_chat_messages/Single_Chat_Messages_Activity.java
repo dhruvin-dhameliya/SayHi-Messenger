@@ -144,7 +144,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if ((snapshot.exists())) {
                     String retrieveWallpaperImage = snapshot.getValue(String.class);
-                    Glide.with(img_chat_wallpaper).load(retrieveWallpaperImage).into(img_chat_wallpaper);
+                    Glide.with(getApplicationContext()).load(retrieveWallpaperImage).into(img_chat_wallpaper);
                 }
             }
 

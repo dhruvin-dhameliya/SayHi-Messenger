@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,15 +16,16 @@
             android:id="@+id/fragment_contact_search_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_margin="@dimen/_10sdp"
             android:background="@drawable/custome_searchview_bg"
-            android:backgroundTint="@null"
             android:iconifiedByDefault="false"
-            android:inputType="textCapWords"
-            android:paddingEnd="@dimen/_8sdp"
-            android:queryHint="Search Here..." />
+            android:inputType="textCapSentences"
+            android:paddingStart="0dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="2dp"
+            android:queryBackground="@null"
+            android:queryHint="Search" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fragment_contact_list"

@@ -144,9 +144,6 @@ public class Fragment_Stories extends Fragment {
                         startActivity(new Intent(getContext(), MainActivity.class));
                         requireActivity().finishAffinity();
                     }
-                } else {
-                    startActivity(new Intent(getContext(), MainActivity.class));
-                    requireActivity().finishAffinity();
                 }
             }
         });

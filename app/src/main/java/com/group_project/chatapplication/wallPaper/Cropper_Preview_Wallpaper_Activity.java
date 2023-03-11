@@ -88,6 +88,7 @@ public class Cropper_Preview_Wallpaper_Activity extends AppCompatActivity {
                 finish();
             }
         });
+
         btn_set_wallpaper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,16 +110,9 @@ public class Cropper_Preview_Wallpaper_Activity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
+            assert data != null;
             resultUri = UCrop.getOutput(data);
-
-            if (resultUri != null) {
-                resultUri = Uri.parse(result);
-            } else {
-                Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
-            }
             wallpaper_set_preaview.setImageURI(resultUri);
-
-
         } else if (resultCode == UCrop.RESULT_ERROR) {
             startActivity(new Intent(Cropper_Preview_Wallpaper_Activity.this, Profile_Activity.class));
             finish();

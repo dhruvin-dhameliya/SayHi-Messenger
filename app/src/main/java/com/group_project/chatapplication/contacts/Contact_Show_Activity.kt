@@ -7,6 +7,7 @@ import android.provider.ContactsContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -16,8 +17,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.group_project.chatapplication.singleChat.single_chat_messages.Single_Chat_Messages_Activity
 import com.group_project.chatapplication.R
+import com.group_project.chatapplication.singleChat.single_chat_messages.Single_Chat_Messages_Activity
 
 class Contact_Show_Activity : AppCompatActivity() {
     lateinit var name: String
@@ -27,10 +28,15 @@ class Contact_Show_Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contact_show)
 
+        val back_main_screen = findViewById<ImageView>(R.id.back_main_screen)
         val contact_list = findViewById<RecyclerView>(R.id.contact_list_for_activity)
         val contact_search_view_for_activity =
             findViewById<SearchView>(R.id.contact_search_view_for_activity)
         contact_list.layoutManager = LinearLayoutManager(this)
+
+        back_main_screen.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
 
         val contactList: MutableList<ContactDTO> = ArrayList()
         val temporaryContactList: MutableList<ContactDTO> = ArrayList()
