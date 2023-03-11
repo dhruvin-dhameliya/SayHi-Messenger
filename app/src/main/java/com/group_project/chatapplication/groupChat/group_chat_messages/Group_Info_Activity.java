@@ -29,7 +29,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.group_project.chatapplication.MainActivity;
 import com.group_project.chatapplication.R;
 import com.group_project.chatapplication.commonActivities.Image_Preview_Activity;
-import com.group_project.chatapplication.commonActivities.Settings_Activity;
 import com.group_project.chatapplication.contacts.ContactDTO;
 import com.group_project.chatapplication.groupChat.add_participant.Adapter_Group_Contact;
 import com.group_project.chatapplication.groupChat.add_participant.Group_Contacts_Activity;

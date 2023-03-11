@@ -14,7 +14,6 @@
         <!-- Customize your theme here. -->
     </style>
 
-
     <style name="ThemeOverlay.PopupTheme" parent="ThemeOverlay.AppCompat.Light">
         <item name="backgroundColor">#E0F2F1</item>
         <item name="android:textColor">@color/colorPrimary</item>
@@ -37,6 +36,17 @@
     <style name="DialoAnimation">
         <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
         <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
+    </style>
+
+    <style name="Setting_Screen_Theme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">#0076CE</item>
+        <item name="colorPrimaryVariant">#0071C6</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="android:statusBarColor">?attr/colorOnPrimary</item>
     </style>
 
 </resources>

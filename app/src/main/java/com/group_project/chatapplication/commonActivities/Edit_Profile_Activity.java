@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +30,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.group_project.chatapplication.MainActivity;
 import com.group_project.chatapplication.registration.Registration_Activity;
 import com.group_project.chatapplication.registration.User_Model;
 import com.group_project.chatapplication.R;
@@ -39,12 +39,13 @@ import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class Settings_Activity extends AppCompatActivity {
+public class Edit_Profile_Activity extends AppCompatActivity {
 
     CircleImageView display_profile_img, update_profile_img;
+    ImageView back_to_setting_screen;
     EditText profile_user_name, profile_user_about;
     TextView profile_user_phone;
-    MaterialButton btn_profile_update, btn_jump_wallpaper, btn_logout;
+    MaterialButton btn_profile_update;
     String currentLoginUserId, name, phoneNumber, about, imageUri;
     Uri updateImageUri;
     ProgressDialog progressDialog;
@@ -58,20 +59,19 @@ public class Settings_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        setContentView(R.layout.activity_edit_profile);
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Profile Updating...");
         progressDialog.setCancelable(false);
 
+        back_to_setting_screen = findViewById(R.id.back_to_setting_screen);
         display_profile_img = findViewById(R.id.display_profile_img);
         update_profile_img = findViewById(R.id.update_profile_img);
         profile_user_name = findViewById(R.id.profile_user_name);
         profile_user_about = findViewById(R.id.profile_user_about);
         profile_user_phone = findViewById(R.id.profile_user_phone);
         btn_profile_update = findViewById(R.id.btn_profile_update);
-        btn_jump_wallpaper = findViewById(R.id.btn_jump_wallpaper);
-        btn_logout = findViewById(R.id.btn_logout);
 
         currentLoginUserId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
@@ -106,7 +106,7 @@ public class Settings_Activity extends AppCompatActivity {
                     profile_user_name.setText(name);
                     profile_user_about.setText(about);
                     profile_user_phone.setText(phoneNumber);
-                    Glide.with(display_profile_img.getContext()).load(imageUri).into(display_profile_img);
+                    Glide.with(getApplicationContext()).load(imageUri).into(display_profile_img);
                 }
             }
 
@@ -119,7 +119,7 @@ public class Settings_Activity extends AppCompatActivity {
         display_profile_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentId = new Intent(Settings_Activity.this, Image_Preview_Activity.class);
+                Intent intentId = new Intent(Edit_Profile_Activity.this, Image_Preview_Activity.class);
                 intentId.putExtra("passSelectedImage", imageUri);
                 intentId.putExtra("pass_current_name", profile_user_name.getText().toString().trim());
                 startActivity(intentId);
@@ -150,6 +150,7 @@ public class Settings_Activity extends AppCompatActivity {
                                             public void onSuccess(Void unused) {
                                                 if (task.isSuccessful()) {
                                                     progressDialog.dismiss();
+                                                    onBackPressed();
                                                     Toast.makeText(getApplicationContext(), "Profile Update.", Toast.LENGTH_SHORT).show();
                                                 } else {
                                                     progressDialog.dismiss();
@@ -172,6 +173,7 @@ public class Settings_Activity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
                                             progressDialog.dismiss();
+                                            onBackPressed();
                                             Toast.makeText(getApplicationContext(), "Profile Update.", Toast.LENGTH_SHORT).show();
                                         } else {
                                             progressDialog.dismiss();
@@ -186,28 +188,18 @@ public class Settings_Activity extends AppCompatActivity {
             }
         });
 
-        btn_jump_wallpaper.setOnClickListener(new View.OnClickListener() {
+        back_to_setting_screen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Settings_Activity.this, Wallpaper_Chat_Activity.class));
-                finish();
+                onBackPressed();
             }
         });
 
-        btn_logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                auth.signOut();
-                startActivity(new Intent(Settings_Activity.this, Registration_Activity.class));
-                finishAffinity();
-            }
-        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
 
         if (requestCode == 200) {
             if (data != null) {

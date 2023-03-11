@@ -74,7 +74,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
         if (messageType.equals("text")) {
             if (holder.getClass() == SenderViewHolder.class) {
                 ((SenderViewHolder) holder).senderMsg.setText(chatmodel.getMessage());
-                String senderMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "dd-MM-yyyy hh:mm");
+                String senderMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "dd-MM-yy hh:mm");
                 ((SenderViewHolder) holder).senderTime.setText(senderMsgTime);
 
                 ((SenderViewHolder) holder).senderMsg.setVisibility(View.VISIBLE);
@@ -83,7 +83,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
 
             } else {
                 ((RecieverViewHolder) holder).receiverMsg.setText(chatmodel.getMessage());
-                String reciverMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "dd-MM-yyyy hh:mm");
+                String reciverMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "dd-MM-yy hh:mm");
                 ((RecieverViewHolder) holder).receiverTime.setText(reciverMsgTime);
 
                 ((RecieverViewHolder) holder).receiverMsg.setVisibility(View.VISIBLE);
@@ -98,7 +98,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                 } catch (Exception e) {
                     ((SenderViewHolder) holder).senderImage.setImageResource(R.drawable.default_image_for_chat);
                 }
-                String senderMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "dd-MM-yyyy hh:mm");
+                String senderMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "dd-MM-yy hh:mm");
                 ((SenderViewHolder) holder).senderTime.setText(senderMsgTime);
 
                 ((SenderViewHolder) holder).senderMsg.setVisibility(View.GONE);
@@ -120,7 +120,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                 } catch (Exception e) {
                     ((RecieverViewHolder) holder).receiverImage.setImageResource(R.drawable.default_image_for_chat);
                 }
-                String receiverMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "dd-MM-yyyy hh:mm");
+                String receiverMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "dd-MM-yy hh:mm");
                 ((RecieverViewHolder) holder).receiverTime.setText(receiverMsgTime);
 
                 ((RecieverViewHolder) holder).receiverMsg.setVisibility(View.GONE);
@@ -138,7 +138,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
             }
         } else { //document message
             if (holder.getClass() == SenderViewHolder.class) {
-                String senderMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "dd-MM-yyyy hh:mm");
+                String senderMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "dd-MM-yy hh:mm");
                 ((SenderViewHolder) holder).senderTime.setText(senderMsgTime);
 
                 ((SenderViewHolder) holder).user_doc_msg_layout.setVisibility(View.VISIBLE);
@@ -154,7 +154,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                     }
                 });
             } else {
-                String receiverMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "dd-MM-yyyy hh:mm");
+                String receiverMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "dd-MM-yy hh:mm");
                 ((RecieverViewHolder) holder).receiverTime.setText(receiverMsgTime);
 
                 ((RecieverViewHolder) holder).user_doc_msg_layout.setVisibility(View.VISIBLE);

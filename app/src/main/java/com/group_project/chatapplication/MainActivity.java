@@ -27,11 +27,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.group_project.chatapplication.commonActivities.Profile_Activity;
 import com.group_project.chatapplication.groupChat.group_list.Fragment_Groups;
 import com.group_project.chatapplication.contacts.Contact_Show_Activity;
 import com.group_project.chatapplication.groupChat.group_list.Create_New_Group_Activity;
 import com.group_project.chatapplication.registration.Registration_Activity;
-import com.group_project.chatapplication.commonActivities.Settings_Activity;
+import com.group_project.chatapplication.commonActivities.Edit_Profile_Activity;
 import com.group_project.chatapplication.singleChat.single_chat_list.Fragment_Chats;
 import com.group_project.chatapplication.contacts.Fragment_Contacts;
 import com.group_project.chatapplication.stories.Fragment_Stories;
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         home_profile_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, Settings_Activity.class));
+                startActivity(new Intent(MainActivity.this, Profile_Activity.class));
             }
         });
 

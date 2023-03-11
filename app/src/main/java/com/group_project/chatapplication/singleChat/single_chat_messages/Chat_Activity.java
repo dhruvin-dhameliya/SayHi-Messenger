@@ -272,6 +272,7 @@ public class Chat_Activity extends AppCompatActivity {
                     });
 
                 } else {
+                    onBackPressed();
                     Toast.makeText(getApplicationContext(), "Not Exist.", Toast.LENGTH_SHORT).show();
                 }
             }

@@ -5,17 +5,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:layout_marginHorizontal="30dp"
     android:gravity="center"
-    tools:context=".commonActivities.Settings_Activity">
+    tools:context=".commonActivities.Edit_Profile_Activity">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/edit_screen_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:elevation="@dimen/_3sdp"
+        android:gravity="center"
+        android:padding="0dp"
+        app:subtitleTextColor="@color/white"
+        app:titleTextColor="@color/white">
+
+        <ImageView
+            android:id="@+id/back_to_setting_screen"
+            android:layout_width="@dimen/_24sdp"
+            android:layout_height="@dimen/_24sdp"
+            android:layout_gravity="start"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="@drawable/img_back_arow"
+            android:backgroundTint="@color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit Profile"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_18sdp"
+            android:textStyle="normal" />
+
+    </androidx.appcompat.widget.Toolbar>
 
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/edit_screen_toolbar">
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -124,52 +156,28 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_10sdp">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_profile_update"
-                    android:layout_width="@dimen/_100sdp"
-                    android:layout_height="@dimen/_45sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_48sdp"
                     android:layout_marginTop="@dimen/_25sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
                     android:backgroundTint="#EBF5FB"
-                    android:text="Save"
+                    android:elevation="0dp"
+                    android:text="Update"
+                    android:textAlignment="center"
                     android:textAllCaps="false"
                     android:textColor="#036fdc"
                     android:textSize="@dimen/_18sdp"
                     app:borderWidth="0dp"
+                    app:cornerRadius="@dimen/_101sdp"
+                    app:elevation="0dp"
                     app:rippleColor="#dbe2e8" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_logout"
-                    android:layout_width="@dimen/_100sdp"
-                    android:layout_height="@dimen/_45sdp"
-                    android:layout_marginStart="@dimen/_30sdp"
-                    android:layout_marginTop="@dimen/_25sdp"
-                    android:backgroundTint="#EBF5FB"
-                    android:text="Logout"
-                    android:textAllCaps="false"
-                    android:textColor="#036fdc"
-                    android:textSize="@dimen/_18sdp"
-                    app:borderWidth="0dp"
-                    app:rippleColor="#dbe2e8" />
             </LinearLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_jump_wallpaper"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_45sdp"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:backgroundTint="@color/colorPrimary"
-                android:text="Wallpaper"
-                android:textAllCaps="false"
-                android:textSize="@dimen/_18sdp"
-                app:borderWidth="0dp"
-                app:elevation="3dp"
-                app:rippleColor="#EFEFEF"
-                app:tint="@color/white" />
 
         </LinearLayout>
 

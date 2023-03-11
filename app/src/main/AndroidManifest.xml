@@ -17,6 +17,14 @@
         android:theme="@style/Theme.ChatApplication"
         tools:targetApi="31">
         <activity
+            android:name=".commonActivities.Profile_Activity"
+            android:theme="@style/Setting_Screen_Theme"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".singleChat.single_chat_messages.Single_Chat_full_screen_photo_Activity"
             android:exported="false">
             <meta-data
@@ -135,6 +143,7 @@
         </activity>
         <activity
             android:name=".contacts.Contact_Show_Activity"
+            android:theme="@style/Setting_Screen_Theme"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -142,6 +151,7 @@
         </activity>
         <activity
             android:name=".commonActivities.Splash_Screen_Activity"
+            android:theme="@style/Setting_Screen_Theme"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -155,6 +165,7 @@
         </activity>
         <activity
             android:name=".registration.Profile_Info_Activity"
+            android:theme="@style/Setting_Screen_Theme"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -162,6 +173,7 @@
         </activity>
         <activity
             android:name=".registration.Register_OTP_Activity"
+            android:theme="@style/Setting_Screen_Theme"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -169,14 +181,15 @@
         </activity>
         <activity
             android:name=".registration.Registration_Activity"
-            android:exported="false"
-            android:theme="@style/Theme.ChatApplication.NoActionBar">
+            android:theme="@style/Setting_Screen_Theme"
+            android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".commonActivities.Settings_Activity"
+            android:name=".commonActivities.Edit_Profile_Activity"
+            android:theme="@style/Setting_Screen_Theme"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
