@@ -55,19 +55,20 @@
         android:textColor="#343434"
         android:textSize="@dimen/_20sdp" />
 
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_add_profile"
-        android:layout_width="@dimen/_85sdp"
-        android:layout_height="@dimen/_50sdp"
-        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_48sdp"
         android:layout_marginTop="@dimen/_30sdp"
         android:backgroundTint="@color/colorPrimary"
+        android:elevation="0dp"
         android:text="Next"
+        android:textAlignment="center"
         android:textAllCaps="false"
         android:textSize="@dimen/_18sdp"
         app:borderWidth="0dp"
-        app:elevation="3dp"
+        app:cornerRadius="@dimen/_101sdp"
+        app:elevation="0dp"
         app:rippleColor="#EFEFEF"
         app:tint="@color/white" />
 
