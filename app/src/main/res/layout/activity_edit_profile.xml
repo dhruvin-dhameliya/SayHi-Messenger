@@ -8,7 +8,6 @@
     android:gravity="center"
     tools:context=".userSettings.Edit_Profile_Activity">
 
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/edit_screen_toolbar"
         android:layout_width="match_parent"

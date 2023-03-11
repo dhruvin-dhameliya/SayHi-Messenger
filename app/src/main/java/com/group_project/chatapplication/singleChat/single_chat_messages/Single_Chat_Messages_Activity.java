@@ -24,6 +24,8 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,6 +62,10 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
     TextView user_name;
     String currentContactName, myMobileNo, receiverMobileNo, getName, senderRoom, receiverRoom;
     RecyclerView chattingRecycleView;
+    LinearLayout msgLinearLayout;
+    RelativeLayout invite_user_layout;
+    ImageView img_invite;
+    TextView btn_invite_user;
     Chat_Adapter chatAd;
     User_Model user_model;
     Receiver_info_Model msg_model = new Receiver_info_Model();
@@ -86,9 +92,15 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
         profile_img = findViewById(R.id.profile_img);
         user_name = findViewById(R.id.user_name);
         attachbtn = findViewById(R.id.send_file);
+        msgLinearLayout = findViewById(R.id.msgLinearLayout);
         sendMessageButton = findViewById(R.id.send_message_button);
         userMessageInput = findViewById(R.id.input_message);
         img_chat_wallpaper = findViewById(R.id.img_chat_wallpaper);
+        invite_user_layout = findViewById(R.id.invite_user_layout);
+        img_invite = findViewById(R.id.img_invite);
+        btn_invite_user = findViewById(R.id.btn_invite_user);
+
+        invite_user_layout.setVisibility(View.GONE);
 
         currentContactName = getIntent().getExtras().get("pass_receiver_name").toString().trim();
         receiverMobileNo = getIntent().getExtras().get("pass_receiver_number").toString().replace(" ", "").replace("-", "").replace("+91", "");
@@ -272,8 +284,23 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                     });
 
                 } else {
-                    onBackPressed();
-                    Toast.makeText(getApplicationContext(), "Not Exist.", Toast.LENGTH_SHORT).show();
+                    Glide.with(img_chat_wallpaper).load(R.drawable.img_white_bg).into(img_chat_wallpaper);
+                    Glide.with(profile_img).load(R.drawable.img_contact_user).into(profile_img);
+                    user_name.setText(currentContactName);
+                    msgLinearLayout.setVisibility(View.GONE);
+                    sendMessageButton.setVisibility(View.GONE);
+                    img_chat_wallpaper.setVisibility(View.GONE);
+                    invite_user_layout.setVisibility(View.VISIBLE);
+                    btn_invite_user.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(Intent.ACTION_SEND);
+                            intent.setType("text/plain");
+                            String Body = "Let's chat on Say Hi! It's a fast, simple, and secure app we can use to message each other for free. Get it at https://www.signal.org";
+                            intent.putExtra(Intent.EXTRA_TEXT, Body);
+                            startActivity(Intent.createChooser(intent, "Share App"));
+                        }
+                    });
                 }
             }
 
@@ -309,6 +336,8 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                                 intent.putExtra("mobile", mobile);
                                 intent.putExtra("profileImage", profileImage);
                                 intent.putExtra("about", about);
+                                intent.putExtra("contactName", currentContactName);
+                                intent.putExtra("contactNumber", receiverMobileNo);
                                 startActivity(intent);
                             }
                         });
