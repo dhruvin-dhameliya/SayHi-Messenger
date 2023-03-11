@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.group_project.chatapplication.R;
-import com.group_project.chatapplication.singleChat.single_chat_messages.Chat_Activity;
+import com.group_project.chatapplication.singleChat.single_chat_messages.Single_Chat_Messages_Activity;
 
 import java.util.ArrayList;
 
@@ -55,7 +55,7 @@ public class Chat_List_Adapter extends RecyclerView.Adapter<Chat_List_Adapter.My
             @Override
             public void onClick(View view) {
                 //in future
-                Intent intent = new Intent(context, Chat_Activity.class);
+                Intent intent = new Intent(context, Single_Chat_Messages_Activity.class);
                 intent.putExtra("pass_receiver_name", listmodel.getReceiver_name());
                 intent.putExtra("pass_receiver_number", listmodel.getReceiver_no());
                 context.startActivity(intent);

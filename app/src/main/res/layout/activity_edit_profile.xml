@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:gravity="center"
-    tools:context=".commonActivities.Edit_Profile_Activity">
+    tools:context=".userSettings.Edit_Profile_Activity">
 
 
     <androidx.appcompat.widget.Toolbar

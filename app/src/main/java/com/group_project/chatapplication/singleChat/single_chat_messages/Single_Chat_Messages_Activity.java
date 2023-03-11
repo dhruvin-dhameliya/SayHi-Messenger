@@ -51,7 +51,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class Chat_Activity extends AppCompatActivity {
+public class Single_Chat_Messages_Activity extends AppCompatActivity {
 
     Toolbar mToolbar;
     ImageButton sendMessageButton;
@@ -80,7 +80,7 @@ public class Chat_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
+        setContentView(R.layout.activity_single_chat_messages);
 
         back_press = findViewById(R.id.back_to_screen);
         profile_img = findViewById(R.id.profile_img);

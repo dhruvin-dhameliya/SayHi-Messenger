@@ -1,8 +1,5 @@
 package com.group_project.chatapplication.wallPaper;
 
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,129 +9,140 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.group_project.chatapplication.MainActivity;
 import com.group_project.chatapplication.R;
+import com.group_project.chatapplication.userSettings.Profile_Activity;
+import com.yalantis.ucrop.UCrop;
 
+import java.io.File;
 import java.util.Objects;
+import java.util.UUID;
 
-public class Wallpaper_Chat_Activity extends AppCompatActivity {
+public class Cropper_Preview_Wallpaper_Activity extends AppCompatActivity {
 
-    ImageView img_choose_wallpaper;
-    Button btn_set_wallpaper;
-    ActivityResultLauncher<String> mGetContent;
-    Uri uri;
-    DatabaseReference databaseReference;
-    FirebaseAuth auth;
-    String fetch_phone_number, wallpaper;
-    FirebaseStorage firebaseStorage;
+    String result;
+    Uri fileuri, resultUri;
+    ImageView wallpaper_set_preaview, back_arrow;
+    TextView btn_set_wallpaper;
     ProgressDialog progressDialog;
+    FirebaseAuth auth;
+    String fetch_phone_number;
     Wallpaper_Model wallpaper_model;
+    DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wall_paper_chat);
+        setContentView(R.layout.activity_cropper_preview_wallpaper);
 
-        auth = FirebaseAuth.getInstance();
-        firebaseStorage = FirebaseStorage.getInstance();
-        FirebaseUser user = auth.getCurrentUser();
-        fetch_phone_number = user.getPhoneNumber();
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(this.getResources().getColor(R.color.black));
 
-        img_choose_wallpaper = findViewById(R.id.img_choose_wallpaper);
+        wallpaper_set_preaview = findViewById(R.id.wallpaper_set_preaview);
         btn_set_wallpaper = findViewById(R.id.btn_set_wallpaper);
-
+        back_arrow = findViewById(R.id.btn_screen_close);
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Set Wallpaper");
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Please, wait for set wallpaper...");
 
-        img_choose_wallpaper.setOnClickListener(new View.OnClickListener() {
+        auth = FirebaseAuth.getInstance();
+
+        FirebaseUser user = auth.getCurrentUser();
+        fetch_phone_number = user.getPhoneNumber();
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Chat Wallpaper").child(fetch_phone_number);
+
+        readIntent();
+
+        String dest_uri = new StringBuilder(UUID.randomUUID().toString()).append(".jpg").toString();
+        UCrop.Options options = new UCrop.Options();
+
+        UCrop.of(fileuri, Uri.fromFile(new File(getCacheDir(), dest_uri)))
+                .withOptions(options)
+                .withAspectRatio(0, 0)
+                .useSourceImageAspectRatio()
+                .withMaxResultSize(2000, 2000)
+                .start(Cropper_Preview_Wallpaper_Activity.this);
+
+        back_arrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mGetContent.launch("image/*");
+                onBackPressed();
+                finish();
             }
         });
-
-        mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
-            @Override
-            public void onActivityResult(Uri result) {
-                Intent intent = new Intent(Wallpaper_Chat_Activity.this, Cropper_Activity.class);
-                intent.putExtra("DATA", result.toString());
-                startActivityForResult(intent, 101);
-
-            }
-        });
-
         btn_set_wallpaper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog.show();
+                progressDialog.dismiss();
                 uploadWallpaper();
             }
         });
+    }
 
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Chat Wallpaper").child(fetch_phone_number);
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if ((snapshot.exists())) {
-                    String retriveimage = snapshot.child("wallpaper_image").getValue().toString();
-                    Glide.with(img_choose_wallpaper.getContext()).load(retriveimage).into(img_choose_wallpaper);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(Wallpaper_Chat_Activity.this, "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+    private void readIntent() {
+        Intent intent = getIntent();
+        if (intent.getExtras() != null) {
+            result = intent.getStringExtra("DATA");
+            fileuri = Uri.parse(result);
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == -1 && requestCode == 101) {
-            String result = data.getStringExtra("RESULT");
-            uri = null;
-            if (result != null) {
-                uri = Uri.parse(result);
+        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
+            resultUri = UCrop.getOutput(data);
+
+            if (resultUri != null) {
+                resultUri = Uri.parse(result);
+            } else {
+                Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
             }
-            img_choose_wallpaper.setImageURI(uri);
+            wallpaper_set_preaview.setImageURI(resultUri);
+
+
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            startActivity(new Intent(Cropper_Preview_Wallpaper_Activity.this, Profile_Activity.class));
+            finish();
+        } else if (data == null) {
+            onBackPressed();
+            finish();
         }
     }
 
     private void uploadWallpaper() {
-        StorageReference storageReference = firebaseStorage.getReference().child("Wallpaper Image").child(Objects.requireNonNull(fetch_phone_number));
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Wallpaper Image").child(Objects.requireNonNull(fetch_phone_number));
         progressDialog.show();
-        if (uri == null) {
+        if (resultUri == null) {
             String finalWallpaper_ImageUri = "https://firebasestorage.googleapis.com/v0/b/say-hi-chat-app.appspot.com/o/default_wallpaper_img.jpeg?alt=media&token=b6d3532b-ca12-4488-a18c-5a61b3540d63";
             wallpaper_model = new Wallpaper_Model(auth.getUid(), finalWallpaper_ImageUri);
+
             databaseReference.setValue(wallpaper_model).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
                         progressDialog.dismiss();
                         Toast.makeText(getApplicationContext(), "Wallpaper Set!", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(Wallpaper_Chat_Activity.this, MainActivity.class));
-                        finish();
+                        startActivity(new Intent(Cropper_Preview_Wallpaper_Activity.this, MainActivity.class));
+                        finishAffinity();
                     } else {
                         progressDialog.dismiss();
                         Toast.makeText(getApplicationContext(), "Wallpaper not set!", Toast.LENGTH_SHORT).show();
@@ -142,8 +150,8 @@ public class Wallpaper_Chat_Activity extends AppCompatActivity {
                 }
             });
         } else {
-            if (uri != null) {
-                storageReference.putFile(uri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            if (resultUri != null) {
+                storageReference.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -157,8 +165,8 @@ public class Wallpaper_Chat_Activity extends AppCompatActivity {
                                         if (task.isSuccessful()) {
                                             progressDialog.dismiss();
                                             Toast.makeText(getApplicationContext(), "Wallpaper is Set.", Toast.LENGTH_SHORT).show();
-                                            startActivity(new Intent(Wallpaper_Chat_Activity.this, MainActivity.class));
-                                            finish();
+                                            startActivity(new Intent(Cropper_Preview_Wallpaper_Activity.this, MainActivity.class));
+                                            finishAffinity();
                                         } else {
                                             progressDialog.dismiss();
                                             Toast.makeText(getApplicationContext(), "Wallpaper not set!", Toast.LENGTH_SHORT).show();
@@ -181,7 +189,7 @@ public class Wallpaper_Chat_Activity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     progressDialog.dismiss();
                                     Toast.makeText(getApplicationContext(), "Wallpaper set.", Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(Wallpaper_Chat_Activity.this, MainActivity.class));
+                                    startActivity(new Intent(Cropper_Preview_Wallpaper_Activity.this, MainActivity.class));
                                     finish();
                                 } else {
                                     progressDialog.dismiss();
@@ -194,5 +202,4 @@ public class Wallpaper_Chat_Activity extends AppCompatActivity {
             }
         }
     }
-
 }

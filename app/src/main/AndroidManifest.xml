@@ -17,7 +17,7 @@
         android:theme="@style/Theme.ChatApplication"
         tools:targetApi="31">
         <activity
-            android:name=".commonActivities.Profile_Activity"
+            android:name=".userSettings.Profile_Activity"
             android:theme="@style/Setting_Screen_Theme"
             android:exported="false">
             <meta-data
@@ -46,7 +46,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".singleChat.single_chat_messages.Chat_Activity"
+            android:name=".singleChat.single_chat_messages.Single_Chat_Messages_Activity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -60,7 +60,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".groupChat.group_chat_messages.Full_screen_photo_Activity"
+            android:name=".groupChat.group_chat_messages.Group_full_screen_photo_Activity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -124,7 +124,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".wallPaper.Cropper_Activity"
+            android:name=".wallPaper.Cropper_Preview_Wallpaper_Activity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -134,13 +134,6 @@
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name=".wallPaper.Wallpaper_Chat_Activity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
         <activity
             android:name=".contacts.Contact_Show_Activity"
             android:theme="@style/Setting_Screen_Theme"
@@ -188,7 +181,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".commonActivities.Edit_Profile_Activity"
+            android:name=".userSettings.Edit_Profile_Activity"
             android:theme="@style/Setting_Screen_Theme"
             android:exported="false">
             <meta-data

@@ -1,4 +1,4 @@
-package com.group_project.chatapplication.commonActivities;
+package com.group_project.chatapplication.userSettings;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,10 +30,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.group_project.chatapplication.registration.Registration_Activity;
+import com.group_project.chatapplication.commonActivities.Image_Preview_Activity;
 import com.group_project.chatapplication.registration.User_Model;
 import com.group_project.chatapplication.R;
-import com.group_project.chatapplication.wallPaper.Wallpaper_Chat_Activity;
 
 import java.util.Objects;
 

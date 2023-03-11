@@ -1,11 +1,15 @@
-package com.group_project.chatapplication.commonActivities;
+package com.group_project.chatapplication.userSettings;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -26,9 +30,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.group_project.chatapplication.R;
+import com.group_project.chatapplication.commonActivities.Image_Preview_Activity;
 import com.group_project.chatapplication.registration.Registration_Activity;
 import com.group_project.chatapplication.registration.User_Model;
-import com.group_project.chatapplication.wallPaper.Wallpaper_Chat_Activity;
+import com.group_project.chatapplication.wallPaper.Cropper_Preview_Wallpaper_Activity;
 
 import java.util.Objects;
 
@@ -41,7 +46,7 @@ public class Profile_Activity extends AppCompatActivity {
     TextView user_name_txt, user_about_txt, jump_to_edit_profile_txt, jump_to_set_wallpaper_txt, txt_logout;
     MaterialButton btn1, btn2, btn3, btn4;
     RelativeLayout jump_to_edit_profile_layout, jump_to_set_wallpaper_layout;
-
+    ActivityResultLauncher<String> mGetContent;
     String currentLoginUserId, name, phoneNumber, about, imageUri;
     User_Model usersModel;
     FirebaseAuth auth;
@@ -125,21 +130,31 @@ public class Profile_Activity extends AppCompatActivity {
         jump_to_edit_profile_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Profile_Activity.this, Edit_Profile_Activity.class));
+                mGetContent.launch("image/*");
             }
         });
 
         jump_to_set_wallpaper_txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Profile_Activity.this, Wallpaper_Chat_Activity.class));
+                mGetContent.launch("image/*");
             }
         });
 
         jump_to_set_wallpaper_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Profile_Activity.this, Wallpaper_Chat_Activity.class));
+                startActivity(new Intent(Profile_Activity.this, Cropper_Preview_Wallpaper_Activity.class));
+            }
+        });
+
+        mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
+            @Override
+            public void onActivityResult(Uri result) {
+                Intent intent = new Intent(Profile_Activity.this, Cropper_Preview_Wallpaper_Activity.class);
+                intent.putExtra("DATA", result.toString());
+                startActivity(intent);
+
             }
         });
 
@@ -151,7 +166,6 @@ public class Profile_Activity extends AppCompatActivity {
                 finishAffinity();
             }
         });
-
 
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override

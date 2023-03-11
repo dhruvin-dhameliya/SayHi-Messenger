@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.group_project.chatapplication.singleChat.single_chat_messages.Chat_Activity
+import com.group_project.chatapplication.singleChat.single_chat_messages.Single_Chat_Messages_Activity
 import com.group_project.chatapplication.R
 
 class Contact_Show_Activity : AppCompatActivity() {
@@ -126,7 +126,7 @@ class Contact_Show_Activity : AppCompatActivity() {
                     .child(list[position].phone_number.trim().replace(" ", "").replace("-", ""))
                 database.setValue(contact_model)
 
-                val intent_id = Intent(context, Chat_Activity::class.java)
+                val intent_id = Intent(context, Single_Chat_Messages_Activity::class.java)
                 intent_id.putExtra("pass_receiver_name", list[position].name.trim())
                 intent_id.putExtra("pass_receiver_number", list[position].phone_number.trim())
                 context.startActivity(intent_id)

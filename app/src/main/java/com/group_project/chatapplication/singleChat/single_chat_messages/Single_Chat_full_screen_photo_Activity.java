@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.group_project.chatapplication.R;
-import com.group_project.chatapplication.groupChat.group_chat_messages.Full_screen_photo_Activity;
 
 import java.io.File;
 import java.io.FileNotFoundException;

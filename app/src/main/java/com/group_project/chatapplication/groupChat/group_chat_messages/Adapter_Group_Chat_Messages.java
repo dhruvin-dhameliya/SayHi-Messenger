@@ -94,7 +94,7 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
             holder.user_img_msg_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, Full_screen_photo_Activity.class);
+                    Intent intent = new Intent(context, Group_full_screen_photo_Activity.class);
                     intent.putExtra("image", message);
                     intent.putExtra("sender", senderUid);
                     context.startActivity(intent);
@@ -103,7 +103,7 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
             holder.user_img_msg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, Full_screen_photo_Activity.class);
+                    Intent intent = new Intent(context, Group_full_screen_photo_Activity.class);
                     intent.putExtra("image", message);
                     intent.putExtra("sender", senderUid);
                     context.startActivity(intent);

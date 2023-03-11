@@ -23,7 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class Full_screen_photo_Activity extends AppCompatActivity {
+public class Group_full_screen_photo_Activity extends AppCompatActivity {
 
     ImageView back_group_msg_page, get_image, img_download;
     String image, senderid;
@@ -33,7 +33,7 @@ public class Full_screen_photo_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_full_screen_photo);
+        setContentView(R.layout.activity_group_full_screen_photo);
 
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -73,7 +73,7 @@ public class Full_screen_photo_Activity extends AppCompatActivity {
 
                 String filename = String.format("IMG-" + System.currentTimeMillis() + ".jpg", System.currentTimeMillis());
                 File outfile = new File(Directory, filename);
-                Toast.makeText(Full_screen_photo_Activity.this, "Download Successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Group_full_screen_photo_Activity.this, "Download Successfully", Toast.LENGTH_SHORT).show();
                 try {
                     fileOutputStream = new FileOutputStream(outfile);
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
