@@ -30,6 +30,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.group_project.chatapplication.groupChat.group_list.Create_New_Group_Activity;
 import com.group_project.chatapplication.wallPaper.Default_Wallpaper_Preview_Activity;
 import com.group_project.chatapplication.R;
 import com.group_project.chatapplication.commonActivities.Image_Preview_Activity;
@@ -45,13 +46,11 @@ public class Profile_Activity extends AppCompatActivity {
 
     ImageView back_to_main_screen;
     CircleImageView user_profile_image;
-    TextView user_name_txt, user_about_txt, jump_to_edit_profile_txt, jump_to_set_wallpaper_txt, txt_logout;
+    TextView user_name_txt, user_about_txt, jump_to_edit_profile_txt, jump_to_set_wallpaper_txt, jump_to_create_group_txt, jump_to_invite_txt, txt_logout;
     MaterialButton btn1, btn2, btn3, btn4;
-    RelativeLayout jump_to_edit_profile_layout, jump_to_set_wallpaper_layout;
-    //    ActivityResultLauncher<String> mGetContent;
+    RelativeLayout jump_to_edit_profile_layout, jump_to_set_wallpaper_layout, jump_to_create_group_layout, jump_to_invite_layout;
     ActivityResultLauncher<Intent> activityResultLauncher;
     String currentLoginUserId, name, phoneNumber, about, imageUri;
-    Uri updateImageUri;
     User_Model usersModel;
     FirebaseAuth auth;
     FirebaseDatabase firebaseDatabase;
@@ -69,6 +68,8 @@ public class Profile_Activity extends AppCompatActivity {
         user_about_txt = findViewById(R.id.user_about_txt);
         jump_to_edit_profile_txt = findViewById(R.id.jump_to_edit_profile_txt);
         jump_to_set_wallpaper_txt = findViewById(R.id.jump_to_set_wallpaper_txt);
+        jump_to_create_group_txt = findViewById(R.id.jump_to_create_group_txt);
+        jump_to_invite_txt = findViewById(R.id.jump_to_invite_txt);
         txt_logout = findViewById(R.id.txt_logout);
         btn1 = findViewById(R.id.btn1);
         btn2 = findViewById(R.id.btn2);
@@ -76,6 +77,8 @@ public class Profile_Activity extends AppCompatActivity {
         btn4 = findViewById(R.id.btn4);
         jump_to_edit_profile_layout = findViewById(R.id.jump_to_edit_profile_layout);
         jump_to_set_wallpaper_layout = findViewById(R.id.jump_to_set_wallpaper_layout);
+        jump_to_create_group_layout = findViewById(R.id.jump_to_create_group_layout);
+        jump_to_invite_layout = findViewById(R.id.jump_to_invite_layout);
 
         currentLoginUserId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
@@ -149,6 +152,42 @@ public class Profile_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showPickDialog();
+            }
+        });
+
+        jump_to_create_group_txt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Profile_Activity.this, Create_New_Group_Activity.class));
+            }
+        });
+
+        jump_to_create_group_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Profile_Activity.this, Create_New_Group_Activity.class));
+            }
+        });
+
+        jump_to_invite_txt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                String Body = name + " would like to chat with you on Say Hi. It's free! \n\nhttps://www.signal.org";
+                intent.putExtra(Intent.EXTRA_TEXT, Body);
+                startActivity(Intent.createChooser(intent, "Share App"));
+            }
+        });
+
+        jump_to_invite_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                String Body = name + " would like to chat with you on Say Hi. It's free! \n\nhttps://www.signal.org";
+                intent.putExtra(Intent.EXTRA_TEXT, Body);
+                startActivity(Intent.createChooser(intent, "Share App"));
             }
         });
 
@@ -240,22 +279,21 @@ public class Profile_Activity extends AppCompatActivity {
     private void showPickDialog() {
         String[] options = {"Default Wallpaper", "Custom Wallpaper"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Wallpaper")
-                .setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        if (i == 0) {
-                            //Default Wallpaper
-                            startActivity(new Intent(Profile_Activity.this, Default_Wallpaper_Preview_Activity.class));
-                        } else {
-                            //Custom Wallpaper
-                            Intent intent_img = new Intent();
-                            intent_img.setType("image/*");
-                            intent_img.setAction(Intent.ACTION_PICK);
-                            activityResultLauncher.launch(intent_img);
-                        }
-                    }
-                }).show();
+        builder.setTitle("Wallpaper").setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (i == 0) {
+                    //Default Wallpaper
+                    startActivity(new Intent(Profile_Activity.this, Default_Wallpaper_Preview_Activity.class));
+                } else {
+                    //Custom Wallpaper
+                    Intent intent_img = new Intent();
+                    intent_img.setType("image/*");
+                    intent_img.setAction(Intent.ACTION_PICK);
+                    activityResultLauncher.launch(intent_img);
+                }
+            }
+        }).show();
     }
 
 }

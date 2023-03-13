@@ -314,11 +314,91 @@
 
             </RelativeLayout>
 
+            <RelativeLayout
+                android:id="@+id/jump_to_create_group_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/jump_to_set_wallpaper_layout"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="10dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingVertical="@dimen/_8sdp">
+
+                <ImageView
+                    android:id="@+id/img3"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:background="@drawable/icon_add_group" />
+
+                <TextView
+                    android:id="@+id/jump_to_create_group_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_toEndOf="@+id/img3"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="start"
+                    android:text="New Group"
+                    android:textColor="#1f2c34"
+                    android:textSize="@dimen/_18sdp"
+                    android:textStyle="normal" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/jump_to_invite_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/jump_to_create_group_layout"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="10dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingVertical="@dimen/_8sdp">
+
+                <ImageView
+                    android:id="@+id/img4"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:background="@drawable/icon_invite_user" />
+
+                <TextView
+                    android:id="@+id/jump_to_invite_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_toEndOf="@+id/img4"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="start"
+                    android:text="Invite Friends"
+                    android:textColor="#1f2c34"
+                    android:textSize="@dimen/_18sdp"
+                    android:textStyle="normal" />
+
+            </RelativeLayout>
+
             <TextView
                 android:id="@+id/text1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/jump_to_set_wallpaper_layout"
+                android:layout_below="@id/jump_to_invite_layout"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="@dimen/_18sdp"

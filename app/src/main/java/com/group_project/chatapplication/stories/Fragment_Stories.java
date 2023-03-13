@@ -3,6 +3,7 @@ package com.group_project.chatapplication.stories;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -187,6 +188,23 @@ public class Fragment_Stories extends Fragment {
             }
         });
 
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Stories").child(fetch_phone_number).child("Status");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    btn_delete_your_stories.setVisibility(View.VISIBLE);
+                } else {
+                    btn_delete_your_stories.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         // Delete all uploaded Stories...
         btn_delete_your_stories.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -212,5 +230,26 @@ public class Fragment_Stories extends Fragment {
         });
 
         return storiesFragmentView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Stories").child(fetch_phone_number).child("Status");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    btn_delete_your_stories.setVisibility(View.VISIBLE);
+                } else {
+                    btn_delete_your_stories.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }

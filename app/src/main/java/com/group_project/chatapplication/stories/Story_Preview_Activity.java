@@ -214,7 +214,7 @@ public class Story_Preview_Activity extends AppCompatActivity {
             String path = MediaStore.Images.Media.insertImage(this.getContentResolver(), bitmapImg, "picture", null);
             Uri myImgURI = Uri.parse(path);
 
-            // Text-Story upload on firebase Storage code....
+            // Story upload on firebase Storage code....
             FirebaseStorage storage = FirebaseStorage.getInstance();
             Date date = new Date();
             StorageReference reference = storage.getReference().child("Stories").child(fetch_phone_number).child(date.getTime() + "");

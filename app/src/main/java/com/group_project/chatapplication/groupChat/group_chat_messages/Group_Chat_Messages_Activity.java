@@ -231,7 +231,7 @@ public class Group_Chat_Messages_Activity extends AppCompatActivity {
         progressDialog.show();
 
         //file path
-        String filepath = "Single User Messages/" + fetch_phone_number + "/" + "Images/" + System.currentTimeMillis() + ".jpg";
+        String filepath = "Group Messages/" + fetch_phone_number + "/" + "Images/" + System.currentTimeMillis() + ".jpg";
         //upload
         StorageReference storageReference = FirebaseStorage.getInstance().getReference(filepath);
         storageReference.putFile(image_uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

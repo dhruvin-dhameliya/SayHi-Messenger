@@ -357,7 +357,7 @@ public class Group_Info_Activity extends AppCompatActivity {
                     ContactDTO model = ds.getValue(ContactDTO.class);
                     userModelArrayList.add(model);
 
-                    contactAdapter = new Adapter_Group_Contact(userModelArrayList, Group_Info_Activity.this);
+                    contactAdapter = new Adapter_Group_Contact(userModelArrayList, Group_Info_Activity.this,groupId);
                     participantsRv.setAdapter(contactAdapter);
                     participantTv.setText(userModelArrayList.size() + " PARTICIPANTS");
                 }

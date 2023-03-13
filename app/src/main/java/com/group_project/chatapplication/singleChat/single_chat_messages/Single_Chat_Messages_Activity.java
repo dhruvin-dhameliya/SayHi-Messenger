@@ -24,7 +24,6 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,7 +61,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
     TextView user_name;
     String currentContactName, myMobileNo, receiverMobileNo, getName, senderRoom, receiverRoom;
     RecyclerView chattingRecycleView;
-    LinearLayout msgLinearLayout;
+    RelativeLayout msgRelativeLayout;
     RelativeLayout invite_user_layout;
     ImageView img_invite;
     TextView btn_invite_user;
@@ -92,7 +91,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
         profile_img = findViewById(R.id.profile_img);
         user_name = findViewById(R.id.user_name);
         attachbtn = findViewById(R.id.send_file);
-        msgLinearLayout = findViewById(R.id.msgLinearLayout);
+        msgRelativeLayout = findViewById(R.id.msgRelativeLayout);
         sendMessageButton = findViewById(R.id.send_message_button);
         userMessageInput = findViewById(R.id.input_message);
         img_chat_wallpaper = findViewById(R.id.img_chat_wallpaper);
@@ -287,7 +286,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                     Glide.with(img_chat_wallpaper).load(R.drawable.img_white_bg).into(img_chat_wallpaper);
                     Glide.with(profile_img).load(R.drawable.img_contact_user).into(profile_img);
                     user_name.setText(currentContactName);
-                    msgLinearLayout.setVisibility(View.GONE);
+                    msgRelativeLayout.setVisibility(View.GONE);
                     sendMessageButton.setVisibility(View.GONE);
                     img_chat_wallpaper.setVisibility(View.GONE);
                     invite_user_layout.setVisibility(View.VISIBLE);
