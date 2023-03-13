@@ -2,6 +2,7 @@ package com.group_project.chatapplication.singleChat.single_chat_messages;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -18,6 +20,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -105,6 +108,53 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
         receiverMobileNo = getIntent().getExtras().get("pass_receiver_number").toString().replace(" ", "").replace("-", "").replace("+91", "");
 
         mToolbar = findViewById(R.id.chat_bar_layout);
+        mToolbar.inflateMenu(R.menu.delete_chat_menu);
+        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.clear_chat_for_me) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Single_Chat_Messages_Activity.this);
+                    builder.setTitle("Clear chat?");
+                    builder.setMessage("Are you sure to clear your chat?");
+                    builder.setPositiveButton("Clear", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            FirebaseDatabase.getInstance().getReference().child("Chat").child(myMobileNo).child(senderRoom).child("Messages").setValue(null);
+                            Toast.makeText(Single_Chat_Messages_Activity.this, "All chat cleared for you", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.create().show();
+                }
+                else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Single_Chat_Messages_Activity.this);
+                    builder.setTitle("Clear chat?");
+                    builder.setMessage("Are you sure to clear chat for everyone?");
+                    builder.setPositiveButton("Clear", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            FirebaseDatabase.getInstance().getReference().child("Chat").child(myMobileNo).child(senderRoom).child("Messages").setValue(null);
+                            FirebaseDatabase.getInstance().getReference().child("Chat").child(receiverMobileNo).child(receiverRoom).child("Messages").setValue(null);
+                            Toast.makeText(Single_Chat_Messages_Activity.this, "All chat cleared for everyone", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.create().show();
+                }
+                return false;
+            }
+        });
+
 
         auth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -115,9 +165,6 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Chat");
 
         chattingRecycleView = findViewById(R.id.chat_recyclearview);
-
-        chatAd = new Chat_Adapter(chatModel, this);
-        chattingRecycleView.setAdapter(chatAd);
 
         senderRoom = myMobileNo + receiverMobileNo;
         receiverRoom = receiverMobileNo + myMobileNo;
@@ -210,7 +257,8 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                             Chatmodel chatmodel = snapshot1.getValue(Chatmodel.class);
                             chatModel.add(chatmodel);
                         }
-                        chatAd.notifyDataSetChanged();
+                        chatAd = new Chat_Adapter(Single_Chat_Messages_Activity.this, chatModel, senderRoom, receiverRoom, receiverMobileNo);
+                        chattingRecycleView.setAdapter(chatAd);
                     }
 
                     @Override

@@ -79,7 +79,7 @@
                         android:focusable="true"
                         android:text="User Name"
                         android:textColor="#1f2c34"
-                        android:textSize="@dimen/_18sdp"
+                        android:textSize="@dimen/_21sdp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -93,7 +93,7 @@
                         android:focusable="true"
                         android:text="About"
                         android:textColor="#1f2c34"
-                        android:textSize="@dimen/_11sdp"
+                        android:textSize="@dimen/_14sdp"
                         android:textStyle="normal" />
 
                 </RelativeLayout>
@@ -178,7 +178,7 @@
                             android:layout_marginEnd="@dimen/_8sdp"
                             android:backgroundTint="#009688"
                             android:elevation="0dp"
-                            android:text="🎮 Gamming"
+                            android:text="🎮 Gaming"
                             android:textAlignment="center"
                             android:textAllCaps="false"
                             android:textColor="@color/white"
@@ -226,7 +226,7 @@
                 android:layout_below="@id/border_1"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
-                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginHorizontal="@dimen/_18sdp"
                 android:layout_marginTop="@dimen/_11sdp"
                 android:gravity="start"
                 android:text="Dashboard"
@@ -241,11 +241,11 @@
                 android:layout_below="@+id/text3"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
-                android:layout_marginHorizontal="@dimen/_12sdp"
                 android:layout_marginTop="8dp"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:gravity="center"
                 android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_18sdp"
                 android:paddingVertical="@dimen/_8sdp">
 
                 <ImageView
@@ -281,11 +281,11 @@
                 android:layout_below="@+id/jump_to_edit_profile_layout"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
-                android:layout_marginHorizontal="@dimen/_12sdp"
                 android:layout_marginTop="10dp"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:gravity="center"
                 android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_18sdp"
                 android:paddingVertical="@dimen/_8sdp">
 
                 <ImageView
@@ -321,17 +321,17 @@
                 android:layout_below="@+id/jump_to_set_wallpaper_layout"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
-                android:layout_marginHorizontal="@dimen/_12sdp"
                 android:layout_marginTop="10dp"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:gravity="center"
                 android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_18sdp"
                 android:paddingVertical="@dimen/_8sdp">
 
                 <ImageView
                     android:id="@+id/img3"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="31dp"
+                    android:layout_height="31dp"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center"
@@ -361,17 +361,17 @@
                 android:layout_below="@+id/jump_to_create_group_layout"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
-                android:layout_marginHorizontal="@dimen/_12sdp"
                 android:layout_marginTop="10dp"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:gravity="center"
                 android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_18sdp"
                 android:paddingVertical="@dimen/_8sdp">
 
                 <ImageView
                     android:id="@+id/img4"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="31dp"
+                    android:layout_height="31dp"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center"
@@ -401,7 +401,7 @@
                 android:layout_below="@id/jump_to_invite_layout"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
-                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginHorizontal="@dimen/_18sdp"
                 android:layout_marginTop="@dimen/_31sdp"
                 android:gravity="start"
                 android:text="My Account"
@@ -416,12 +416,12 @@
                 android:layout_below="@+id/text1"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
-                android:layout_marginHorizontal="@dimen/_12sdp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:gravity="start"
                 android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_18sdp"
                 android:paddingVertical="@dimen/_4sdp"
                 android:text="Log Out"
                 android:textColor="#FF5722"

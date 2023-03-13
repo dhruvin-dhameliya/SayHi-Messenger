@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if ((snapshot.exists()) && (snapshot.hasChild("phone"))) {
                     String retrieveProfileImage = snapshot.child("profile_image").getValue().toString();
-                    Glide.with(home_profile_image).load(retrieveProfileImage).into(home_profile_image);
+                    Glide.with(getApplicationContext()).load(retrieveProfileImage).into(home_profile_image);
                 }
             }
 

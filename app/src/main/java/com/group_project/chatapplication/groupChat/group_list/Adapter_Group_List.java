@@ -3,6 +3,7 @@ package com.group_project.chatapplication.groupChat.group_list;
 import android.content.Context;
 import android.content.Intent;
 import android.text.format.DateFormat;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.group_project.chatapplication.R;
 import com.group_project.chatapplication.groupChat.group_chat_messages.Group_Chat_Messages_Activity;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
@@ -98,7 +100,9 @@ public class Adapter_Group_List extends RecyclerView.Adapter<Adapter_Group_List.
                             } else if (messageType.equals("file")) {
                                 holder.messageTv.setText("Sent Document");
                             } else {
-                                holder.messageTv.setText(message);
+                                byte[] data = Base64.decode(message, Base64.DEFAULT);
+                                String text = new String(data, StandardCharsets.UTF_8);
+                                holder.messageTv.setText(text);
                             }
 
                             holder.timeTv.setText(dateTime);

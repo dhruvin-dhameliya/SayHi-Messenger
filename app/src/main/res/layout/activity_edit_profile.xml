@@ -147,7 +147,7 @@
                 android:elevation="3dp"
                 android:fontFamily="sans-serif"
                 android:padding="@dimen/_10sdp"
-                android:text="+91 9876543210"
+                android:text="Your phone number"
                 android:textColor="#222222"
                 android:textSize="20sp"
                 android:textStyle="normal" />

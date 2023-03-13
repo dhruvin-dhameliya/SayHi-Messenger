@@ -13,6 +13,11 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">#0076CE</item>
         <!-- Customize your theme here. -->
+        <item name="android:actionOverflowButtonStyle">@style/MyTheme</item>
+    </style>
+
+    <style name="MyTheme" parent="android:Widget.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_baseline_more_vert_24</item>
     </style>
 
     <style name="ThemeOverlay.PopupTheme" parent="ThemeOverlay.AppCompat.Light">
