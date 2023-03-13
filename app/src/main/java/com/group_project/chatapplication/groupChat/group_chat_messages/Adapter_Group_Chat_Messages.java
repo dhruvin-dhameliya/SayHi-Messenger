@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.format.DateFormat;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.group_project.chatapplication.R;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -40,7 +43,7 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
     ArrayList<Model_Group_Chat_Messages> modelGroupChats;
     FirebaseAuth auth;
     Model_Group_Chat_Messages modelGroupChat;
-    String groupId;
+    String groupId, encoded_deleted_already_msg = "VGhpcyBtZXNzYWdlIHdhcyBkZWxldGVk"; // This message was deleted
 
     public Adapter_Group_Chat_Messages(Context context, ArrayList<Model_Group_Chat_Messages> modelGroupChats, String groupId) {
         this.context = context;
@@ -75,7 +78,9 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
 
         if (messageType.equals("text")) {
             holder.user_txt_msg.setVisibility(View.VISIBLE);
-            holder.user_txt_msg.setText(message);
+            byte[] data = Base64.decode(message, Base64.DEFAULT);
+            String text = new String(data, StandardCharsets.UTF_8);
+            holder.user_txt_msg.setText(text);
             holder.user_img_msg_layout.setVisibility(View.GONE);
             holder.user_doc_msg_layout.setVisibility(View.GONE);
             holder.user_txt_msg.setOnLongClickListener(new View.OnLongClickListener() {
@@ -90,12 +95,14 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
             holder.user_txt_msg.setVisibility(View.GONE);
             holder.user_doc_msg_layout.setVisibility(View.GONE);
             holder.user_img_msg_layout.setVisibility(View.VISIBLE);
-            Glide.with(holder.user_img_msg).load(message).into(holder.user_img_msg);
+            byte[] data = Base64.decode(message, Base64.DEFAULT);
+            String text = new String(data, StandardCharsets.UTF_8);
+            Glide.with(holder.user_img_msg).load(text).into(holder.user_img_msg);
             holder.user_img_msg_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, Group_full_screen_photo_Activity.class);
-                    intent.putExtra("image", message);
+                    intent.putExtra("image", text);
                     intent.putExtra("sender", senderUid);
                     context.startActivity(intent);
                 }
@@ -104,7 +111,7 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, Group_full_screen_photo_Activity.class);
-                    intent.putExtra("image", message);
+                    intent.putExtra("image", text);
                     intent.putExtra("sender", senderUid);
                     context.startActivity(intent);
                 }
@@ -115,11 +122,13 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
             holder.user_doc_msg_layout.setVisibility(View.VISIBLE);
             holder.user_txt_msg.setVisibility(View.GONE);
             holder.user_img_msg_layout.setVisibility(View.GONE);
+            byte[] data = Base64.decode(message, Base64.DEFAULT);
+            String text = new String(data, StandardCharsets.UTF_8);
             holder.user_doc_msg_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, Group_Doc_WebView_Activty.class);
-                    intent.putExtra("pass_pdf_url", message);
+                    intent.putExtra("pass_pdf_url", text);
                     intent.putExtra("sender", senderUid);
                     context.startActivity(intent);
                 }
@@ -128,16 +137,19 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, Group_Doc_WebView_Activty.class);
-                    intent.putExtra("pass_pdf_url", message);
+                    intent.putExtra("pass_pdf_url", text);
                     intent.putExtra("sender", senderUid);
                     context.startActivity(intent);
                 }
             });
         }
 
-        if (message.equals("This message was deleted")) {
+        // This message was deleted
+        if (message.equals(encoded_deleted_already_msg)) {
+            byte[] data = Base64.decode(modelGroupChat.getMessage().trim(), Base64.DEFAULT);
+            String text = new String(data, StandardCharsets.UTF_8);
             holder.user_txt_msg.setVisibility(View.VISIBLE);
-            holder.user_txt_msg.setText(modelGroupChat.getMessage());
+            holder.user_txt_msg.setText(text);
             holder.user_img_msg.setVisibility(View.GONE);
             holder.user_img_msg_layout.setVisibility(View.GONE);
             holder.user_doc_msg.setVisibility(View.GONE);
@@ -162,11 +174,11 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 for (DataSnapshot ds : snapshot.getChildren()) {
                                     String msg = ds.child("message").getValue().toString();
-                                    if (msg.equals("This message was deleted")) {
+                                    if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
                                         ds.getRef().removeValue();
                                     } else {
                                         HashMap<String, Object> hashMap = new HashMap<>();
-                                        hashMap.put("message", "This message was deleted");
+                                        hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
                                         ds.getRef().updateChildren(hashMap);
                                     }
                                 }
@@ -207,11 +219,11 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 for (DataSnapshot ds : snapshot.getChildren()) {
                                     String msg = ds.child("message").getValue().toString();
-                                    if (msg.equals("This message was deleted")) {
+                                    if (msg.equals(encoded_deleted_already_msg)) {  // This message was deleted
                                         ds.getRef().removeValue();
                                     } else {
                                         HashMap<String, Object> hashMap = new HashMap<>();
-                                        hashMap.put("message", "This message was deleted");
+                                        hashMap.put("message", encoded_deleted_already_msg);  // This message was deleted
                                         ds.getRef().updateChildren(hashMap);
                                     }
                                 }
@@ -252,11 +264,11 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 for (DataSnapshot ds : snapshot.getChildren()) {
                                     String msg = ds.child("message").getValue().toString();
-                                    if (msg.equals("This message was deleted")) {
+                                    if (msg.equals(encoded_deleted_already_msg)) {  // This message was deleted
                                         ds.getRef().removeValue();
                                     } else {
                                         HashMap<String, Object> hashMap = new HashMap<>();
-                                        hashMap.put("message", "This message was deleted");
+                                        hashMap.put("message", encoded_deleted_already_msg);  // This message was deleted
                                         ds.getRef().updateChildren(hashMap);
                                     }
                                 }
@@ -297,11 +309,11 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 for (DataSnapshot ds : snapshot.getChildren()) {
                                     String msg = ds.child("message").getValue().toString();
-                                    if (msg.equals("This message was deleted")) {
+                                    if (msg.equals(encoded_deleted_already_msg)) {  // This message was deleted
                                         ds.getRef().removeValue();
                                     } else {
                                         HashMap<String, Object> hashMap = new HashMap<>();
-                                        hashMap.put("message", "This message was deleted");
+                                        hashMap.put("message", encoded_deleted_already_msg);  // This message was deleted
                                         ds.getRef().updateChildren(hashMap);
                                     }
                                 }
@@ -342,11 +354,11 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 for (DataSnapshot ds : snapshot.getChildren()) {
                                     String msg = ds.child("message").getValue().toString();
-                                    if (msg.equals("This message was deleted")) {
+                                    if (msg.equals(encoded_deleted_already_msg)) {  // This message was deleted
                                         ds.getRef().removeValue();
                                     } else {
                                         HashMap<String, Object> hashMap = new HashMap<>();
-                                        hashMap.put("message", "This message was deleted");
+                                        hashMap.put("message", encoded_deleted_already_msg);  // This message was deleted
                                         ds.getRef().updateChildren(hashMap);
                                     }
                                 }
