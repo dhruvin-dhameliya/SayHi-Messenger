@@ -127,7 +127,6 @@ public class Group_Chat_Messages_Activity extends AppCompatActivity {
                 if (TextUtils.isEmpty(message)) {
                     Toast.makeText(getApplicationContext(), "Can't send empty message", Toast.LENGTH_SHORT).show();
                 } else {
-                    // Sending text msg side
                     byte[] data = message.getBytes(StandardCharsets.UTF_8);
                     String encode_txt_msg = Base64.encodeToString(data, Base64.DEFAULT);
                     sendmessage(encode_txt_msg);
@@ -248,7 +247,6 @@ public class Group_Chat_Messages_Activity extends AppCompatActivity {
                 Uri p_downloadUri = p_uriTasl.getResult();
                 if (p_uriTasl.isSuccessful()) {
                     String timestamp = "" + System.currentTimeMillis();
-                    // Sending image msg side
                     String img_uri_normal = p_downloadUri.toString();
                     byte[] data = img_uri_normal.getBytes(StandardCharsets.UTF_8);
                     String encode_img_msg = Base64.encodeToString(data, Base64.DEFAULT);
@@ -431,7 +429,6 @@ public class Group_Chat_Messages_Activity extends AppCompatActivity {
                 Uri p_downloadUri = p_uriTasl.getResult();
                 if (p_uriTasl.isSuccessful()) {
                     String timestamp = "" + System.currentTimeMillis();
-                    // Sending image msg side
                     String doc_uri_normal = p_downloadUri.toString();
                     byte[] data = doc_uri_normal.getBytes(StandardCharsets.UTF_8);
                     String encode_doc_msg = Base64.encodeToString(data, Base64.DEFAULT);

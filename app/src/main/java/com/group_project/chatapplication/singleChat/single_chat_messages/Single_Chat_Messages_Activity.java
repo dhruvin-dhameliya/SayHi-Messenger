@@ -19,6 +19,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,6 +51,7 @@ import com.group_project.chatapplication.R;
 import com.group_project.chatapplication.registration.User_Model;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -130,8 +132,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                         }
                     });
                     builder.create().show();
-                }
-                else {
+                } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(Single_Chat_Messages_Activity.this);
                     builder.setTitle("Clear chat?");
                     builder.setMessage("Are you sure to clear chat for everyone?");
@@ -213,7 +214,9 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String getTxtMessage = userMessageInput.getText().toString().trim();
-                final Chatmodel chatmodel = new Chatmodel(myMobileNo, getTxtMessage, "text");
+                byte[] data = getTxtMessage.getBytes(StandardCharsets.UTF_8);
+                String encode_txt_msg = Base64.encodeToString(data, Base64.DEFAULT);
+                final Chatmodel chatmodel = new Chatmodel(myMobileNo, encode_txt_msg, "text");
 
                 if (TextUtils.isEmpty(getTxtMessage)) {
                     Toast.makeText(getApplicationContext(), "Can't send empty message", Toast.LENGTH_SHORT).show();
@@ -243,7 +246,6 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     // display user messages
@@ -483,10 +485,13 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                 Uri p_downloadUri = p_uriTasl.getResult();
                 if (p_uriTasl.isSuccessful()) {
                     String timestamp = "" + System.currentTimeMillis();
+                    String img_uri_normal = p_downloadUri.toString();
+                    byte[] data = img_uri_normal.getBytes(StandardCharsets.UTF_8);
+                    String encode_img_msg = Base64.encodeToString(data, Base64.DEFAULT);
 
                     HashMap<String, Object> hashMap = new HashMap<>();
                     hashMap.put("sender", "" + myMobileNo);
-                    hashMap.put("message", "" + p_downloadUri);
+                    hashMap.put("message", "" + encode_img_msg);
                     hashMap.put("timestamp", "" + timestamp);
                     hashMap.put("type", "" + "image");//text,image,file
 
@@ -583,10 +588,13 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                 Uri p_downloadUri = p_uriTasl.getResult();
                 if (p_uriTasl.isSuccessful()) {
                     String timestamp = "" + System.currentTimeMillis();
+                    String doc_uri_normal = p_downloadUri.toString();
+                    byte[] data = doc_uri_normal.getBytes(StandardCharsets.UTF_8);
+                    String encode_doc_msg = Base64.encodeToString(data, Base64.DEFAULT);
 
                     HashMap<String, Object> hashMap = new HashMap<>();
                     hashMap.put("sender", "" + myMobileNo);
-                    hashMap.put("message", "" + p_downloadUri);
+                    hashMap.put("message", "" + encode_doc_msg);
                     hashMap.put("timestamp", "" + timestamp);
                     hashMap.put("type", "" + "file");//text,image,file
 
