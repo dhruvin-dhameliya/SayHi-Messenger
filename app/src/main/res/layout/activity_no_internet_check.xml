@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:theme="@style/Theme.Material3.DayNight.NoActionBar"
+    tools:context=".commonActivities.No_Internet_Check_Activity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20sp"
+        app:srcCompat="@drawable/img_no_internet" />
+
+    <TextView
+        android:id="@+id/mainMassage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-20dp"
+        android:gravity="center"
+        android:text="No Internet connection"
+        android:textColor="@android:color/black"
+        android:textSize="25sp"
+        android:textStyle="bold|normal"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/infoMassage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:text="Check your connection, then \n refresh the page."
+        android:textSize="17sp"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_21sdp"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/retry_btn"
+            android:layout_width="@dimen/_101sdp"
+            android:layout_height="@dimen/_41sdp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="40dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="Refresh"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold|normal"
+            app:borderWidth="0dp"
+            app:cornerRadius="@dimen/_101sdp"
+            app:rippleColor="#dbe2e8" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/exit_btn"
+            android:layout_width="@dimen/_101sdp"
+            android:layout_height="@dimen/_41sdp"
+            android:backgroundTint="#EBF5FB"
+            android:text="Exit"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="#036fdc"
+            android:textSize="18sp"
+            app:borderWidth="0dp"
+            app:cornerRadius="@dimen/_101sdp"
+            app:rippleColor="#dbe2e8" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -2,11 +2,12 @@ package com.group_project.chatapplication.commonActivities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.group_project.chatapplication.MainActivity;
@@ -22,29 +23,31 @@ public class Splash_Screen_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        Window window = this.getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(this.getResources().getColor(R.color.white));
+        isConnected();
+    }
 
-        auth = FirebaseAuth.getInstance();
-
-        if (auth.getCurrentUser() == null) {
+    private void isConnected() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+        if (null != activeNetwork) {
+            if ((activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) || (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI)) {
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        auth = FirebaseAuth.getInstance();
+                        if (auth.getCurrentUser() != null) {
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        } else {
+                            startActivity(new Intent(getApplicationContext(), Registration_Activity.class));
+                        }
+                        finish();
+                    }
+                }, 1500);
+            }
+        } else {
             new Handler().postDelayed(new Runnable() {
-                @Override
                 public void run() {
-                    startActivity(new Intent(Splash_Screen_Activity.this, Registration_Activity.class));
+                    startActivity(new Intent(getApplicationContext(), No_Internet_Check_Activity.class));
                     finish();
-                    finishAffinity();
-                }
-            }, 1500);
-        }
-        if (auth.getCurrentUser() != null) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    startActivity(new Intent(Splash_Screen_Activity.this, MainActivity.class));
-                    finish();
-                    finishAffinity();
                 }
             }, 1500);
         }
