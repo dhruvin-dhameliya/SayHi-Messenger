@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -14,6 +15,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavbar;
     FloatingActionButton jump_chat_screen;
     CircleImageView home_profile_image;
-
+    Dialog dialog;
     Fragment_Chats fragment_chats = new Fragment_Chats();
     Fragment_Stories fragment_stories = new Fragment_Stories();
     Fragment_Contacts fragment_contacts = new Fragment_Contacts();
@@ -126,6 +128,12 @@ public class MainActivity extends AppCompatActivity {
         fetch_phone_number = user.getPhoneNumber();
         checkPermission();
 
+        dialog = new Dialog(this, R.style.NewDialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.custom_progress_dialog);
+        dialog.setCancelable(false);
+        dialog.show();
+
         // Show profile image on home screen
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users Details").child(fetch_phone_number);
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -134,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
                 if ((snapshot.exists()) && (snapshot.hasChild("phone"))) {
                     String retrieveProfileImage = snapshot.child("profile_image").getValue().toString();
                     Glide.with(getApplicationContext()).load(retrieveProfileImage).into(home_profile_image);
+                    dialog.dismiss();
                 }
             }
 
