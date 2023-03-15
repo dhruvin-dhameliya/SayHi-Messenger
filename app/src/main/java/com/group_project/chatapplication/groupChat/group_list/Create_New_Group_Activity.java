@@ -124,7 +124,7 @@ public class Create_New_Group_Activity extends AppCompatActivity {
             createGroup1("" + g_timestamp, "" + grouptitle, "" + groupDescription, default_image_url);
         } else {
             //with image
-            String fileNameandPath = "Group_Img/" + "image" + g_timestamp;
+            String fileNameandPath = "Group Profile Images/" + "image" + g_timestamp;
             StorageReference storageReference = FirebaseStorage.getInstance().getReference(fileNameandPath);
             storageReference.putFile(image_uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override

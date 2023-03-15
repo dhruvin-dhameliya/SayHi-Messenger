@@ -11,12 +11,16 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.util.GlideSuppliers;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,6 +28,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.group_project.chatapplication.R;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -97,7 +103,7 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
             holder.user_img_msg_layout.setVisibility(View.VISIBLE);
             byte[] data = Base64.decode(message, Base64.DEFAULT);
             String text = new String(data, StandardCharsets.UTF_8);
-            Glide.with(holder.user_img_msg).load(text).into(holder.user_img_msg);
+            Glide.with(holder.user_img_msg).load(text).placeholder(R.drawable.default_image_for_chat).into(holder.user_img_msg);
             holder.user_img_msg_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -177,6 +183,23 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
                                     if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
                                         ds.getRef().removeValue();
                                     } else {
+                                        //image delete from the firebase storageno
+                                        byte[] data = Base64.decode(msg, Base64.DEFAULT);
+                                        String text = new String(data, StandardCharsets.UTF_8);
+                                        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                                        StorageReference storageReference = firebaseStorage.getReferenceFromUrl(text);
+                                        storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                //image deleted from the firebase storage
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception exception) {
+                                                Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+
                                         HashMap<String, Object> hashMap = new HashMap<>();
                                         hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
                                         ds.getRef().updateChildren(hashMap);
@@ -222,6 +245,22 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
                                     if (msg.equals(encoded_deleted_already_msg)) {  // This message was deleted
                                         ds.getRef().removeValue();
                                     } else {
+                                        //image delete from the firebase storage
+                                        byte[] data = Base64.decode(msg, Base64.DEFAULT);
+                                        String text = new String(data, StandardCharsets.UTF_8);
+                                        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                                        StorageReference storageReference = firebaseStorage.getReferenceFromUrl(text);
+                                        storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                //image deleted from the firebase storage
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception exception) {
+                                                Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
                                         HashMap<String, Object> hashMap = new HashMap<>();
                                         hashMap.put("message", encoded_deleted_already_msg);  // This message was deleted
                                         ds.getRef().updateChildren(hashMap);
@@ -267,6 +306,23 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
                                     if (msg.equals(encoded_deleted_already_msg)) {  // This message was deleted
                                         ds.getRef().removeValue();
                                     } else {
+                                        //document delete from the firebase storage
+                                        byte[] data = Base64.decode(msg, Base64.DEFAULT);
+                                        String text = new String(data, StandardCharsets.UTF_8);
+                                        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                                        StorageReference storageReference = firebaseStorage.getReferenceFromUrl(text);
+                                        storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                //document deleted from the firebase storage
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception exception) {
+                                                Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+
                                         HashMap<String, Object> hashMap = new HashMap<>();
                                         hashMap.put("message", encoded_deleted_already_msg);  // This message was deleted
                                         ds.getRef().updateChildren(hashMap);
@@ -312,6 +368,22 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
                                     if (msg.equals(encoded_deleted_already_msg)) {  // This message was deleted
                                         ds.getRef().removeValue();
                                     } else {
+                                        //document delete from the firebase storage
+                                        byte[] data = Base64.decode(msg, Base64.DEFAULT);
+                                        String text = new String(data, StandardCharsets.UTF_8);
+                                        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                                        StorageReference storageReference = firebaseStorage.getReferenceFromUrl(text);
+                                        storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                //document deleted from the firebase storage
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception exception) {
+                                                Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
                                         HashMap<String, Object> hashMap = new HashMap<>();
                                         hashMap.put("message", encoded_deleted_already_msg);  // This message was deleted
                                         ds.getRef().updateChildren(hashMap);

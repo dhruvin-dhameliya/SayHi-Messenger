@@ -127,7 +127,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                 byte[] data = Base64.decode(message, Base64.DEFAULT);
                 String text = new String(data, StandardCharsets.UTF_8);
                 try {
-                    Glide.with(((SenderViewHolder) holder).senderImage).load(text).into(((SenderViewHolder) holder).senderImage);
+                    Glide.with(((SenderViewHolder) holder).senderImage).load(text).placeholder(R.drawable.default_image_for_chat).into(((SenderViewHolder) holder).senderImage);
                 } catch (Exception e) {
                     ((SenderViewHolder) holder).senderImage.setImageResource(R.drawable.default_image_for_chat);
                 }
@@ -151,7 +151,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                 byte[] data = Base64.decode(message, Base64.DEFAULT);
                 String text = new String(data, StandardCharsets.UTF_8);
                 try {
-                    Glide.with(((RecieverViewHolder) holder).receiverImage).load(text).into(((RecieverViewHolder) holder).receiverImage);
+                    Glide.with(((RecieverViewHolder) holder).receiverImage).load(text).placeholder(R.drawable.default_image_for_chat).into(((RecieverViewHolder) holder).receiverImage);
                 } catch (Exception e) {
                     ((RecieverViewHolder) holder).receiverImage.setImageResource(R.drawable.default_image_for_chat);
                 }
