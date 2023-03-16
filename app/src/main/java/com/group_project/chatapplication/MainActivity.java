@@ -11,7 +11,9 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -75,7 +77,15 @@ public class MainActivity extends AppCompatActivity {
         jump_chat_screen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, Contact_Show_Activity.class));
+//                startActivity(new Intent(MainActivity.this, Contact_Show_Activity.class));
+                if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+                    intent.setData(uri);
+                    startActivity(intent);
+                } else if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+                    startActivity(new Intent(MainActivity.this, Contact_Show_Activity.class));
+                }
             }
         });
 
@@ -109,8 +119,20 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.contacts:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_contacts).commit();
+                       /* getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_contacts).commit();
                         jump_chat_screen.hide();
+                        break;*/
+
+                        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+                            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                            Uri uri = Uri.fromParts("package", getPackageName(), null);
+                            intent.setData(uri);
+                            startActivity(intent);
+                            jump_chat_screen.hide();
+                        } else if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+                            getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_contacts).commit();
+                            jump_chat_screen.hide();
+                        }
                         break;
                 }
                 return true;
@@ -187,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 100 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(getApplicationContext(), "Permission Granted!", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(getApplicationContext(), "Denied...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Permission Denied...", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -8,6 +8,7 @@ import android.provider.ContactsContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
@@ -29,9 +30,15 @@ class Group_Contacts_Activity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group_contacts)
+
+        val back_group_screen = findViewById<ImageView>(R.id.back_group_screen)
         val contact_list = findViewById<RecyclerView>(R.id.group_contact_list_for_activity)
         val contact_search_view_for_activity =
             findViewById<SearchView>(R.id.group_contact_search_view_for_activity)
+
+        back_group_screen.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
 
         firebaseAuth = FirebaseAuth.getInstance()
         groupId = intent.getStringExtra("groupId").toString()

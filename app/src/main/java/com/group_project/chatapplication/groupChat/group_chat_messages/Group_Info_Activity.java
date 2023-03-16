@@ -1,8 +1,12 @@
 package com.group_project.chatapplication.groupChat.group_chat_messages;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.ImageButton;
@@ -14,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -117,27 +122,48 @@ public class Group_Info_Activity extends AppCompatActivity {
         jump_add_participent_iner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Group_Info_Activity.this, Group_Contacts_Activity.class);
-                intent.putExtra("groupId", groupId);
-                startActivity(intent);
+                if (ContextCompat.checkSelfPermission(Group_Info_Activity.this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+                    intent.setData(uri);
+                    startActivity(intent);
+                } else if (ContextCompat.checkSelfPermission(Group_Info_Activity.this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+                    Intent intent = new Intent(Group_Info_Activity.this, Group_Contacts_Activity.class);
+                    intent.putExtra("groupId", groupId);
+                    startActivity(intent);
+                }
             }
         });
 
         jump_add_participent_iner_txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Group_Info_Activity.this, Group_Contacts_Activity.class);
-                intent.putExtra("groupId", groupId);
-                startActivity(intent);
+                if (ContextCompat.checkSelfPermission(Group_Info_Activity.this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+                    intent.setData(uri);
+                    startActivity(intent);
+                } else if (ContextCompat.checkSelfPermission(Group_Info_Activity.this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+                    Intent intent = new Intent(Group_Info_Activity.this, Group_Contacts_Activity.class);
+                    intent.putExtra("groupId", groupId);
+                    startActivity(intent);
+                }
             }
         });
 
         participantaddTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Group_Info_Activity.this, Group_Contacts_Activity.class);
-                intent.putExtra("groupId", groupId);
-                startActivity(intent);
+                if (ContextCompat.checkSelfPermission(Group_Info_Activity.this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+                    intent.setData(uri);
+                    startActivity(intent);
+                } else if (ContextCompat.checkSelfPermission(Group_Info_Activity.this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+                    Intent intent = new Intent(Group_Info_Activity.this, Group_Contacts_Activity.class);
+                    intent.putExtra("groupId", groupId);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -357,7 +383,7 @@ public class Group_Info_Activity extends AppCompatActivity {
                     ContactDTO model = ds.getValue(ContactDTO.class);
                     userModelArrayList.add(model);
 
-                    contactAdapter = new Adapter_Group_Contact(userModelArrayList, Group_Info_Activity.this,groupId);
+                    contactAdapter = new Adapter_Group_Contact(userModelArrayList, Group_Info_Activity.this, groupId);
                     participantsRv.setAdapter(contactAdapter);
                     participantTv.setText(userModelArrayList.size() + " PARTICIPANTS");
                 }
@@ -369,5 +395,15 @@ public class Group_Info_Activity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 100 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(getApplicationContext(), "Permission Granted!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Denied...", Toast.LENGTH_SHORT).show();
+        }
     }
 }

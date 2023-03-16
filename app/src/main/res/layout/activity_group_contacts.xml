@@ -7,19 +7,53 @@
     android:background="#19E1F5FE"
     tools:context=".groupChat.add_participant.Group_Contacts_Activity">
 
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/participant_screen_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:elevation="@dimen/_3sdp"
+        android:gravity="center"
+        android:padding="0dp"
+        app:subtitleTextColor="@color/white"
+        app:titleTextColor="@color/white">
+
+        <ImageView
+            android:id="@+id/back_group_screen"
+            android:layout_width="@dimen/_24sdp"
+            android:layout_height="@dimen/_24sdp"
+            android:layout_gravity="start"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="@drawable/img_back_arow"
+            android:backgroundTint="@color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Participants"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_18sdp"
+            android:textStyle="normal" />
+
+    </androidx.appcompat.widget.Toolbar>
+
     <SearchView
         android:id="@+id/group_contact_search_view_for_activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_below="@id/participant_screen_toolbar"
+        android:layout_centerInParent="true"
+        android:layout_margin="@dimen/_10sdp"
         android:background="@drawable/custome_searchview_bg"
-        android:backgroundTint="@null"
         android:iconifiedByDefault="false"
-        android:inputType="textCapWords|textPhonetic"
-        android:paddingEnd="@dimen/_8sdp"
-        android:queryHint="Search Here..." />
+        android:inputType="textCapSentences|textPhonetic"
+        android:paddingStart="0dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="2dp"
+        android:queryBackground="@null"
+        android:queryHint="Search" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/group_contact_list_for_activity"

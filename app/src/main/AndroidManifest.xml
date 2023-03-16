@@ -104,6 +104,7 @@
         </activity>
         <activity
             android:name=".groupChat.add_participant.Group_Contacts_Activity"
+            android:theme="@style/Setting_Screen_Theme"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
