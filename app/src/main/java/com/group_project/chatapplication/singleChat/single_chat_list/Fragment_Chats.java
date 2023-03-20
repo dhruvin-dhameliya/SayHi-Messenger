@@ -122,7 +122,7 @@ public class Fragment_Chats extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.hasChild("phone")) {
                     imageUri = Objects.requireNonNull(snapshot.child("profile_image").getValue()).toString();
-                    Glide.with(img_profile_show_stories.getContext()).load(imageUri).into(img_profile_show_stories);
+                    Glide.with(img_profile_show_stories).load(imageUri).into(img_profile_show_stories);
                 }
             }
 

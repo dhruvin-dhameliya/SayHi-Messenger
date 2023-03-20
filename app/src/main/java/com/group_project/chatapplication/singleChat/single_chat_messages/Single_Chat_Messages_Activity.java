@@ -345,7 +345,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                         public void onClick(View v) {
                             Intent intent = new Intent(Intent.ACTION_SEND);
                             intent.setType("text/plain");
-                            String Body = "Let's chat on Say Hi! It's a fast, simple, and secure app we can use to message each other for free. Get it at https://www.signal.org";
+                            String Body = "Let's chat on Say Hi! It's a fast, simple, and secure app we can use to message each other for free. Get it at https://app-sayhi.netlify.app";
                             intent.putExtra(Intent.EXTRA_TEXT, Body);
                             startActivity(Intent.createChooser(intent, "Share App"));
                         }

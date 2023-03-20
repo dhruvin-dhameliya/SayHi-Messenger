@@ -41,7 +41,7 @@ public class Splash_Screen_Activity extends AppCompatActivity {
                         }
                         finish();
                     }
-                }, 1500);
+                }, 2500);
             }
         } else {
             new Handler().postDelayed(new Runnable() {
@@ -49,7 +49,7 @@ public class Splash_Screen_Activity extends AppCompatActivity {
                     startActivity(new Intent(getApplicationContext(), No_Internet_Check_Activity.class));
                     finish();
                 }
-            }, 1500);
+            }, 2500);
         }
     }
 }

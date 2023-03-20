@@ -216,7 +216,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
         }
 
 
-        //delete code for sender text,image & file..
+        //SENDER side delete code for sender text,image & file..
         if (holder.getClass() == SenderViewHolder.class) {
 
             // This message was deleted
@@ -731,8 +731,11 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                 }
             });
 
+            // This message was deleted
             if (message.equals(encoded_deleted_already_msg)) { // This message was deleted
-                ((RecieverViewHolder) holder).receiverMsg.setText(message);
+                byte[] data = Base64.decode(message, Base64.DEFAULT);
+                String text = new String(data, StandardCharsets.UTF_8);
+                ((RecieverViewHolder) holder).receiverMsg.setText(text);
                 ((RecieverViewHolder) holder).receiverMsg.setVisibility(View.VISIBLE);
                 ((RecieverViewHolder) holder).receiverImage.setVisibility(View.GONE);
                 ((RecieverViewHolder) holder).user_img_msg_layout.setVisibility(View.GONE);
