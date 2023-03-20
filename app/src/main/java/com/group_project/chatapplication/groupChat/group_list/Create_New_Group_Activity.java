@@ -116,6 +116,10 @@ public class Create_New_Group_Activity extends AppCompatActivity {
             Toast.makeText(this, "Please Enter Group Title", Toast.LENGTH_SHORT).show();
             return;
         }
+        if (TextUtils.isEmpty(groupDescription)) {
+            Toast.makeText(this, "Please Enter Group Info.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         progressDialog.show();
         String g_timestamp = "" + System.currentTimeMillis();
         if (image_uri == null) {

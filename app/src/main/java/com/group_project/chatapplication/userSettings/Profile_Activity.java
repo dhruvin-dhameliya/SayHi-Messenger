@@ -174,7 +174,7 @@ public class Profile_Activity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
-                String Body = name + " would like to chat with you on Say Hi. It's free! \n\nhttps://app-sayhi.netlify.app";
+                String Body = name + " would like to chat with you on Say Hi. It's free! \n\n https://app-sayhi.netlify.app";
                 intent.putExtra(Intent.EXTRA_TEXT, Body);
                 startActivity(Intent.createChooser(intent, "Share App"));
             }
@@ -185,7 +185,7 @@ public class Profile_Activity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
-                String Body = name + " would like to chat with you on Say Hi. It's free! \n\nhttps://app-sayhi.netlify.app";
+                String Body = name + " would like to chat with you on Say Hi. It's free! \n\n https://app-sayhi.netlify.app";
                 intent.putExtra(Intent.EXTRA_TEXT, Body);
                 startActivity(Intent.createChooser(intent, "Share App"));
             }

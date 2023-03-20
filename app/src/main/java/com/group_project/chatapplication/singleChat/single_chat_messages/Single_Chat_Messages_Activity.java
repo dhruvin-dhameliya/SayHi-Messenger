@@ -110,52 +110,6 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
         receiverMobileNo = getIntent().getExtras().get("pass_receiver_number").toString().replace(" ", "").replace("-", "").replace("+91", "");
 
         mToolbar = findViewById(R.id.chat_bar_layout);
-        mToolbar.inflateMenu(R.menu.delete_chat_menu);
-        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.clear_chat_for_me) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(Single_Chat_Messages_Activity.this);
-                    builder.setTitle("Clear chat?");
-                    builder.setMessage("Are you sure to clear your chat?");
-                    builder.setPositiveButton("Clear", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            FirebaseDatabase.getInstance().getReference().child("Chat").child(myMobileNo).child(senderRoom).child("Messages").setValue(null);
-                            Toast.makeText(Single_Chat_Messages_Activity.this, "All chat cleared for you", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    builder.create().show();
-                } else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(Single_Chat_Messages_Activity.this);
-                    builder.setTitle("Clear chat?");
-                    builder.setMessage("Are you sure to clear chat for everyone?");
-                    builder.setPositiveButton("Clear", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            FirebaseDatabase.getInstance().getReference().child("Chat").child(myMobileNo).child(senderRoom).child("Messages").setValue(null);
-                            FirebaseDatabase.getInstance().getReference().child("Chat").child(receiverMobileNo).child(receiverRoom).child("Messages").setValue(null);
-                            Toast.makeText(Single_Chat_Messages_Activity.this, "All chat cleared for everyone", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    builder.create().show();
-                }
-                return false;
-            }
-        });
-
 
         auth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -202,7 +156,6 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
         });
 
         check_number_exist_or_not();
-        loadChatInfo();
 
         do_chat_messages();
         display_chat_messages();
@@ -332,6 +285,91 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                         }
                     });
 
+                    //inflate menu for clear chat
+                    mToolbar.inflateMenu(R.menu.delete_chat_menu);
+                    mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            if (item.getItemId() == R.id.clear_chat_for_me) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(Single_Chat_Messages_Activity.this);
+                                builder.setTitle("Clear chat?");
+                                builder.setMessage("Are you sure to clear your chat?");
+                                builder.setPositiveButton("Clear", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        FirebaseDatabase.getInstance().getReference().child("Chat").child(myMobileNo).child(senderRoom).child("Messages").setValue(null);
+                                        Toast.makeText(Single_Chat_Messages_Activity.this, "All chat cleared for you", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                                builder.create().show();
+                            } else {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(Single_Chat_Messages_Activity.this);
+                                builder.setTitle("Clear chat?");
+                                builder.setMessage("Are you sure to clear chat for everyone?");
+                                builder.setPositiveButton("Clear", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        FirebaseDatabase.getInstance().getReference().child("Chat").child(myMobileNo).child(senderRoom).child("Messages").setValue(null);
+                                        FirebaseDatabase.getInstance().getReference().child("Chat").child(receiverMobileNo).child(receiverRoom).child("Messages").setValue(null);
+                                        Toast.makeText(Single_Chat_Messages_Activity.this, "All chat cleared for everyone", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                                builder.create().show();
+                            }
+                            return false;
+                        }
+                    });
+
+                    // navigate to info activity
+                    databaseReference.child(myMobileNo).child(senderRoom)
+                            .addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot ds) {
+                                    String title = "" + ds.child("receiver_name").getValue();
+                                    String profileImage = "" + ds.child("receiver_profileImage").getValue();
+                                    String mobile = "" + ds.child("receiver_no").getValue();
+                                    String about = "" + ds.child("receiver_info").getValue();
+
+                                    user_name.setText(title);
+                                    try {
+                                        Glide.with(profile_img).load(profileImage).into(profile_img);
+                                    } catch (Exception e) {
+                                        profile_img.setImageResource(R.drawable.img_default_person);
+                                    }
+
+                                    user_name.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Intent intent = new Intent(getApplicationContext(), Single_Chat_Info_Activity.class);
+                                            intent.putExtra("title", title);
+                                            intent.putExtra("mobile", mobile);
+                                            intent.putExtra("profileImage", profileImage);
+                                            intent.putExtra("about", about);
+                                            intent.putExtra("contactName", currentContactName);
+                                            intent.putExtra("contactNumber", receiverMobileNo);
+                                            startActivity(intent);
+                                        }
+                                    });
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+
                 } else {
                     Glide.with(img_chat_wallpaper).load(R.drawable.img_white_bg).into(img_chat_wallpaper);
                     Glide.with(profile_img).load(R.drawable.img_contact_user).into(profile_img);
@@ -345,7 +383,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                         public void onClick(View v) {
                             Intent intent = new Intent(Intent.ACTION_SEND);
                             intent.setType("text/plain");
-                            String Body = "Let's chat on Say Hi! It's a fast, simple, and secure app we can use to message each other for free. Get it at https://app-sayhi.netlify.app";
+                            String Body = "Let's chat on Say Hi! It's a fast, simple, and secure app we can use to message each other for free. Get it at \n\n https://app-sayhi.netlify.app";
                             intent.putExtra(Intent.EXTRA_TEXT, Body);
                             startActivity(Intent.createChooser(intent, "Share App"));
                         }
@@ -360,45 +398,6 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
         });
     }
 
-    public void loadChatInfo() {
-        databaseReference.child(myMobileNo).child(senderRoom)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot ds) {
-                        String title = "" + ds.child("receiver_name").getValue();
-                        String profileImage = "" + ds.child("receiver_profileImage").getValue();
-                        String mobile = "" + ds.child("receiver_no").getValue();
-                        String about = "" + ds.child("receiver_info").getValue();
-
-                        user_name.setText(title);
-                        try {
-                            Glide.with(profile_img).load(profileImage).into(profile_img);
-                        } catch (Exception e) {
-                            profile_img.setImageResource(R.drawable.img_default_person);
-                        }
-
-                        user_name.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent(getApplicationContext(), Single_Chat_Info_Activity.class);
-                                intent.putExtra("title", title);
-                                intent.putExtra("mobile", mobile);
-                                intent.putExtra("profileImage", profileImage);
-                                intent.putExtra("about", about);
-                                intent.putExtra("contactName", currentContactName);
-                                intent.putExtra("contactNumber", receiverMobileNo);
-                                startActivity(intent);
-                            }
-                        });
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-    }
 
     private void showDialog() {
         Dialog dialog = new Dialog(this);

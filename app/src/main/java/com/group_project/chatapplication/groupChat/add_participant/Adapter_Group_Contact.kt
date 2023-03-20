@@ -32,13 +32,11 @@ class Adapter_Group_Contact(items: MutableList<ContactDTO>, ctx: Context, groupI
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        firebaseAuth = FirebaseAuth.getInstance()
+        val user = firebaseAuth!!.currentUser
+        fetch_phone_number = user!!.phoneNumber
         holder.name.text = list[position].name
         holder.contact_card_view.setOnLongClickListener() {
-
-            firebaseAuth = FirebaseAuth.getInstance()
-            val user = firebaseAuth!!.currentUser
-            fetch_phone_number = user!!.phoneNumber
-
             val reference = FirebaseDatabase.getInstance().getReference("Groups")
             reference.child(groupId).child("Participants").orderByChild("uid")
                 .equalTo(fetch_phone_number).addValueEventListener(object : ValueEventListener {
@@ -195,7 +193,12 @@ class Adapter_Group_Contact(items: MutableList<ContactDTO>, ctx: Context, groupI
                     for (ds in snapshot.children) {
                         val post = "" + ds.child("post").value
                         holder.post.text = post
-                        if (post.equals("creator")) {
+//                        if (post.equals("creator")) {
+//                            holder.you.visibility = View.VISIBLE
+//                        }
+                        val number = "" + ds.child("uid").value
+                        holder.post.text = post
+                        if (number == fetch_phone_number) {
                             holder.you.visibility = View.VISIBLE
                         }
                     }
