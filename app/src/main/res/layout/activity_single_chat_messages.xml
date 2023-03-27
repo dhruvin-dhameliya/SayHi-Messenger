@@ -70,18 +70,6 @@
                     android:textSize="@dimen/_15sdp"
                     android:textStyle="bold" />
 
-                <!--<TextView
-                    android:id="@+id/user_online_or_not_txt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:gravity="start|center"
-                    android:text="Offline"
-                    android:textColor="@color/white"
-                    android:textStyle="normal"
-                    android:visibility="gone" />-->
-
             </LinearLayout>
 
         </LinearLayout>
@@ -216,6 +204,8 @@
             android:layout_centerInParent="true"
             android:backgroundTint="@color/colorPrimary"
             android:contentDescription="Chats"
+            android:foregroundGravity="center"
+            android:scaleType="center"
             android:src="@drawable/icon_send_chat"
             app:borderWidth="0dp"
             app:elevation="0dp"

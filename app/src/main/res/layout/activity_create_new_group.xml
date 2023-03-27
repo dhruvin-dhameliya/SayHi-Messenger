@@ -81,7 +81,7 @@
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginBottom="@dimen/_20sdp"
-        android:text="This is optional"
+        android:text="Describe shortly about your group"
         android:textColor="#808080" />
 
     <com.google.android.material.button.MaterialButton

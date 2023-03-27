@@ -113,11 +113,11 @@ public class Create_New_Group_Activity extends AppCompatActivity {
         String grouptitle = editname.getText().toString().trim();
         String groupDescription = editdesc.getText().toString().trim();
         if (TextUtils.isEmpty(grouptitle)) {
-            Toast.makeText(this, "Please Enter Group Title", Toast.LENGTH_SHORT).show();
+            editname.setError("Please enter group title.");
             return;
         }
         if (TextUtils.isEmpty(groupDescription)) {
-            Toast.makeText(this, "Please Enter Group Info.", Toast.LENGTH_SHORT).show();
+            editdesc.setError("Please enter group description.");
             return;
         }
         progressDialog.show();
@@ -212,19 +212,18 @@ public class Create_New_Group_Activity extends AppCompatActivity {
     private void showPickDialog() {
         String[] options = {"Camera", "Gallery"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Pick Image")
-                .setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        if (i == 0) {
-                            //camera
-                            pickFromCamera();
-                        } else {
-                            //gallery
-                            pickfromGallery();
-                        }
-                    }
-                }).show();
+        builder.setTitle("Pick Image").setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (i == 0) {
+                    //camera
+                    pickFromCamera();
+                } else {
+                    //gallery
+                    pickfromGallery();
+                }
+            }
+        }).show();
     }
 
     public void pickfromGallery() {

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center">
+    android:layout_gravity="center"
+    android:background="@color/white">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -17,9 +18,9 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_101sdp"
+                android:layout_height="@dimen/_150sdp"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/group_info_inside_banner" />
+                app:srcCompat="@drawable/img_chat_info_banner" />
 
             <LinearLayout
                 android:id="@+id/top_section"
@@ -30,10 +31,10 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/groupIconIv"
-                    android:layout_width="@dimen/_101sdp"
-                    android:layout_height="@dimen/_101sdp"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="@dimen/_120sdp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_25sdp"
+                    android:layout_marginTop="@dimen/_60sdp"
                     android:src="@drawable/img_default_person" />
 
                 <RelativeLayout
@@ -269,6 +270,7 @@
                 android:layout_below="@+id/participantTv"
                 android:layout_marginHorizontal="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_8sdp"
+                android:background="@color/white"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/row_add_participant" />
 

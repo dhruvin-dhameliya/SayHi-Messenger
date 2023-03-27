@@ -81,6 +81,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
         android:layout_marginBottom="@dimen/_2sdp"
+        android:foregroundGravity="center"
         android:gravity="center"
         android:padding="@dimen/_4sdp">
 
@@ -107,7 +108,6 @@
                     android:layout_height="@dimen/_40sdp"
                     android:layout_alignParentStart="true"
                     android:layout_centerInParent="true"
-                    android:layout_centerVertical="true"
                     android:layout_gravity="start|center"
                     android:layout_marginStart="@dimen/_4sdp"
                     android:layout_marginEnd="@dimen/_6sdp"
@@ -147,6 +147,8 @@
             android:layout_centerInParent="true"
             android:backgroundTint="@color/colorPrimary"
             android:contentDescription="Chats"
+            android:foregroundGravity="center"
+            android:scaleType="center"
             android:src="@drawable/icon_send_chat"
             app:borderWidth="0dp"
             app:elevation="0dp"

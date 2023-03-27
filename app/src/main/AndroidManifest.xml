@@ -55,7 +55,8 @@
         </activity>
         <activity
             android:name=".singleChat.single_chat_messages.Single_Chat_Info_Activity"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/Chat_Info_Theme">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -90,7 +91,8 @@
         </activity>
         <activity
             android:name=".groupChat.group_chat_messages.Group_Info_Activity"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/Chat_Info_Theme">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -104,8 +106,8 @@
         </activity>
         <activity
             android:name=".groupChat.add_participant.Group_Contacts_Activity"
-            android:theme="@style/Setting_Screen_Theme"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/Setting_Screen_Theme">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

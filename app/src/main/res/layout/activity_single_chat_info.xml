@@ -20,7 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_150sdp"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/img_single_chat_banner" />
+                app:srcCompat="@drawable/img_chat_info_banner" />
 
             <LinearLayout
                 android:id="@+id/top_section"
@@ -174,14 +174,6 @@
                 </RelativeLayout>
 
             </LinearLayout>
-            <!--
-                        <View
-                            android:id="@+id/view_border1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="1dp"
-                            android:layout_below="@+id/jump_group_chat"
-                            android:layout_marginHorizontal="@dimen/_8sdp"
-                            android:background="#b6b6b6" />-->
 
         </RelativeLayout>
 

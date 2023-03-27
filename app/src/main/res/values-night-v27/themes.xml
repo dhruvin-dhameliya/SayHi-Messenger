@@ -44,10 +44,9 @@
         <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
     </style>
 
-    <style name="Chat_Info_Theme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Chat_Info_Theme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:fitsSystemWindows">true</item>
-        <item name="android:navigationBarColor">@color/white</item>
+        <item name="android:windowLightNavigationBar">true</item>
     </style>
 
     <style name="Setting_Screen_Theme" parent="Theme.MaterialComponents.Light.NoActionBar">

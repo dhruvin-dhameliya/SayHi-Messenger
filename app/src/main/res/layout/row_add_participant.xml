@@ -3,13 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:background="@color/white"
+    android:orientation="horizontal"
+    android:theme="@style/Chat_Info_Theme">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/contact_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:background="@color/white"
         android:foreground="?android:attr/selectableItemBackground"
         android:gravity="center">
 
@@ -20,7 +23,7 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_img"
                 android:layout_width="@dimen/_48sdp"
                 android:layout_height="@dimen/_48sdp"
@@ -31,14 +34,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_marginStart="@dimen/_4sdp"
-                android:gravity="start"
                 android:orientation="vertical">
 
-
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
@@ -61,10 +61,23 @@
                         android:text="(You)"
                         android:visibility="gone" />
 
+                    <TextView
+                        android:id="@+id/tv_post"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:gravity="end"
+                        android:shadowColor="#0B0B0B"
+                        android:shadowDx="12"
+                        android:shadowDy="12"
+                        android:shadowRadius="10"
+                        android:text="post"
+                        android:textColor="#00B0FF" />
+
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/tv_post"
+                    android:id="@+id/info_participant"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 

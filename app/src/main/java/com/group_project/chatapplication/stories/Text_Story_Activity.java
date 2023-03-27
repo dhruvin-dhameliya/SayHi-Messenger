@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -39,6 +40,7 @@ import com.group_project.chatapplication.R;
 import com.group_project.chatapplication.registration.User_Model;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -283,6 +285,7 @@ public class Text_Story_Activity extends AppCompatActivity {
         if (TextUtils.isEmpty(storyTxtMsg)) {
             Toast.makeText(getApplicationContext(), "Type a status!", Toast.LENGTH_SHORT).show();
         } else {
+            progressDialog.show();
             write_story_txt.setFocusable(false);
             // preserve layout as image
             txt_story_layout.setDrawingCacheEnabled(true);
@@ -316,19 +319,21 @@ public class Text_Story_Activity extends AppCompatActivity {
                                 objectsHashMap.put("profileImage", userStories_model.getProfileImage());
                                 objectsHashMap.put("lastUpdate", userStories_model.getLastupdated());
                                 String imgURL = uri.toString();
-                                Stories_Model stories_model = new Stories_Model(imgURL, userStories_model.getLastupdated());
+                                byte[] data = imgURL.getBytes(StandardCharsets.UTF_8);
+                                String encode_story = Base64.encodeToString(data, Base64.DEFAULT);
+                                Stories_Model stories_model = new Stories_Model(encode_story, userStories_model.getLastupdated());
                                 firebaseDatabase.getReference().child("Stories").child(fetch_phone_number).updateChildren(objectsHashMap);
                                 firebaseDatabase.getReference().child("Stories").child(fetch_phone_number).child("Status").child(String.valueOf(d1)).setValue(stories_model);
                                 progressDialog.dismiss();
+
+                                Toast.makeText(getApplicationContext(), "Story Uploaded!.", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(Text_Story_Activity.this, MainActivity.class));
+                                finishAffinity();
                             }
                         });
                     }
                 }
             });
-
-            Toast.makeText(getApplicationContext(), "TEXT story upload.", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(Text_Story_Activity.this, MainActivity.class));
-            finishAffinity();
         }
     }
 }

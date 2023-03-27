@@ -11,7 +11,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -44,6 +46,8 @@ import com.group_project.chatapplication.R;
 import com.group_project.chatapplication.registration.User_Model;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -201,6 +205,7 @@ public class Story_Preview_Activity extends AppCompatActivity {
         if (fetch_caption.length() >= 75) {
             edit_txt_caption.setError("Story caption maximum 75 character.");
         } else {
+            progressDialog.show();
             edit_txt_caption.setFocusable(false);
             // preserve layout as image
             final_story_img_layout.setDrawingCacheEnabled(true);
@@ -211,7 +216,7 @@ public class Story_Preview_Activity extends AppCompatActivity {
             Bitmap bitmapImg = final_story_img_layout.getDrawingCache();
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             bitmapImg.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-            String path = MediaStore.Images.Media.insertImage(this.getContentResolver(), bitmapImg, "picture", null);
+            String path = MediaStore.Images.Media.insertImage(this.getContentResolver(), bitmapImg, "SayHi Story-" + System.currentTimeMillis(), null);
             Uri myImgURI = Uri.parse(path);
 
             // Story upload on firebase Storage code....
@@ -234,19 +239,21 @@ public class Story_Preview_Activity extends AppCompatActivity {
                                 objectsHashMap.put("profileImage", userStories_model.getProfileImage());
                                 objectsHashMap.put("lastUpdate", userStories_model.getLastupdated());
                                 String imgURL = uri.toString();
-                                Stories_Model stories_model = new Stories_Model(imgURL, userStories_model.getLastupdated());
+                                byte[] data = imgURL.getBytes(StandardCharsets.UTF_8);
+                                String encode_story = Base64.encodeToString(data, Base64.DEFAULT);
+                                Stories_Model stories_model = new Stories_Model(encode_story, userStories_model.getLastupdated());
                                 firebaseDatabase.getReference().child("Stories").child(fetch_phone_number).updateChildren(objectsHashMap);
                                 firebaseDatabase.getReference().child("Stories").child(fetch_phone_number).child("Status").child(String.valueOf(d1)).setValue(stories_model);
                                 progressDialog.dismiss();
+
+                                Toast.makeText(getApplicationContext(), "Story Uploaded!", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(Story_Preview_Activity.this, MainActivity.class));
+                                finishAffinity();
                             }
                         });
                     }
                 }
             });
-
-            Toast.makeText(getApplicationContext(), "Story upload.", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(Story_Preview_Activity.this, MainActivity.class));
-            finishAffinity();
         }
     }
 

@@ -133,6 +133,8 @@ public class Edit_Profile_Activity extends AppCompatActivity {
 
                 if (TextUtils.isEmpty(profileName)) {
                     profile_user_name.setError("Please enter your name.");
+                } else if (TextUtils.isEmpty(profileAbout)) {
+                    profile_user_about.setError("Please enter your about.");
                 } else {
                     progressDialog.show();
                     if (updateImageUri != null) {

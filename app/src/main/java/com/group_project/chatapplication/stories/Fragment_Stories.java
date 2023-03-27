@@ -63,8 +63,7 @@ public class Fragment_Stories extends Fragment {
     FloatingActionButton add_txt_story;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         storiesFragmentView = inflater.inflate(R.layout.fragment__stories, container, false);
 
@@ -216,7 +215,8 @@ public class Fragment_Stories extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         FirebaseDatabase.getInstance().getReference().child("Stories").child(fetch_phone_number).getRef().setValue(null);
-                        Toast.makeText(getContext(), "Stories Deleted!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Stories Deleted.", Toast.LENGTH_SHORT).show();
+                        btn_delete_your_stories.setVisibility(View.GONE);
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
