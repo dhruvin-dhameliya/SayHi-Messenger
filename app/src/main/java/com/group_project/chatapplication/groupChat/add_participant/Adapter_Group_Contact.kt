@@ -31,7 +31,7 @@ class Adapter_Group_Contact(items: MutableList<ContactDTO>, ctx: Context, groupI
     private var context = ctx
     private var groupId = groupId
     var myGroupPost = ""
-    var fetch_phone_number: kotlin.String? = null
+    var fetch_phone_number: String? = null
     var firebaseAuth: FirebaseAuth? = null
 
     override fun getItemCount(): Int {
@@ -42,6 +42,7 @@ class Adapter_Group_Contact(items: MutableList<ContactDTO>, ctx: Context, groupI
         firebaseAuth = FirebaseAuth.getInstance()
         val user = firebaseAuth!!.currentUser
         fetch_phone_number = user!!.phoneNumber
+
         holder.name.text = list[position].name
         holder.contact_card_view.setOnLongClickListener() {
             val reference = FirebaseDatabase.getInstance().getReference("Groups")
@@ -225,6 +226,8 @@ class Adapter_Group_Contact(items: MutableList<ContactDTO>, ctx: Context, groupI
                                     for (s in snapshot.children) {
                                         val info = "" + s.child("about").value
                                         val profile_image = "" + s.child("profile_image").value
+                                        val username=""+s.child("name").value
+                                        holder.name.text=username
                                         holder.info_participant.text = info
                                         Glide.with(context).load(profile_image)
                                             .placeholder(R.drawable.img_contact_user)

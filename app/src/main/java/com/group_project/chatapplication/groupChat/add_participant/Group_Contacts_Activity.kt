@@ -114,6 +114,7 @@ class Group_Contacts_Activity : AppCompatActivity() {
         private var list = items
         private var context = ctx
         private var groupID = groupID
+        var fetch_number = ""
 
         override fun getItemCount(): Int {
             return list.size
@@ -131,6 +132,11 @@ class Group_Contacts_Activity : AppCompatActivity() {
                         list[position].phone_number.trim().replace(" ", "").replace("-", "")
                     )
 
+                fetch_number = contact_model.contact_number
+                if (fetch_number.length == 10) {
+                    fetch_number = "+91" + fetch_number
+                }
+
                 //not exists/not participant-add
                 val builder = AlertDialog.Builder(context)
                 builder.setTitle("Add Participant")
@@ -139,14 +145,14 @@ class Group_Contacts_Activity : AppCompatActivity() {
                         //addParticipant(contact_model)
                         val timestamp = "" + System.currentTimeMillis()
                         val hashMap = HashMap<String, String>()
-                        hashMap["uid"] = contact_model.contact_number
+                        hashMap["uid"] = fetch_number
                         hashMap["post"] = "participant"
                         hashMap["timestamp"] = "" + timestamp
                         hashMap["name"] = contact_model.contact_name
                         //add that user in Groups<groupId>Participant
                         val reference = FirebaseDatabase.getInstance().getReference("Groups")
                         reference.child(groupID).child("Participants")
-                            .child(contact_model.contact_number).setValue(hashMap)
+                            .child(fetch_number).setValue(hashMap)
                             .addOnSuccessListener { //add success
                                 Toast.makeText(context, "Added successfully", Toast.LENGTH_SHORT)
                                     .show()
