@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:foreground="?android:attr/selectableItemBackground"
-        android:paddingVertical="@dimen/_6sdp">
+        android:paddingVertical="@dimen/_4sdp">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/single_chat_profile_img"
@@ -23,31 +23,61 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:src="@drawable/img_contact_user" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/chat_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="@dimen/_11sdp"
+            android:layout_marginStart="@dimen/_4sdp"
             android:layout_toEndOf="@id/single_chat_profile_img"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:paddingStart="@dimen/_10sdp"
+            android:text="Chat Title"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_18sdp" />
 
-            <TextView
-                android:id="@+id/chat_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Chat Title"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_18sdp" />
+        <LinearLayout
+            android:id="@+id/last_mg_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/chat_title"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_toEndOf="@id/single_chat_profile_img"
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/info_txt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/icon_img_file"
+                android:layout_width="@dimen/_13sdp"
+                android:layout_height="@dimen/_13sdp"
+                android:layout_marginStart="@dimen/_11sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginEnd="-7dp"
                 android:singleLine="true"
-                android:text="Info"
-                android:textColor="@color/colorPrimary" />
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/last_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_3sdp"
+                android:paddingStart="@dimen/_8sdp"
+                android:paddingEnd="0dp"
+                android:singleLine="true"
+                android:text="Last Message"
+                android:textColor="@color/colorPrimary"
+                android:textSize="15sp" />
+
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/last_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/last_mg_layout"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:singleLine="true"
+            android:text="00:00 AM "
+            android:textColor="#999898" />
 
     </RelativeLayout>
 
