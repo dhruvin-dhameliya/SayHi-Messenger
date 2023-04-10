@@ -24,7 +24,6 @@ public class No_Internet_Check_Activity extends AppCompatActivity {
     MaterialButton exit_btn, retry_btn;
     FirebaseAuth auth;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

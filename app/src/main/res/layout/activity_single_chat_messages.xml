@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_centerInParent="true"
@@ -158,17 +159,26 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center">
 
+                <ImageButton
+                    android:id="@+id/btn_emoji"
+                    android:layout_width="@dimen/_24sdp"
+                    android:layout_height="@dimen/_24sdp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:background="@drawable/icon_emoji"
+                    android:backgroundTint="#808080" />
+
                 <EditText
                     android:id="@+id/input_message"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_40sdp"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerInParent="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="start|center"
-                    android:layout_marginStart="@dimen/_4sdp"
                     android:layout_marginEnd="@dimen/_6sdp"
                     android:layout_toStartOf="@+id/send_file"
+                    android:layout_toEndOf="@+id/btn_emoji"
                     android:background="@null"
                     android:gravity="start|center"
                     android:hint="Type a message"
@@ -177,7 +187,6 @@
                     android:lineSpacingExtra="@dimen/_4sdp"
                     android:maxLines="4"
                     android:minLines="1"
-                    android:paddingStart="@dimen/_10sdp"
                     android:paddingEnd="0dp"
                     android:textSize="18sp" />
 

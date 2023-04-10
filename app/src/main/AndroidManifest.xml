@@ -17,6 +17,9 @@
         android:theme="@style/Theme.ChatApplication"
         tools:targetApi="31">
         <activity
+            android:name=".chatbot.Bot_Msg_Activity"
+            android:exported="false" />
+        <activity
             android:name=".commonActivities.No_Internet_Check_Activity"
             android:exported="false"
             android:theme="@style/Setting_Screen_Theme">

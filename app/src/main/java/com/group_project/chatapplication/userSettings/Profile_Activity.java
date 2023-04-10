@@ -8,12 +8,22 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +31,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,9 +57,9 @@ public class Profile_Activity extends AppCompatActivity {
 
     ImageView back_to_main_screen;
     CircleImageView user_profile_image;
-    TextView user_name_txt, user_about_txt, jump_to_edit_profile_txt, jump_to_set_wallpaper_txt, jump_to_create_group_txt, jump_to_invite_txt, txt_logout;
+    TextView user_name_txt, user_about_txt, jump_to_edit_profile_txt, jump_to_set_wallpaper_txt, jump_to_create_group_txt, jump_to_invite_txt, jump_to_encryption_txt, txt_logout;
     MaterialButton btn1, btn2, btn3, btn4;
-    RelativeLayout jump_to_edit_profile_layout, jump_to_set_wallpaper_layout, jump_to_create_group_layout, jump_to_invite_layout;
+    RelativeLayout jump_to_edit_profile_layout, jump_to_set_wallpaper_layout, jump_to_create_group_layout, jump_to_invite_layout, jump_to_encryption_layout;
     ActivityResultLauncher<Intent> activityResultLauncher;
     String currentLoginUserId, name, phoneNumber, about, imageUri;
     User_Model usersModel;
@@ -70,6 +81,7 @@ public class Profile_Activity extends AppCompatActivity {
         jump_to_set_wallpaper_txt = findViewById(R.id.jump_to_set_wallpaper_txt);
         jump_to_create_group_txt = findViewById(R.id.jump_to_create_group_txt);
         jump_to_invite_txt = findViewById(R.id.jump_to_invite_txt);
+        jump_to_encryption_txt = findViewById(R.id.jump_to_encryption_txt);
         txt_logout = findViewById(R.id.txt_logout);
         btn1 = findViewById(R.id.btn1);
         btn2 = findViewById(R.id.btn2);
@@ -79,6 +91,7 @@ public class Profile_Activity extends AppCompatActivity {
         jump_to_set_wallpaper_layout = findViewById(R.id.jump_to_set_wallpaper_layout);
         jump_to_create_group_layout = findViewById(R.id.jump_to_create_group_layout);
         jump_to_invite_layout = findViewById(R.id.jump_to_invite_layout);
+        jump_to_encryption_layout = findViewById(R.id.jump_to_encryption_layout);
 
         currentLoginUserId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
@@ -249,6 +262,20 @@ public class Profile_Activity extends AppCompatActivity {
             }
         });
 
+        jump_to_encryption_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                show_E2E_Dialog();
+            }
+        });
+
+        jump_to_encryption_txt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                show_E2E_Dialog();
+            }
+        });
+
     }
 
     public void changeAbout(String newAbout) {
@@ -296,4 +323,26 @@ public class Profile_Activity extends AppCompatActivity {
         }).show();
     }
 
+
+    private void show_E2E_Dialog() {
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.bottom_sheet_info_end_to_end);
+
+        MaterialButton jump_to_website = dialog.findViewById(R.id.jump_to_website);
+        jump_to_website.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://app-sayhi.netlify.app"));
+                startActivity(browserIntent);
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialoAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
 }
