@@ -17,6 +17,14 @@
         android:theme="@style/Theme.ChatApplication"
         tools:targetApi="31">
         <activity
+            android:name=".chatBot.Chat_Bot_Msg_Activity"
+            android:theme="@style/Setting_Screen_Theme"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".commonActivities.No_Internet_Check_Activity"
             android:exported="false"
             android:theme="@style/Setting_Screen_Theme">

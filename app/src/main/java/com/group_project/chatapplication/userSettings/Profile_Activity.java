@@ -36,6 +36,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.group_project.chatapplication.chatBot.Chat_Bot_Msg_Activity;
 import com.group_project.chatapplication.groupChat.group_list.Create_New_Group_Activity;
 import com.group_project.chatapplication.wallPaper.Default_Wallpaper_Preview_Activity;
 import com.group_project.chatapplication.R;
@@ -182,15 +183,13 @@ public class Profile_Activity extends AppCompatActivity {
         jump_to_chatbot_txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                startActivity(new Intent(Profile_Activity.this, Bot_Msg_Activity.class));
-                Toast.makeText(getApplicationContext(), "BOT feature coming soon..", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(Profile_Activity.this, Chat_Bot_Msg_Activity.class));
             }
         });
         jump_to_chatbot_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                startActivity(new Intent(Profile_Activity.this, Bot_Msg_Activity.class));
-                Toast.makeText(getApplicationContext(), "BOT feature coming soon..", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(Profile_Activity.this, Chat_Bot_Msg_Activity.class));
             }
         });
 

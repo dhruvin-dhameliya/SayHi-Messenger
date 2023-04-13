@@ -496,6 +496,7 @@
                 android:layout_below="@+id/text1"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/_18sdp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
