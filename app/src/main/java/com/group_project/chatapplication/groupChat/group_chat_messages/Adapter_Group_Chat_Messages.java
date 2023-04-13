@@ -18,7 +18,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.util.GlideSuppliers;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,7 +32,6 @@ import com.google.firebase.storage.StorageReference;
 import com.group_project.chatapplication.R;
 import com.makeramen.roundedimageview.RoundedImageView;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -89,6 +87,7 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
             holder.user_txt_msg.setText(text);
             holder.user_img_msg_layout.setVisibility(View.GONE);
             holder.user_doc_msg_layout.setVisibility(View.GONE);
+            holder.user_video_msg_layout.setVisibility(View.GONE);
             holder.user_txt_msg.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -101,9 +100,10 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
             holder.user_txt_msg.setVisibility(View.GONE);
             holder.user_doc_msg_layout.setVisibility(View.GONE);
             holder.user_img_msg_layout.setVisibility(View.VISIBLE);
+            holder.user_video_msg_layout.setVisibility(View.GONE);
             byte[] data = Base64.decode(message, Base64.DEFAULT);
             String text = new String(data, StandardCharsets.UTF_8);
-            try{
+            try {
                 Glide.with(holder.user_img_msg).load(text).placeholder(R.drawable.default_image_for_chat).into(holder.user_img_msg);
             }catch (Exception e){
                 e.printStackTrace();
@@ -129,10 +129,46 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
             });
         }
 
+        //for video message
+        if (messageType.equals("video")) {
+            holder.user_txt_msg.setVisibility(View.GONE);
+            holder.user_doc_msg_layout.setVisibility(View.GONE);
+            holder.user_img_msg_layout.setVisibility(View.GONE);
+            holder.user_video_msg_layout.setVisibility(View.VISIBLE);
+            byte[] data = Base64.decode(message, Base64.DEFAULT);
+            String text = new String(data, StandardCharsets.UTF_8);
+            try {
+                Glide.with(holder.user_video_msg).load(text).placeholder(R.drawable.default_image_for_chat).into(holder.user_video_msg);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            holder.user_video_msg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, Group_Full_Screen_Video_Activity.class);
+                    intent.putExtra("video", text);
+                    intent.putExtra("sender", senderUid);
+                    context.startActivity(intent);
+                }
+            });
+            holder.user_video_msg_layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, Group_Full_Screen_Video_Activity.class);
+                    intent.putExtra("video", text);
+                    intent.putExtra("sender", senderUid);
+                    context.startActivity(intent);
+                }
+            });
+
+        }
+
         if (messageType.equals("file")) {
             holder.user_doc_msg_layout.setVisibility(View.VISIBLE);
             holder.user_txt_msg.setVisibility(View.GONE);
             holder.user_img_msg_layout.setVisibility(View.GONE);
+            holder.user_video_msg_layout.setVisibility(View.GONE);
             byte[] data = Base64.decode(message, Base64.DEFAULT);
             String text = new String(data, StandardCharsets.UTF_8);
             holder.user_doc_msg_layout.setOnClickListener(new View.OnClickListener() {
@@ -165,6 +201,7 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
             holder.user_img_msg_layout.setVisibility(View.GONE);
             holder.user_doc_msg.setVisibility(View.GONE);
             holder.user_doc_msg_layout.setVisibility(View.GONE);
+            holder.user_video_msg_layout.setVisibility(View.GONE);
         }
 
         // Delete Text, Image & Documents messages...
@@ -471,17 +508,23 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
         ref.orderByChild("id").equalTo(modelGroupChat.getSender()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    String name = "" + ds.child("name").getValue();
-                    String groupIcon = "" + ds.child("profile_image").getValue();
-                    holder.user_name.setText(name);
-                    try{
-                        Glide.with(holder.user_profile_img).load(groupIcon).into(holder.user_profile_img);
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
+                if (snapshot.exists()){
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        String name = "" + ds.child("name").getValue();
+                        String groupIcon = "" + ds.child("profile_image").getValue();
+                        holder.user_name.setText(name);
+                        try{
+                            Glide.with(holder.user_profile_img).load(groupIcon).into(holder.user_profile_img);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
 
+                    }
                 }
+                else {
+                    holder.user_name.setVisibility(View.GONE);
+                }
+
             }
 
             @Override
@@ -510,10 +553,10 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
         CircleImageView user_profile_img;
         TextView msg_time;
         LinearLayout msg_layout, outer_message_layout;
-        RelativeLayout user_img_msg_layout, user_doc_msg_layout;
+        RelativeLayout user_img_msg_layout, user_doc_msg_layout,user_video_msg_layout;
         TextView user_name;
         TextView user_txt_msg;
-        RoundedImageView user_img_msg, user_doc_msg;
+        RoundedImageView user_img_msg, user_doc_msg,user_video_msg;
 
 
         public HolderGroupChat(@NonNull View itemView) {
@@ -528,6 +571,8 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
             user_txt_msg = itemView.findViewById(R.id.user_txt_msg);
             user_img_msg = itemView.findViewById(R.id.user_img_msg);
             user_doc_msg = itemView.findViewById(R.id.user_doc_msg);
+            user_video_msg=itemView.findViewById(R.id.single_user_video_msg);
+            user_video_msg_layout=itemView.findViewById(R.id.single_user_video_msg_layout);
         }
     }
 }

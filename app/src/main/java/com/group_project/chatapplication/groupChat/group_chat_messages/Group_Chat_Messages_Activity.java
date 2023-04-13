@@ -71,12 +71,13 @@ public class Group_Chat_Messages_Activity extends AppCompatActivity {
     RecyclerView chatRv;
     ArrayList<Model_Group_Chat_Messages> groupChatArrayList;
     Adapter_Group_Chat_Messages adapterGroupChat;
-    Uri image_uri = null;
+    Uri image_uri = null, video_uri = null;
     Uri uri;
     String picturePath;
     int IMAGE_PICK_CAMERA_CODE = 300;
     int IMAGE_PICK_GALLERY_CODE = 400;
     int DOCUMENT_PICK_CODE = 500;
+    int VIDEO_PICK_GALLERY_CODE = 102;
     long length;
     int file_size;
 
@@ -107,9 +108,9 @@ public class Group_Chat_Messages_Activity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if ((snapshot.exists())) {
                     String retrieveWallpaperImage = snapshot.getValue(String.class);
-                    try{
+                    try {
                         Glide.with(img_group_chat_wallpaper).load(retrieveWallpaperImage).into(img_group_chat_wallpaper);
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
@@ -173,6 +174,7 @@ public class Group_Chat_Messages_Activity extends AppCompatActivity {
 
         ImageView camera = dialog.findViewById(R.id.camera);
         ImageView gallery = dialog.findViewById(R.id.gallery);
+        ImageView video = dialog.findViewById(R.id.video);
         ImageView pdf = dialog.findViewById(R.id.pdf);
 
         camera.setOnClickListener(new View.OnClickListener() {
@@ -188,6 +190,14 @@ public class Group_Chat_Messages_Activity extends AppCompatActivity {
             public void onClick(View v) {
                 dialog.dismiss();
                 pickfromGallery();
+            }
+        });
+
+        video.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                pickfromVideos();
             }
         });
 
@@ -232,6 +242,11 @@ public class Group_Chat_Messages_Activity extends AppCompatActivity {
         startActivityForResult(intent, IMAGE_PICK_CAMERA_CODE);
     }
 
+    public void pickfromVideos() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("video/*");
+        startActivityForResult(intent, VIDEO_PICK_GALLERY_CODE);
+    }
 
     private void sendImagemessage() {
         //progress
@@ -407,6 +422,26 @@ public class Group_Chat_Messages_Activity extends AppCompatActivity {
 
                 sendImagemessage();
 
+            } else if (requestCode == VIDEO_PICK_GALLERY_CODE) {
+                video_uri = data.getData();
+
+                String[] filepathColumn = {MediaStore.Images.Media.DATA};
+                Cursor cursor = getContentResolver().query(video_uri, filepathColumn, null, null, null);
+                cursor.moveToFirst();
+
+                int columnIndex = cursor.getColumnIndex(filepathColumn[0]);
+                picturePath = cursor.getString(columnIndex);
+                cursor.close();
+
+                File video_len = new File(picturePath);
+                length = video_len.length();
+                file_size = Integer.parseInt(String.valueOf(length / 1024));
+                if (file_size < 15000) {
+                    sendVideoMessage();
+                } else {
+                    Toast.makeText(this, "Video is Greater!", Toast.LENGTH_SHORT).show();
+                }
+
             } else if (requestCode == DOCUMENT_PICK_CODE) {
                 uri = data.getData();
                 sendDocument();
@@ -454,7 +489,72 @@ public class Group_Chat_Messages_Activity extends AppCompatActivity {
                                     //clear
                                     messageET.setText("");
                                     progressDialog.dismiss();
-                                    Toast.makeText(Group_Chat_Messages_Activity.this, "Document", Toast.LENGTH_SHORT).show();
+
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    progressDialog.dismiss();
+                                    Toast.makeText(Group_Chat_Messages_Activity.this, "Failed", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progressDialog.dismiss();
+                Toast.makeText(Group_Chat_Messages_Activity.this, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                double p = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
+                progressDialog.setMessage((int) p + "% Uploading...");
+            }
+        });
+    }
+
+    private void sendVideoMessage() {
+        //progress
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Please wait");
+        // progressDialog.setMessage("Sending Image..");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+        //file path
+        String filepath = "Group Messages/" + fetch_phone_number + "/" + "Videos/" + System.currentTimeMillis() + ".mp4";
+        //upload
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference(filepath);
+        storageReference.putFile(video_uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Task<Uri> p_uriTasl = taskSnapshot.getStorage().getDownloadUrl();
+                while (!p_uriTasl.isSuccessful()) ;
+                Uri p_downloadUri = p_uriTasl.getResult();
+                if (p_uriTasl.isSuccessful()) {
+                    String timestamp = "" + System.currentTimeMillis();
+                    String doc_uri_normal = p_downloadUri.toString();
+                    byte[] data = doc_uri_normal.getBytes(StandardCharsets.UTF_8);
+                    String encode_doc_msg = Base64.encodeToString(data, Base64.DEFAULT);
+
+                    HashMap<String, Object> hashMap = new HashMap<>();
+                    hashMap.put("sender", "" + firebaseAuth.getUid());
+                    hashMap.put("message", "" + encode_doc_msg);
+                    hashMap.put("timestamp", "" + timestamp);
+                    hashMap.put("type", "" + "video");//text,image,file
+
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Groups");
+                    reference.child(groupId).child("Messages").child(timestamp).setValue(hashMap)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    //send
+                                    //clear
+                                    messageET.setText("");
+                                    progressDialog.dismiss();
+
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override

@@ -14,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,6 +33,8 @@ public class Adapter_Group_List extends RecyclerView.Adapter<Adapter_Group_List.
 
     Context context;
     ArrayList<Model_Group_List> groupArrayList;
+    FirebaseAuth firebaseAuth;
+    String fetch_number,encoded_deleted_already_msg = "VGhpcyBtZXNzYWdlIHdhcyBkZWxldGVk";
 
     public Adapter_Group_List(Context context, ArrayList<Model_Group_List> groupArrayList) {
         this.context = context;
@@ -46,6 +50,10 @@ public class Adapter_Group_List extends RecyclerView.Adapter<Adapter_Group_List.
 
     @Override
     public void onBindViewHolder(@NonNull HolderGroupchatList holder, int position) {
+        firebaseAuth=FirebaseAuth.getInstance();
+        FirebaseUser user= firebaseAuth.getCurrentUser();
+        fetch_number= user.getPhoneNumber();
+
         Model_Group_List modelGroup = groupArrayList.get(position);
         String groupId = modelGroup.getGroupId();
         String groupIcon = modelGroup.getGroupIcon();
@@ -95,11 +103,36 @@ public class Adapter_Group_List extends RecyclerView.Adapter<Adapter_Group_List.
                             cal.setTimeInMillis(Long.parseLong(timestamp));
                             String dateTime = DateFormat.format("dd/MM/yy hh:mm aa", cal).toString();
 
+
                             if (messageType.equals("image")) {
-                                holder.messageTv.setText("Sent Photo");
+                                if (message.equals(encoded_deleted_already_msg)){
+                                    byte[] data = Base64.decode(message, Base64.DEFAULT);
+                                    String text = new String(data, StandardCharsets.UTF_8);
+                                    holder.messageTv.setText(text);
+                                }else {
+                                    holder.messageTv.setText("Sent Photo");
+                                }
+
                             } else if (messageType.equals("file")) {
-                                holder.messageTv.setText("Sent Document");
-                            } else {
+                                if (message.equals(encoded_deleted_already_msg)){
+                                    byte[] data = Base64.decode(message, Base64.DEFAULT);
+                                    String text = new String(data, StandardCharsets.UTF_8);
+                                    holder.messageTv.setText(text);
+                                }else {
+                                    holder.messageTv.setText("Sent Document");
+                                }
+
+                            }
+                            else if (messageType.equals("video")){
+                                if (message.equals(encoded_deleted_already_msg)){
+                                    byte[] data = Base64.decode(message, Base64.DEFAULT);
+                                    String text = new String(data, StandardCharsets.UTF_8);
+                                    holder.messageTv.setText(text);
+                                }else {
+                                    holder.messageTv.setText("Sent Video");
+                                }
+                            }
+                            else  {
                                 byte[] data = Base64.decode(message, Base64.DEFAULT);
                                 String text = new String(data, StandardCharsets.UTF_8);
                                 holder.messageTv.setText(text);
@@ -115,7 +148,13 @@ public class Adapter_Group_List extends RecyclerView.Adapter<Adapter_Group_List.
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                                             for (DataSnapshot ds : snapshot.getChildren()) {
                                                 String name = "" + ds.child("name").getValue().toString().trim();
-                                                holder.groupTv.setText(name + ":");
+                                                String phone=""+ds.child("phone").getValue().toString().trim();
+
+                                                if (phone.equals(fetch_number)){
+                                                    holder.groupTv.setText("You:");
+                                                }else {
+                                                    holder.groupTv.setText(name + ":");
+                                                }
                                             }
                                         }
 

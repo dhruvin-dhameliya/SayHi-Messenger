@@ -57,7 +57,7 @@ public class Profile_Activity extends AppCompatActivity {
     MaterialButton btn1, btn2, btn3, btn4;
     RelativeLayout jump_to_edit_profile_layout, jump_to_set_wallpaper_layout, jump_to_create_group_layout, jump_to_chatbot_layout, jump_to_invite_layout, jump_to_encryption_layout;
     ActivityResultLauncher<Intent> activityResultLauncher;
-    String currentLoginUserId, name, phoneNumber, about, imageUri;
+    String currentLoginUserId, name, phoneNumber, about, imageUri, onlineStatus, typing;
     User_Model usersModel;
     FirebaseAuth auth;
     FirebaseDatabase firebaseDatabase;
@@ -113,7 +113,7 @@ public class Profile_Activity extends AppCompatActivity {
                     user_about_txt.setText(about);
                     try {
                         Glide.with(getApplicationContext()).load(imageUri).into(user_profile_image);
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
@@ -300,7 +300,7 @@ public class Profile_Activity extends AppCompatActivity {
         builder.setCancelable(false);
         builder.setPositiveButton("CHANGE", (DialogInterface.OnClickListener) (dialog, which) -> {
 
-            usersModel = new User_Model(auth.getUid(), name, phoneNumber, about, imageUri);
+            usersModel = new User_Model(auth.getUid(), name, phoneNumber, about, imageUri, onlineStatus, typing);
             databaseReference.setValue(usersModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {

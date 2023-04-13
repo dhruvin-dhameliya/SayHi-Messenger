@@ -40,7 +40,7 @@ public class Profile_Info_Activity extends AppCompatActivity {
     EditText add_user_name;
     MaterialButton btn_add_profile;
     ProgressDialog progressDialog;
-    String currentLoginUserId, name, phoneNumber, about, imageUri;
+    String currentLoginUserId, name, phoneNumber, about, imageUri, onlineStatus = "", typing = "noOne";
     Uri updateImageUri;
     User_Model usersModel;
     FirebaseAuth auth;
@@ -119,7 +119,7 @@ public class Profile_Info_Activity extends AppCompatActivity {
                     progressDialog.show();
                     if (updateImageUri == null) {
                         String finalUpdate_ImageUri = "https://firebasestorage.googleapis.com/v0/b/say-hi-chat-app.appspot.com/o/img_default_person.png?alt=media&token=f794b44a-0777-449c-8d0a-bc5b8087b920";
-                        usersModel = new User_Model(auth.getUid(), profileName, phoneNumber, about, finalUpdate_ImageUri);
+                        usersModel = new User_Model(auth.getUid(), profileName, phoneNumber, about, finalUpdate_ImageUri, onlineStatus, typing);
                         databaseReference.setValue(usersModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
@@ -143,7 +143,7 @@ public class Profile_Info_Activity extends AppCompatActivity {
                                         @Override
                                         public void onSuccess(Uri uri) {
                                             String finalUpdate_ImageUri = uri.toString();
-                                            usersModel = new User_Model(auth.getUid(), profileName, phoneNumber, about, finalUpdate_ImageUri);
+                                            usersModel = new User_Model(auth.getUid(), profileName, phoneNumber, about, finalUpdate_ImageUri, onlineStatus, typing);
                                             databaseReference.setValue(usersModel).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void unused) {
@@ -167,7 +167,7 @@ public class Profile_Info_Activity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     String finalUpdate_ImageUri = uri.toString();
-                                    usersModel = new User_Model(auth.getUid(), profileName, phoneNumber, about, finalUpdate_ImageUri);
+                                    usersModel = new User_Model(auth.getUid(), profileName, phoneNumber, about, finalUpdate_ImageUri, onlineStatus, typing);
                                     databaseReference.setValue(usersModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {

@@ -17,6 +17,13 @@
         android:theme="@style/Theme.ChatApplication"
         tools:targetApi="31">
         <activity
+            android:name=".groupChat.group_chat_messages.Group_Full_Screen_Video_Activity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".singleChat.single_chat_messages.Chat_Full_Screen_Video_Activity"
             android:configChanges="orientation|screenLayout|screenSize|keyboardHidden|keyboard"
             android:exported="false">

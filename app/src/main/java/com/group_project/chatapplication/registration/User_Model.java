@@ -2,17 +2,19 @@ package com.group_project.chatapplication.registration;
 
 public class User_Model {
 
-    String Id, Name, Phone, About, Profile_image;
+    String Id, Name, Phone, About, Profile_image, onlineStatus, typing;
 
     public User_Model() {
     }
 
-    public User_Model(String id, String name, String phone, String about, String profile_image) {
+    public User_Model(String id, String name, String phone, String about, String profile_image, String onlineStatus, String typing) {
         Id = id;
         Name = name;
         Phone = phone;
         About = about;
         Profile_image = profile_image;
+        this.onlineStatus = onlineStatus;
+        this.typing = typing;
     }
 
     public String getId() {
@@ -55,4 +57,19 @@ public class User_Model {
         Profile_image = profile_image;
     }
 
+    public String getOnlineStatus() {
+        return onlineStatus;
+    }
+
+    public void setOnlineStatus(String onlineStatus) {
+        this.onlineStatus = onlineStatus;
+    }
+
+    public String getTyping() {
+        return typing;
+    }
+
+    public void setTyping(String typing) {
+        this.typing = typing;
+    }
 }

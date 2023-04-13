@@ -32,7 +32,7 @@ public class Register_OTP_Activity extends AppCompatActivity {
     TextView display_phone;
     TextInputEditText txt_reg_otp;
     MaterialButton btn_reg_otp_verify;
-    String verificationId, code, previous_phone_number;
+    String verificationId, code, previous_phone_number,onlineStatus="",typing="";
     ProgressDialog progressDialog;
     FirebaseAuth auth;
     FirebaseDatabase database;
@@ -126,7 +126,7 @@ public class Register_OTP_Activity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     DatabaseReference reference = database.getReference().child("Users Details").child(code + previous_phone_number);
-                    User_Model model_user = new User_Model(auth.getUid(), user_name, code + previous_phone_number, user_about, user_profile_img);
+                    User_Model model_user = new User_Model(auth.getUid(), user_name, code + previous_phone_number, user_about, user_profile_img,onlineStatus,typing);
                     reference.setValue(model_user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

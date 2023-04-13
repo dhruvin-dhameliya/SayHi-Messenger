@@ -45,7 +45,7 @@ public class Edit_Profile_Activity extends AppCompatActivity {
     EditText profile_user_name, profile_user_about;
     TextView profile_user_phone;
     MaterialButton btn_profile_update;
-    String currentLoginUserId, name, phoneNumber, about, imageUri;
+    String currentLoginUserId, name, phoneNumber, about, imageUri, onlineStatus, typing;
     Uri updateImageUri;
     ProgressDialog progressDialog;
     User_Model usersModel;
@@ -107,7 +107,7 @@ public class Edit_Profile_Activity extends AppCompatActivity {
                     profile_user_phone.setText(phoneNumber);
                     try {
                         Glide.with(getApplicationContext()).load(imageUri).into(display_profile_img);
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
@@ -150,7 +150,7 @@ public class Edit_Profile_Activity extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(Uri uri) {
                                         String finalUpdate_ImageUri = uri.toString();
-                                        usersModel = new User_Model(auth.getUid(), profileName, phoneNumber, profileAbout, finalUpdate_ImageUri);
+                                        usersModel = new User_Model(auth.getUid(), profileName, phoneNumber, profileAbout, finalUpdate_ImageUri, onlineStatus, typing);
                                         databaseReference.setValue(usersModel).addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void unused) {
@@ -173,7 +173,7 @@ public class Edit_Profile_Activity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Uri uri) {
                                 String finalUpdate_ImageUri = uri.toString();
-                                usersModel = new User_Model(auth.getUid(), profileName, phoneNumber, profileAbout, finalUpdate_ImageUri);
+                                usersModel = new User_Model(auth.getUid(), profileName, phoneNumber, profileAbout, finalUpdate_ImageUri, onlineStatus, typing);
                                 databaseReference.setValue(usersModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {

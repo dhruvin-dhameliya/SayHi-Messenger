@@ -92,8 +92,7 @@ class Adapter_Group_Contact(items: MutableList<ContactDTO>, ctx: Context, groupI
                                                                 ds.ref.removeValue()
                                                                 dialogInterface.dismiss()
                                                             }
-                                                        }
-                                                    builder.create().show()
+                                                        }.show()
 
                                                 }
                                                 if (hispost.equals("admin")) {
@@ -138,43 +137,47 @@ class Adapter_Group_Contact(items: MutableList<ContactDTO>, ctx: Context, groupI
                                                         Toast.LENGTH_SHORT
                                                     ).show()
                                                 }
-                                                if (hispost.equals("participant")) {
-                                                    //I am creator ,He is participant
-                                                    val options =
-                                                        arrayOf("Make Admin", "Remove Participant")
-                                                    val builder = AlertDialog.Builder(context)
-                                                    builder.setTitle("Choose Options")
-                                                        .setItems(options) { dialogInterface, i ->
-                                                            if (i == 0) {
-                                                                //Make Admin
+                                                else{
+                                                    if (hispost.equals("participant")) {
+                                                        //I am creator ,He is participant
+                                                        val options =
+                                                            arrayOf("Make Admin", "Remove Participant")
+                                                        val builder = AlertDialog.Builder(context)
+                                                        builder.setTitle("Choose Options")
+                                                            .setItems(options) { dialogInterface, i ->
+                                                                if (i == 0) {
+                                                                    //Make Admin
+                                                                    val hashMap = HashMap<String, Any>()
+                                                                    hashMap["post"] = "admin"
+                                                                    ds.ref.updateChildren(hashMap)
+                                                                    dialogInterface.dismiss()
+                                                                }
+                                                                if (i == 1) {
+                                                                    //Remove Participant
+                                                                    ds.ref.removeValue()
+                                                                    dialogInterface.dismiss()
+                                                                }
+                                                            }
+                                                        builder.create().show()
+
+                                                    }
+                                                    if (hispost.equals("admin")) {
+
+                                                        val builder = AlertDialog.Builder(context)
+                                                        builder.setTitle("Remove Admin")
+                                                            .setMessage("Do you want to Remove admin of this group?")
+                                                            .setPositiveButton("Remove") { _, _ -> //add user
                                                                 val hashMap = HashMap<String, Any>()
-                                                                hashMap["post"] = "admin"
+                                                                hashMap["post"] = "participant"
                                                                 ds.ref.updateChildren(hashMap)
-                                                                dialogInterface.dismiss()
-                                                            }
-                                                            if (i == 1) {
-                                                                //Remove Participant
-                                                                ds.ref.removeValue()
-                                                                dialogInterface.dismiss()
-                                                            }
-                                                        }
-                                                    builder.create().show()
 
+                                                            }.setNegativeButton(
+                                                                "CANCEL"
+                                                            ) { dialogInterface, _ -> dialogInterface.dismiss() }
+                                                            .show()
+                                                    }
                                                 }
-                                                if (hispost.equals("admin")) {
-                                                    val builder = AlertDialog.Builder(context)
-                                                    builder.setTitle("Remove Admin")
-                                                        .setMessage("Do you want to Remove admin of this group?")
-                                                        .setPositiveButton("Remove") { _, _ -> //add user
-                                                            val hashMap = HashMap<String, Any>()
-                                                            hashMap["post"] = "participant"
-                                                            ds.ref.updateChildren(hashMap)
 
-                                                        }.setNegativeButton(
-                                                            "CANCEL"
-                                                        ) { dialogInterface, _ -> dialogInterface.dismiss() }
-                                                        .show()
-                                                }
 
                                             }
                                         }
@@ -229,10 +232,8 @@ class Adapter_Group_Contact(items: MutableList<ContactDTO>, ctx: Context, groupI
                                         val username=""+s.child("name").value
                                         holder.name.text=username
                                         holder.info_participant.text = info
-                                        try{
-                                            Glide.with(context).load(profile_image)
-                                                .placeholder(R.drawable.img_contact_user)
-                                                .into(holder.profile_img)
+                                        try {
+                                            Glide.with(context).load(profile_image).placeholder(R.drawable.img_contact_user).into(holder.profile_img)
                                         }catch (e:Exception){
                                             e.printStackTrace()
                                         }

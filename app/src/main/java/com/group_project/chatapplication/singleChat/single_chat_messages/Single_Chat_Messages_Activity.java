@@ -18,7 +18,10 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.util.Base64;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -53,8 +56,10 @@ import com.group_project.chatapplication.registration.User_Model;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Objects;
 
 public class Single_Chat_Messages_Activity extends AppCompatActivity {
@@ -69,7 +74,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
     RelativeLayout msgRelativeLayout;
     RelativeLayout invite_user_layout;
     ImageView img_invite;
-    TextView btn_invite_user;
+    TextView btn_invite_user, user_status;
     Chat_Adapter chatAd;
     User_Model user_model;
     Receiver_info_Model msg_model = new Receiver_info_Model();
@@ -92,6 +97,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_chat_messages);
 
+        user_status = findViewById(R.id.userstatusTv);
         back_press = findViewById(R.id.back_to_screen);
         profile_img = findViewById(R.id.profile_img);
         user_name = findViewById(R.id.user_name);
@@ -147,7 +153,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                     String retrieveWallpaperImage = snapshot.getValue(String.class);
                     try {
                         Glide.with(getApplicationContext()).load(retrieveWallpaperImage).into(img_chat_wallpaper);
-                    }catch (Exception e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
@@ -164,6 +170,76 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
 
         do_chat_messages();
         display_chat_messages();
+
+        userMessageInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() == 0) {
+                    checkTypingStatus("noOne");
+                } else {
+                    checkTypingStatus(myMobileNo);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+    //start checking online & typing
+    public void checkOnlineStatus(String status) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users Details").child("+91" + myMobileNo);
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("onlineStatus", status);
+        reference.updateChildren(hashMap);
+    }
+
+//    public void checkReceiverStatus(String status){
+//        DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Users Details").child("+91" + receiverMobileNo);
+//
+//        HashMap<String,Object> hashMap=new HashMap<>();
+//        hashMap.put("onlineStatus",status);
+//        reference.updateChildren(hashMap);
+//    }
+
+    public void checkTypingStatus(String typing) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users Details").child("+91" + myMobileNo);
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("typing", typing);
+        reference.updateChildren(hashMap);
+    }
+
+    @Override
+    protected void onStart() {
+        checkOnlineStatus("online");
+        //checkReceiverStatus("online");
+        super.onStart();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        String timestamp = String.valueOf(System.currentTimeMillis());
+        checkOnlineStatus(timestamp);
+        checkTypingStatus("noOne");
+        // checkReceiverStatus(timestamp);
+    }
+
+    @Override
+    protected void onResume() {
+        checkOnlineStatus("online");
+        // checkReceiverStatus("online");
+        super.onResume();
     }
 
     //send message
@@ -228,6 +304,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                 });
     }
 
+
     // check user can use this app or not
     public void check_number_exist_or_not() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users Details").child("+91" + receiverMobileNo);
@@ -247,6 +324,8 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                             msg_model.setReceiverProfileImg(user_model.getProfile_image());
                             msg_model.setReceiverInfo(user_model.getAbout());
                             msg_model.setRoomId(senderRoom);
+                            msg_model.setOnlineStatus(user_model.getOnlineStatus());
+                            msg_model.setTyping(user_model.getTyping());
 
                             HashMap<String, Object> objectsHashMap = new HashMap<>();
                             objectsHashMap.put("receiver_no", msg_model.getReceiverNo());
@@ -254,6 +333,8 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                             objectsHashMap.put("receiver_profileImage", msg_model.getReceiverProfileImg());
                             objectsHashMap.put("receiver_info", msg_model.getReceiverInfo());
                             objectsHashMap.put("room_id", msg_model.getRoomId());
+                            objectsHashMap.put("onlineStatus", msg_model.getOnlineStatus());
+                            objectsHashMap.put("typing", msg_model.getTyping());
 
                             firebaseDatabase.getReference().child("Chat").child(myMobileNo).child(senderRoom).updateChildren(objectsHashMap);
                         }
@@ -274,6 +355,8 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                             msg_model.setReceiverProfileImg(user_model.getProfile_image());
                             msg_model.setReceiverInfo(user_model.getAbout());
                             msg_model.setRoomId(receiverRoom);
+                            msg_model.setOnlineStatus(user_model.getOnlineStatus());
+                            msg_model.setTyping(user_model.getTyping());
 
                             HashMap<String, Object> objectsHashMap = new HashMap<>();
                             objectsHashMap.put("receiver_no", msg_model.getReceiverNo());
@@ -281,6 +364,8 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                             objectsHashMap.put("receiver_profileImage", msg_model.getReceiverProfileImg());
                             objectsHashMap.put("receiver_info", msg_model.getReceiverInfo());
                             objectsHashMap.put("room_id", msg_model.getRoomId());
+                            objectsHashMap.put("onlineStatus", msg_model.getOnlineStatus());
+                            objectsHashMap.put("typing", msg_model.getTyping());
                             firebaseDatabase.getReference().child("Chat").child(receiverMobileNo).child(receiverRoom).updateChildren(objectsHashMap);
                         }
 
@@ -346,6 +431,23 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                                     String profileImage = "" + ds.child("receiver_profileImage").getValue();
                                     String mobile = "" + ds.child("receiver_no").getValue();
                                     String about = "" + ds.child("receiver_info").getValue();
+                                    String online = "" + ds.child("onlineStatus").getValue();
+                                    String typing = "" + ds.child("typing").getValue();
+                                    if (typing.equals(receiverMobileNo)) {
+                                        user_status.setText("typing...");
+                                        user_status.setTextSize(15);
+                                    } else if (online.equals("online")) {
+                                        user_status.setText(online);
+                                        user_status.setTextSize(15);
+                                    }//the end
+                                    else {
+                                        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+                                        calendar.setTimeInMillis(Long.parseLong(online));
+                                        String dateTime = DateFormat.format("dd/MM/yyyy hh:mm aa", calendar).toString();
+                                        user_status.setText("Last seen:" + dateTime);
+                                        user_status.setTextSize(12);
+
+                                    }
 
                                     user_name.setText(title);
                                     try {
@@ -379,7 +481,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                     try {
                         Glide.with(img_chat_wallpaper).load(R.drawable.img_white_bg).into(img_chat_wallpaper);
                         Glide.with(profile_img).load(R.drawable.img_contact_user).into(profile_img);
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 

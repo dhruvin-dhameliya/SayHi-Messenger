@@ -79,6 +79,41 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/single_user_video_msg_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:gravity="center"
+                android:visibility="visible">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="@dimen/_8sdp">
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/single_user_video_msg"
+                        android:layout_width="@dimen/_180sdp"
+                        android:layout_height="@dimen/_250sdp"
+                        android:layout_marginBottom="0dp"
+                        android:scaleType="center"
+                        android:src="@drawable/default_image_for_chat"
+                        app:riv_corner_radius="@dimen/_8sdp"
+                        app:riv_mutate_background="true"
+                        app:riv_oval="false" />
+
+                    <ImageButton
+                        android:layout_width="@dimen/_38sdp"
+                        android:layout_height="@dimen/_38sdp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/icon_play_video_button"
+                        android:gravity="center" />
+
+                </androidx.cardview.widget.CardView>
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/user_doc_msg_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

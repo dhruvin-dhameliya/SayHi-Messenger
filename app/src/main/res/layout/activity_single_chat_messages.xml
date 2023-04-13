@@ -44,6 +44,7 @@
                 android:background="@drawable/img_back_arow"
                 android:backgroundTint="@color/white" />
 
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_img"
                 android:layout_width="@dimen/_35sdp"
@@ -69,6 +70,16 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/_15sdp"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/userstatusTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:gravity="start|center"
+                    android:text=""
+                    android:textColor="@color/white" />
 
             </LinearLayout>
 
