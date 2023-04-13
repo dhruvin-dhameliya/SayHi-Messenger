@@ -8,6 +8,7 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -105,8 +106,8 @@ public class Chat_Adapter extends RecyclerView.Adapter {
 
                 ((SenderViewHolder) holder).senderMsg.setVisibility(View.VISIBLE);
                 ((SenderViewHolder) holder).user_doc_msg_layout.setVisibility(View.GONE);
+                ((SenderViewHolder) holder).user_video_msg_layout.setVisibility(View.GONE);
                 ((SenderViewHolder) holder).user_img_msg_layout.setVisibility(View.GONE);
-
             } else {
                 byte[] data = Base64.decode(chatmodel.getMessage(), Base64.DEFAULT);
                 String text = new String(data, StandardCharsets.UTF_8);
@@ -116,9 +117,9 @@ public class Chat_Adapter extends RecyclerView.Adapter {
 
                 ((RecieverViewHolder) holder).receiverMsg.setVisibility(View.VISIBLE);
                 ((RecieverViewHolder) holder).user_doc_msg_layout.setVisibility(View.GONE);
+                ((RecieverViewHolder) holder).user_video_msg_layout.setVisibility(View.GONE);
                 ((RecieverViewHolder) holder).user_img_msg_layout.setVisibility(View.GONE);
             }
-
         }
 
         // Image display and image-open code...
@@ -135,6 +136,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                 ((SenderViewHolder) holder).senderTime.setText(senderMsgTime);
 
                 ((SenderViewHolder) holder).senderMsg.setVisibility(View.GONE);
+                ((SenderViewHolder) holder).user_video_msg_layout.setVisibility(View.GONE);
                 ((SenderViewHolder) holder).user_doc_msg_layout.setVisibility(View.GONE);
 
 
@@ -159,6 +161,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                 ((RecieverViewHolder) holder).receiverTime.setText(receiverMsgTime);
 
                 ((RecieverViewHolder) holder).receiverMsg.setVisibility(View.GONE);
+                ((RecieverViewHolder) holder).user_video_msg_layout.setVisibility(View.GONE);
                 ((RecieverViewHolder) holder).user_doc_msg_layout.setVisibility(View.GONE);
 
                 ((RecieverViewHolder) holder).receiverImage.setOnClickListener(new View.OnClickListener() {
@@ -166,6 +169,76 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                     public void onClick(View v) {
                         Intent intent = new Intent(context, Single_Chat_full_screen_photo_Activity.class);
                         intent.putExtra("image", text);
+                        intent.putExtra("sender", sender);
+                        context.startActivity(intent);
+                    }
+                });
+            }
+        }
+
+        // Video display and video-open code...
+        if (messageType.equals("video")) {
+            if (holder.getClass() == SenderViewHolder.class) {
+                byte[] data = Base64.decode(message, Base64.DEFAULT);
+                String text = new String(data, StandardCharsets.UTF_8);
+                try {
+                    Glide.with(((SenderViewHolder) holder).senderVideo).load(text).placeholder(R.drawable.default_image_for_chat).into(((SenderViewHolder) holder).senderVideo);
+                } catch (Exception e) {
+                    ((SenderViewHolder) holder).senderVideo.setImageResource(R.drawable.default_image_for_chat);
+                }
+                String senderMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "dd-MM-yy hh:mm");
+                ((SenderViewHolder) holder).senderTime.setText(senderMsgTime);
+
+                ((SenderViewHolder) holder).senderMsg.setVisibility(View.GONE);
+                ((SenderViewHolder) holder).user_doc_msg_layout.setVisibility(View.GONE);
+                ((SenderViewHolder) holder).user_img_msg_layout.setVisibility(View.GONE);
+
+                ((SenderViewHolder) holder).senderVideo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, Chat_Full_Screen_Video_Activity.class);
+                        intent.putExtra("video", text);
+                        intent.putExtra("sender", sender);
+                        context.startActivity(intent);
+                    }
+                });
+                ((SenderViewHolder) holder).play_video.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, Chat_Full_Screen_Video_Activity.class);
+                        intent.putExtra("video", text);
+                        intent.putExtra("sender", sender);
+                        context.startActivity(intent);
+                    }
+                });
+            } else {
+                byte[] data = Base64.decode(message, Base64.DEFAULT);
+                String text = new String(data, StandardCharsets.UTF_8);
+                try {
+                    Glide.with(((RecieverViewHolder) holder).receiverVideo).load(text).placeholder(R.drawable.default_image_for_chat).into(((RecieverViewHolder) holder).receiverVideo);
+                } catch (Exception e) {
+                    ((RecieverViewHolder) holder).receiverVideo.setImageResource(R.drawable.default_image_for_chat);
+                }
+                String receiverMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "dd-MM-yy hh:mm");
+                ((RecieverViewHolder) holder).receiverTime.setText(receiverMsgTime);
+
+                ((RecieverViewHolder) holder).receiverMsg.setVisibility(View.GONE);
+                ((RecieverViewHolder) holder).user_img_msg_layout.setVisibility(View.GONE);
+                ((RecieverViewHolder) holder).user_doc_msg_layout.setVisibility(View.GONE);
+                ((RecieverViewHolder) holder).receiverVideo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, Chat_Full_Screen_Video_Activity.class);
+                        intent.putExtra("video", text);
+                        intent.putExtra("sender", sender);
+                        context.startActivity(intent);
+                    }
+                });
+                ((RecieverViewHolder) holder).play_video.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, Chat_Full_Screen_Video_Activity.class);
+                        intent.putExtra("video", text);
                         intent.putExtra("sender", sender);
                         context.startActivity(intent);
                     }
@@ -182,6 +255,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
 
                 ((SenderViewHolder) holder).user_doc_msg_layout.setVisibility(View.VISIBLE);
                 ((SenderViewHolder) holder).senderMsg.setVisibility(View.GONE);
+                ((SenderViewHolder) holder).user_video_msg_layout.setVisibility(View.GONE);
                 ((SenderViewHolder) holder).senderImage.setVisibility(View.GONE);
                 byte[] data = Base64.decode(message, Base64.DEFAULT);
                 String text = new String(data, StandardCharsets.UTF_8);
@@ -201,6 +275,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                 ((RecieverViewHolder) holder).user_doc_msg_layout.setVisibility(View.VISIBLE);
                 ((RecieverViewHolder) holder).receiverMsg.setVisibility(View.GONE);
                 ((RecieverViewHolder) holder).receiverImage.setVisibility(View.GONE);
+                ((RecieverViewHolder) holder).user_video_msg_layout.setVisibility(View.GONE);
                 byte[] data = Base64.decode(message, Base64.DEFAULT);
                 String text = new String(data, StandardCharsets.UTF_8);
                 ((RecieverViewHolder) holder).receiverFile.setOnClickListener(new View.OnClickListener() {
@@ -216,7 +291,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
         }
 
 
-        //SENDER side delete code for sender text,image & file..
+        //SENDER side delete code for sender text, image, video & file..
         if (holder.getClass() == SenderViewHolder.class) {
 
             // This message was deleted
@@ -227,6 +302,8 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                 ((SenderViewHolder) holder).senderMsg.setVisibility(View.VISIBLE);
                 ((SenderViewHolder) holder).senderImage.setVisibility(View.GONE);
                 ((SenderViewHolder) holder).user_img_msg_layout.setVisibility(View.GONE);
+                ((SenderViewHolder) holder).senderVideo.setVisibility(View.GONE);
+                ((SenderViewHolder) holder).user_video_msg_layout.setVisibility(View.GONE);
                 ((SenderViewHolder) holder).senderFile.setVisibility(View.GONE);
                 ((SenderViewHolder) holder).user_doc_msg_layout.setVisibility(View.GONE);
             }
@@ -392,6 +469,182 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                 }
             });
             ((SenderViewHolder) holder).user_img_msg_layout.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Delete");
+                    builder.setMessage("Are you sure to Delete this message?");
+                    builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String msgTimestamp = chatmodels.get(position).getTimestamp();
+                            DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
+                            Query query = dbref.child(myMobileNo).child(senderID).child("Messages")
+                                    .orderByChild("timestamp").equalTo(msgTimestamp);
+                            Query query1 = dbref.child(receiver).child(receiverId).child("Messages")
+                                    .orderByChild("timestamp").equalTo(msgTimestamp);
+                            //first entry delete code
+                            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    for (DataSnapshot ds : snapshot.getChildren()) {
+                                        String msg = ds.child("message").getValue().toString();
+                                        if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
+                                            ds.getRef().removeValue();
+                                        } else {
+                                            HashMap<String, Object> hashMap = new HashMap<>();
+                                            hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
+                                            ds.getRef().updateChildren(hashMap);
+                                            //image delete from the firebase storage
+                                            byte[] data = Base64.decode(msg, Base64.DEFAULT);
+                                            String text = new String(data, StandardCharsets.UTF_8);
+                                            FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                                            StorageReference storageReference = firebaseStorage.getReferenceFromUrl(text);
+                                            storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    //image deleted from the firebase storage
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception exception) {
+                                                    Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                        }
+
+                                    }
+                                    //second entry delete code
+                                    query1.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            for (DataSnapshot ds : snapshot.getChildren()) {
+                                                String msg = ds.child("message").getValue().toString();
+                                                if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
+                                                    ds.getRef().removeValue();
+                                                } else {
+                                                    HashMap<String, Object> hashMap = new HashMap<>();
+                                                    hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
+                                                    ds.getRef().updateChildren(hashMap);
+                                                }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });//end
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                }
+                            });//end
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.create().show();
+                    return false;
+                }
+            });
+
+            //delete sender Video code
+            ((SenderViewHolder) holder).senderVideo.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Delete");
+                    builder.setMessage("Are you sure to Delete this message?");
+                    builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String msgTimestamp = chatmodels.get(position).getTimestamp();
+                            DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
+                            Query query = dbref.child(myMobileNo).child(senderID).child("Messages")
+                                    .orderByChild("timestamp").equalTo(msgTimestamp);
+                            Query query1 = dbref.child(receiver).child(receiverId).child("Messages")
+                                    .orderByChild("timestamp").equalTo(msgTimestamp);
+                            //first entry delete code
+                            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    for (DataSnapshot ds : snapshot.getChildren()) {
+                                        String msg = ds.child("message").getValue().toString();
+                                        if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
+                                            ds.getRef().removeValue();
+                                        } else {
+                                            HashMap<String, Object> hashMap = new HashMap<>();
+                                            hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
+                                            ds.getRef().updateChildren(hashMap);
+                                            //image delete from the firebase storage
+                                            byte[] data = Base64.decode(msg, Base64.DEFAULT);
+                                            String text = new String(data, StandardCharsets.UTF_8);
+                                            FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                                            StorageReference storageReference = firebaseStorage.getReferenceFromUrl(text);
+                                            storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    //image deleted from the firebase storage
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception exception) {
+                                                    Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                        }
+
+                                    }
+                                    //second entry delete code
+                                    query1.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            for (DataSnapshot ds : snapshot.getChildren()) {
+                                                String msg = ds.child("message").getValue().toString();
+                                                if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
+                                                    ds.getRef().removeValue();
+                                                } else {
+                                                    HashMap<String, Object> hashMap = new HashMap<>();
+                                                    hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
+                                                    ds.getRef().updateChildren(hashMap);
+                                                }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });//end
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                }
+                            });//end
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.create().show();
+                    return false;
+                }
+            });
+            ((SenderViewHolder) holder).user_video_msg_layout.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -657,7 +910,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
 
         }
 
-        //delete code for receiver text,image & file..
+        //delete code for receiver text, image, video & file..
         if (holder.getClass() == RecieverViewHolder.class) {
             //delete receiver text message
             ((RecieverViewHolder) holder).single_outer_message_layout.setOnLongClickListener(new View.OnLongClickListener() {
@@ -739,6 +992,8 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                 ((RecieverViewHolder) holder).receiverMsg.setVisibility(View.VISIBLE);
                 ((RecieverViewHolder) holder).receiverImage.setVisibility(View.GONE);
                 ((RecieverViewHolder) holder).user_img_msg_layout.setVisibility(View.GONE);
+                ((RecieverViewHolder) holder).receiverVideo.setVisibility(View.GONE);
+                ((RecieverViewHolder) holder).user_video_msg_layout.setVisibility(View.GONE);
                 ((RecieverViewHolder) holder).receiverFile.setVisibility(View.GONE);
                 ((RecieverViewHolder) holder).user_doc_msg_layout.setVisibility(View.GONE);
             }
@@ -832,6 +1087,182 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                 }
             });
             ((RecieverViewHolder) holder).user_img_msg_layout.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Delete");
+                    builder.setMessage("Are you sure to Delete this message?");
+                    builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String msgTimestamp = chatmodels.get(position).getTimestamp();
+                            DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
+                            Query query = dbref.child(myMobileNo).child(senderID).child("Messages")
+                                    .orderByChild("timestamp").equalTo(msgTimestamp);
+                            Query query1 = dbref.child(receiver).child(receiverId).child("Messages")
+                                    .orderByChild("timestamp").equalTo(msgTimestamp);
+                            //first entry delete code
+                            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    for (DataSnapshot ds : snapshot.getChildren()) {
+                                        String msg = ds.child("message").getValue().toString();
+                                        if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
+                                            ds.getRef().removeValue();
+                                        } else {
+                                            HashMap<String, Object> hashMap = new HashMap<>();
+                                            hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
+                                            ds.getRef().updateChildren(hashMap);
+                                            //image delete from the firebase storage
+                                            byte[] data = Base64.decode(msg, Base64.DEFAULT);
+                                            String text = new String(data, StandardCharsets.UTF_8);
+                                            FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                                            StorageReference storageReference = firebaseStorage.getReferenceFromUrl(text);
+                                            storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    //image deleted from the firebase storage
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception exception) {
+                                                    Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                        }
+
+                                    }
+                                    //second entry delete code
+                                    query1.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            for (DataSnapshot ds : snapshot.getChildren()) {
+                                                String msg = ds.child("message").getValue().toString();
+                                                if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
+                                                    ds.getRef().removeValue();
+                                                } else {
+                                                    HashMap<String, Object> hashMap = new HashMap<>();
+                                                    hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
+                                                    ds.getRef().updateChildren(hashMap);
+                                                }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });//end
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                }
+                            });//end
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.create().show();
+                    return false;
+                }
+            });
+
+            //delete receiver Video code
+            ((RecieverViewHolder) holder).receiverVideo.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Delete");
+                    builder.setMessage("Are you sure to Delete this message?");
+                    builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String msgTimestamp = chatmodels.get(position).getTimestamp();
+                            DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
+                            Query query = dbref.child(myMobileNo).child(senderID).child("Messages")
+                                    .orderByChild("timestamp").equalTo(msgTimestamp);
+                            Query query1 = dbref.child(receiver).child(receiverId).child("Messages")
+                                    .orderByChild("timestamp").equalTo(msgTimestamp);
+                            //first entry delete code
+                            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    for (DataSnapshot ds : snapshot.getChildren()) {
+                                        String msg = ds.child("message").getValue().toString();
+                                        if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
+                                            ds.getRef().removeValue();
+                                        } else {
+                                            HashMap<String, Object> hashMap = new HashMap<>();
+                                            hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
+                                            ds.getRef().updateChildren(hashMap);
+                                            //image delete from the firebase storage
+                                            byte[] data = Base64.decode(msg, Base64.DEFAULT);
+                                            String text = new String(data, StandardCharsets.UTF_8);
+                                            FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                                            StorageReference storageReference = firebaseStorage.getReferenceFromUrl(text);
+                                            storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    //image deleted from the firebase storage
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception exception) {
+                                                    Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                        }
+
+                                    }
+                                    //second entry delete code
+                                    query1.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            for (DataSnapshot ds : snapshot.getChildren()) {
+                                                String msg = ds.child("message").getValue().toString();
+                                                if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
+                                                    ds.getRef().removeValue();
+                                                } else {
+                                                    HashMap<String, Object> hashMap = new HashMap<>();
+                                                    hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
+                                                    ds.getRef().updateChildren(hashMap);
+                                                }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });//end
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                }
+                            });//end
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.create().show();
+                    return false;
+                }
+            });
+            ((RecieverViewHolder) holder).user_video_msg_layout.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -1104,10 +1535,11 @@ public class Chat_Adapter extends RecyclerView.Adapter {
 
 
     public class RecieverViewHolder extends RecyclerView.ViewHolder {
-        RelativeLayout user_img_msg_layout, user_doc_msg_layout;
+        RelativeLayout user_img_msg_layout, user_video_msg_layout, user_doc_msg_layout;
         TextView receiverMsg, receiverTime;
-        RoundedImageView receiverImage, receiverFile;
+        RoundedImageView receiverImage, receiverVideo, receiverFile;
         LinearLayout single_outer_message_layout;
+        ImageButton play_video;
 
         public RecieverViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -1115,17 +1547,21 @@ public class Chat_Adapter extends RecyclerView.Adapter {
             receiverMsg = itemView.findViewById(R.id.single_user_txt_msg);
             receiverTime = itemView.findViewById(R.id.single_msg_time);
             user_img_msg_layout = itemView.findViewById(R.id.single_user_img_msg_layout);
+            user_video_msg_layout = itemView.findViewById(R.id.single_user_video_msg_layout);
             user_doc_msg_layout = itemView.findViewById(R.id.single_user_doc_msg_layout);
             receiverImage = itemView.findViewById(R.id.single_user_img_msg);
+            receiverVideo = itemView.findViewById(R.id.single_user_video_msg);
             receiverFile = itemView.findViewById(R.id.single_user_doc_msg);
+            play_video = itemView.findViewById(R.id.play_video);
         }
     }
 
     public class SenderViewHolder extends RecyclerView.ViewHolder {
-        RelativeLayout user_img_msg_layout, user_doc_msg_layout;
+        RelativeLayout user_img_msg_layout, user_video_msg_layout, user_doc_msg_layout;
         TextView senderMsg, senderTime;
-        RoundedImageView senderImage, senderFile;
+        RoundedImageView senderImage, senderVideo, senderFile;
         LinearLayout single_outer_message_layout;
+        ImageButton play_video;
 
         public SenderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -1133,9 +1569,12 @@ public class Chat_Adapter extends RecyclerView.Adapter {
             senderMsg = itemView.findViewById(R.id.single_user_txt_msg);
             senderTime = itemView.findViewById(R.id.single_msg_time);
             user_img_msg_layout = itemView.findViewById(R.id.single_user_img_msg_layout);
+            user_video_msg_layout = itemView.findViewById(R.id.single_user_video_msg_layout);
             user_doc_msg_layout = itemView.findViewById(R.id.single_user_doc_msg_layout);
             senderImage = itemView.findViewById(R.id.single_user_img_msg);
+            senderVideo = itemView.findViewById(R.id.single_user_video_msg);
             senderFile = itemView.findViewById(R.id.single_user_doc_msg);
+            play_video = itemView.findViewById(R.id.play_video);
         }
     }
 

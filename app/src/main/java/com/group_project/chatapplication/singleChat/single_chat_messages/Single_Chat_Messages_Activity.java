@@ -78,11 +78,11 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
 
-    Uri image_uri = null;
-    Uri uri;
+    Uri image_uri = null, video_uri = null, doc_uri=null;
     String picturePath;
     int IMAGE_PICK_CAMERA_CODE = 300;
     int IMAGE_PICK_GALLERY_CODE = 400;
+    int VIDEO_PICK_GALLERY_CODE = 102;
     int DOCUMENT_PICK_CODE = 500;
     long length;
     int file_size;
@@ -406,6 +406,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
 
         ImageView camera = dialog.findViewById(R.id.camera);
         ImageView gallery = dialog.findViewById(R.id.gallery);
+        ImageView video = dialog.findViewById(R.id.video);
         ImageView pdf = dialog.findViewById(R.id.pdf);
 
         camera.setOnClickListener(new View.OnClickListener() {
@@ -424,6 +425,14 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
             }
         });
 
+        video.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                pickfromVideos();
+            }
+        });
+
         pdf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -439,19 +448,6 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
         dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
-    private void pickfromDocument() {
-        Intent intent1 = new Intent();
-        intent1.setType("application/*");
-        intent1.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent1, "Select Document"), DOCUMENT_PICK_CODE);
-    }
-
-    public void pickfromGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, IMAGE_PICK_GALLERY_CODE);
-    }
-
     public void pickFromCamera() {
         ContentValues cv = new ContentValues();
         cv.put(MediaStore.Images.Media.TITLE, "Image Icon Title");
@@ -463,11 +459,30 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
         startActivityForResult(intent, IMAGE_PICK_CAMERA_CODE);
     }
 
+    public void pickfromGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, IMAGE_PICK_GALLERY_CODE);
+    }
+
+    public void pickfromVideos() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("video/*");
+        startActivityForResult(intent, VIDEO_PICK_GALLERY_CODE);
+    }
+
+    private void pickfromDocument() {
+        Intent intent1 = new Intent();
+        intent1.setType("application/*");
+        intent1.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent1, "Select Document"), DOCUMENT_PICK_CODE);
+    }
+
     private void sendImagemessage() {
         //progress
         ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Please wait");
-        progressDialog.setMessage("Sending Image..");
+        progressDialog.setMessage("Sending Image...");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
@@ -533,9 +548,87 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
         });
     }
 
+
+    private void sendVideoMessage() {
+        //progress
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Please wait");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+        //file path
+        String filepath = "Single User Messages/" + myMobileNo + "/" + "Videos/" + System.currentTimeMillis() + ".mp4";
+        //upload
+        StorageReference storageReference;
+        storageReference = FirebaseStorage.getInstance().getReference(filepath);
+        storageReference.putFile(video_uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Task<Uri> p_uriTasl = taskSnapshot.getStorage().getDownloadUrl();
+                while (!p_uriTasl.isSuccessful()) ;
+                Uri p_downloadUri = p_uriTasl.getResult();
+                if (p_uriTasl.isSuccessful()) {
+                    String timestamp = "" + System.currentTimeMillis();
+                    String video_uri_normal = p_downloadUri.toString();
+                    byte[] data = video_uri_normal.getBytes(StandardCharsets.UTF_8);
+                    String encode_img_msg = Base64.encodeToString(data, Base64.DEFAULT);
+
+                    HashMap<String, Object> hashMap = new HashMap<>();
+                    hashMap.put("sender", "" + myMobileNo);
+                    hashMap.put("message", "" + encode_img_msg);
+                    hashMap.put("timestamp", "" + timestamp);
+                    hashMap.put("type", "" + "video");//text,image,file
+
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chat");
+                    reference.child(myMobileNo)
+                            .child(senderRoom)
+                            .child("Messages")
+                            .child(timestamp)
+                            .setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    reference.child(receiverMobileNo)
+                                            .child(receiverRoom)
+                                            .child("Messages")
+                                            .child(timestamp)
+                                            .setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+
+                                                }
+                                            });
+                                    userMessageInput.setText("");
+                                    progressDialog.dismiss();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    progressDialog.dismiss();
+                                    Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progressDialog.dismiss();
+                Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                double p = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
+                progressDialog.setMessage((int) p + "% Video uploading...");
+            }
+        });
+    }
+
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK) {
-            if (requestCode == IMAGE_PICK_GALLERY_CODE) {
+            if (requestCode == IMAGE_PICK_CAMERA_CODE) {
+                sendImagemessage();
+            } else if (requestCode == IMAGE_PICK_GALLERY_CODE) {
                 image_uri = data.getData();
 
                 String[] filepathColumn = {MediaStore.Images.Media.DATA};
@@ -552,16 +645,48 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                 if (file_size < 5000) {
                     sendImagemessage();
                 } else {
-                    Toast.makeText(this, "greater", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Image is Greater!", Toast.LENGTH_SHORT).show();
                 }
 
-            } else if (requestCode == IMAGE_PICK_CAMERA_CODE) {
+            } else if (requestCode == VIDEO_PICK_GALLERY_CODE) {
+                video_uri = data.getData();
 
-                sendImagemessage();
+                String[] filepathColumn = {MediaStore.Images.Media.DATA};
+                Cursor cursor = getContentResolver().query(video_uri, filepathColumn, null, null, null);
+                cursor.moveToFirst();
+
+                int columnIndex = cursor.getColumnIndex(filepathColumn[0]);
+                picturePath = cursor.getString(columnIndex);
+                cursor.close();
+
+                File video_len = new File(picturePath);
+                length = video_len.length();
+                file_size = Integer.parseInt(String.valueOf(length / 1024));
+                if (file_size < 15000) {
+                    sendVideoMessage();
+                } else {
+                    Toast.makeText(this, "Video is Greater!", Toast.LENGTH_SHORT).show();
+                }
 
             } else if (requestCode == DOCUMENT_PICK_CODE) {
-                uri = data.getData();
-                sendDocument();
+                doc_uri = data.getData();
+
+                String[] filepathColumn = {MediaStore.Images.Media.DATA};
+                Cursor cursor = getContentResolver().query(doc_uri, filepathColumn, null, null, null);
+                cursor.moveToFirst();
+
+                int columnIndex = cursor.getColumnIndex(filepathColumn[0]);
+                picturePath = cursor.getString(columnIndex);
+                cursor.close();
+
+                File video_len = new File(picturePath);
+                length = video_len.length();
+                file_size = Integer.parseInt(String.valueOf(length / 1024));
+                if (file_size < 20000) {
+                    sendDocument();
+                } else {
+                    Toast.makeText(this, "Document is Greater!", Toast.LENGTH_SHORT).show();
+                }
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -579,7 +704,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
         String filepath = "Single User Messages/" + myMobileNo + "/" + "Documents/" + System.currentTimeMillis();
         //upload
         StorageReference storageReference = FirebaseStorage.getInstance().getReference(filepath);
-        storageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        storageReference.putFile(doc_uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Task<Uri> p_uriTasl = taskSnapshot.getStorage().getDownloadUrl();
@@ -642,7 +767,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
             @Override
             public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
                 double p = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
-                progressDialog.setMessage((int) p + "% Uploading...");
+                progressDialog.setMessage((int) p + "% Document uploading...");
             }
         });
     }

@@ -17,9 +17,17 @@
         android:theme="@style/Theme.ChatApplication"
         tools:targetApi="31">
         <activity
-            android:name=".chatBot.Chat_Bot_Msg_Activity"
-            android:theme="@style/Setting_Screen_Theme"
+            android:name=".singleChat.single_chat_messages.Chat_Full_Screen_Video_Activity"
+            android:configChanges="orientation|screenLayout|screenSize|keyboardHidden|keyboard"
             android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".chatBot.Chat_Bot_Msg_Activity"
+            android:exported="false"
+            android:theme="@style/Setting_Screen_Theme">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
