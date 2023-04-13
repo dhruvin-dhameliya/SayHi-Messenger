@@ -31,7 +31,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.group_project.chatapplication.chatbot.Bot_Msg_Activity;
 import com.group_project.chatapplication.userSettings.Profile_Activity;
 import com.group_project.chatapplication.groupChat.group_list.Fragment_Groups;
 import com.group_project.chatapplication.contacts.Contact_Show_Activity;
@@ -85,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                     intent.setData(uri);
                     startActivity(intent);
                 } else if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-                    startActivity(new Intent(MainActivity.this, Bot_Msg_Activity.class));
+                    startActivity(new Intent(MainActivity.this, Contact_Show_Activity.class));
                 }
             }
         });

@@ -26,6 +26,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -64,7 +65,7 @@ public class Group_Chat_Messages_Activity extends AppCompatActivity {
     ImageView groupIconTv, Back_press, img_group_chat_wallpaper;
     TextView groupTitleTv;
     ImageButton attachbtn;
-    FloatingActionButton senbtn;
+    CardView senbtn;
     EditText messageET;
     FirebaseAuth firebaseAuth;
     RecyclerView chatRv;

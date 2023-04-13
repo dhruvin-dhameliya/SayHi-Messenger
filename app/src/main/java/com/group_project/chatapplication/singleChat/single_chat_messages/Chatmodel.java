@@ -2,7 +2,7 @@ package com.group_project.chatapplication.singleChat.single_chat_messages;
 
 public class Chatmodel {
 
-    private String sender, message, timestamp, type;
+    private String sender,message,timestamp ,type;
 
     public Chatmodel() {
     }

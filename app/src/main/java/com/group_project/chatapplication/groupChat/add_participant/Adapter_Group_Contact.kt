@@ -226,8 +226,8 @@ class Adapter_Group_Contact(items: MutableList<ContactDTO>, ctx: Context, groupI
                                     for (s in snapshot.children) {
                                         val info = "" + s.child("about").value
                                         val profile_image = "" + s.child("profile_image").value
-                                        val username = "" + s.child("name").value
-                                        holder.name.text = username
+                                        val username=""+s.child("name").value
+                                        holder.name.text=username
                                         holder.info_participant.text = info
                                         Glide.with(context).load(profile_image)
                                             .placeholder(R.drawable.img_contact_user)

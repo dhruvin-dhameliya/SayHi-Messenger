@@ -49,11 +49,7 @@ class Group_Contacts_Activity : AppCompatActivity() {
         val temporaryContactList: MutableList<ContactDTO> = ArrayList()
 
         val contacts = contentResolver.query(
-            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-            null,
-            null,
-            null,
-            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC"
+            ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null
         )
 
         if (contacts != null) {
@@ -62,7 +58,6 @@ class Group_Contacts_Activity : AppCompatActivity() {
                     contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
                 number =
                     contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-                        .replace(" ", "").replace("+91", "")
                 val obj = ContactDTO()
                 obj.name = name
                 obj.phone_number = number

@@ -59,6 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_3sdp"
+                android:layout_marginEnd="@dimen/_9sdp"
                 android:paddingStart="@dimen/_8sdp"
                 android:paddingEnd="0dp"
                 android:singleLine="true"
