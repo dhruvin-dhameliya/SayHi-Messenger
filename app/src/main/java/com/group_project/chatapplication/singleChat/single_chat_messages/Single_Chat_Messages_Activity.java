@@ -78,7 +78,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
 
-    Uri image_uri = null, video_uri = null, doc_uri=null;
+    Uri image_uri = null, video_uri = null, doc_uri = null;
     String picturePath;
     int IMAGE_PICK_CAMERA_CODE = 300;
     int IMAGE_PICK_GALLERY_CODE = 400;
@@ -145,7 +145,12 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if ((snapshot.exists())) {
                     String retrieveWallpaperImage = snapshot.getValue(String.class);
-                    Glide.with(getApplicationContext()).load(retrieveWallpaperImage).into(img_chat_wallpaper);
+                    try {
+                        Glide.with(getApplicationContext()).load(retrieveWallpaperImage).into(img_chat_wallpaper);
+                    }catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                 }
             }
 
@@ -371,8 +376,13 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                             });
 
                 } else {
-                    Glide.with(img_chat_wallpaper).load(R.drawable.img_white_bg).into(img_chat_wallpaper);
-                    Glide.with(profile_img).load(R.drawable.img_contact_user).into(profile_img);
+                    try {
+                        Glide.with(img_chat_wallpaper).load(R.drawable.img_white_bg).into(img_chat_wallpaper);
+                        Glide.with(profile_img).load(R.drawable.img_contact_user).into(profile_img);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                     user_name.setText(currentContactName);
                     msgRelativeLayout.setVisibility(View.GONE);
                     sendMessageButton.setVisibility(View.GONE);
@@ -670,23 +680,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
 
             } else if (requestCode == DOCUMENT_PICK_CODE) {
                 doc_uri = data.getData();
-
-                String[] filepathColumn = {MediaStore.Images.Media.DATA};
-                Cursor cursor = getContentResolver().query(doc_uri, filepathColumn, null, null, null);
-                cursor.moveToFirst();
-
-                int columnIndex = cursor.getColumnIndex(filepathColumn[0]);
-                picturePath = cursor.getString(columnIndex);
-                cursor.close();
-
-                File video_len = new File(picturePath);
-                length = video_len.length();
-                file_size = Integer.parseInt(String.valueOf(length / 1024));
-                if (file_size < 20000) {
-                    sendDocument();
-                } else {
-                    Toast.makeText(this, "Document is Greater!", Toast.LENGTH_SHORT).show();
-                }
+                sendDocument();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

@@ -105,7 +105,12 @@ public class Fragment_Stories extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.hasChild("phone")) {
                     imageUri = Objects.requireNonNull(snapshot.child("profile_image").getValue()).toString();
-                    Glide.with(square_img_upload_story.getContext()).load(imageUri).into(square_img_upload_story);
+                    try {
+                        Glide.with(square_img_upload_story.getContext()).load(imageUri).into(square_img_upload_story);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                 }
             }
 

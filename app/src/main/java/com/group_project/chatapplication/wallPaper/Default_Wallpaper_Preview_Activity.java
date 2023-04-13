@@ -56,7 +56,12 @@ public class Default_Wallpaper_Preview_Activity extends AppCompatActivity {
 
         default_wallpaper_URI = "https://firebasestorage.googleapis.com/v0/b/say-hi-chat-app.appspot.com/o/default_wallpaper_img.jpeg?alt=media&token=b6d3532b-ca12-4488-a18c-5a61b3540d63";
 
-        Glide.with(default_wallpaper_set_preaview).load(default_wallpaper_URI).into(default_wallpaper_set_preaview);
+        try {
+            Glide.with(default_wallpaper_set_preaview).load(default_wallpaper_URI).into(default_wallpaper_set_preaview);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Set Wallpaper");

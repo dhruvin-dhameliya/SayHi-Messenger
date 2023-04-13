@@ -57,7 +57,12 @@ public class Single_Chat_Info_Activity extends AppCompatActivity {
                     contact_name_txt.setText(name);
                     mobile_info.setText(mobile.replace("+91", "+91 "));
                     receiver_info_txt.setText(about);
-                    Glide.with(contact_profile_img).load(profileImage).into(contact_profile_img);
+                    try {
+                        Glide.with(contact_profile_img).load(profileImage).into(contact_profile_img);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
 
                     contact_profile_img.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -71,7 +76,12 @@ public class Single_Chat_Info_Activity extends AppCompatActivity {
 
                 } else {
                     contact_name_txt.setText(contactName);
-                    Glide.with(contact_profile_img).load(R.drawable.img_contact_user).into(contact_profile_img);
+                    try {
+                        Glide.with(contact_profile_img).load(R.drawable.img_contact_user).into(contact_profile_img);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                     mobile_info.setText("+91 " + contactNumber.replace("+91", ""));
                     receiver_info_txt.setText("Hey there! I am Not using Say Hi.");
                 }

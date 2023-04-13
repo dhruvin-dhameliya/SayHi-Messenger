@@ -103,7 +103,12 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
             holder.user_img_msg_layout.setVisibility(View.VISIBLE);
             byte[] data = Base64.decode(message, Base64.DEFAULT);
             String text = new String(data, StandardCharsets.UTF_8);
-            Glide.with(holder.user_img_msg).load(text).placeholder(R.drawable.default_image_for_chat).into(holder.user_img_msg);
+            try{
+                Glide.with(holder.user_img_msg).load(text).placeholder(R.drawable.default_image_for_chat).into(holder.user_img_msg);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
             holder.user_img_msg_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -470,7 +475,12 @@ public class Adapter_Group_Chat_Messages extends RecyclerView.Adapter<Adapter_Gr
                     String name = "" + ds.child("name").getValue();
                     String groupIcon = "" + ds.child("profile_image").getValue();
                     holder.user_name.setText(name);
-                    Glide.with(holder.user_profile_img).load(groupIcon).into(holder.user_profile_img);
+                    try{
+                        Glide.with(holder.user_profile_img).load(groupIcon).into(holder.user_profile_img);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                 }
             }
 

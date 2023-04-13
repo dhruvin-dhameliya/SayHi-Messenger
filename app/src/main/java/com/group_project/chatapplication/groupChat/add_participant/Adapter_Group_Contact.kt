@@ -229,9 +229,14 @@ class Adapter_Group_Contact(items: MutableList<ContactDTO>, ctx: Context, groupI
                                         val username=""+s.child("name").value
                                         holder.name.text=username
                                         holder.info_participant.text = info
-                                        Glide.with(context).load(profile_image)
-                                            .placeholder(R.drawable.img_contact_user)
-                                            .into(holder.profile_img)
+                                        try{
+                                            Glide.with(context).load(profile_image)
+                                                .placeholder(R.drawable.img_contact_user)
+                                                .into(holder.profile_img)
+                                        }catch (e:Exception){
+                                            e.printStackTrace()
+                                        }
+
                                     }
                                 }
 

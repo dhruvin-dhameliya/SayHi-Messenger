@@ -107,7 +107,12 @@ public class Group_Chat_Messages_Activity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if ((snapshot.exists())) {
                     String retrieveWallpaperImage = snapshot.getValue(String.class);
-                    Glide.with(img_group_chat_wallpaper).load(retrieveWallpaperImage).into(img_group_chat_wallpaper);
+                    try{
+                        Glide.with(img_group_chat_wallpaper).load(retrieveWallpaperImage).into(img_group_chat_wallpaper);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                 }
             }
 

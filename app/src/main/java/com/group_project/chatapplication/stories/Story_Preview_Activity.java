@@ -116,7 +116,12 @@ public class Story_Preview_Activity extends AppCompatActivity {
             }
         });
 
-        Glide.with(story_preview_img).load(selected_img).into(story_preview_img);
+        try {
+            Glide.with(story_preview_img).load(selected_img).into(story_preview_img);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 
         setSupportActionBar(mTollbar);
 

@@ -105,7 +105,12 @@ public class Edit_Profile_Activity extends AppCompatActivity {
                     profile_user_name.setText(name);
                     profile_user_about.setText(about);
                     profile_user_phone.setText(phoneNumber);
-                    Glide.with(getApplicationContext()).load(imageUri).into(display_profile_img);
+                    try {
+                        Glide.with(getApplicationContext()).load(imageUri).into(display_profile_img);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                 }
             }
 

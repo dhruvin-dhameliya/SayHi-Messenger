@@ -27,7 +27,11 @@ public class Image_Preview_Activity extends AppCompatActivity {
 
         String imgUrl = getIntent().getExtras().get("passSelectedImage").toString();
         String currentName = getIntent().getExtras().get("pass_current_name").toString();
-        Glide.with(selected_img.getContext()).load(imgUrl).into(selected_img);
+        try {
+            Glide.with(selected_img.getContext()).load(imgUrl).into(selected_img);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         current_name.setText(currentName);
 
         back_to_home.setOnClickListener(new View.OnClickListener() {

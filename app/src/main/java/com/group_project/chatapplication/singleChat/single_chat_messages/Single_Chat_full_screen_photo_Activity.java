@@ -46,7 +46,12 @@ public class Single_Chat_full_screen_photo_Activity extends AppCompatActivity {
         Intent intent = getIntent();
         image = intent.getStringExtra("image");
         senderid = intent.getStringExtra("sender");
-        Glide.with(full_img.getContext()).load(image).into(full_img);
+        try {
+            Glide.with(full_img.getContext()).load(image).into(full_img);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 
         String myuid = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().replace("+91", "");
         if (senderid.equals(myuid)) {

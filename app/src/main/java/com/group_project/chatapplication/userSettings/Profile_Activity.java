@@ -111,7 +111,12 @@ public class Profile_Activity extends AppCompatActivity {
 
                     user_name_txt.setText(name);
                     user_about_txt.setText(about);
-                    Glide.with(getApplicationContext()).load(imageUri).into(user_profile_image);
+                    try {
+                        Glide.with(getApplicationContext()).load(imageUri).into(user_profile_image);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                 }
             }
 

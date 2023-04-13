@@ -45,7 +45,12 @@ public class Group_full_screen_photo_Activity extends AppCompatActivity {
         Intent intent = getIntent();
         image = intent.getStringExtra("image");
         senderid = intent.getStringExtra("sender");
-        Glide.with(this).load(image).into(get_image);
+        try {
+            Glide.with(this).load(image).into(get_image);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 
         String myuid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         if (senderid.equals(myuid)) {
