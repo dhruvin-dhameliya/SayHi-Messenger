@@ -82,7 +82,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
-
+    int feeling=-1;
     Uri image_uri = null, video_uri = null, doc_uri = null;
     String picturePath;
     int IMAGE_PICK_CAMERA_CODE = 300;
@@ -196,19 +196,10 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
     //start checking online & typing
     public void checkOnlineStatus(String status) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users Details").child("+91" + myMobileNo);
-
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("onlineStatus", status);
         reference.updateChildren(hashMap);
     }
-
-//    public void checkReceiverStatus(String status){
-//        DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Users Details").child("+91" + receiverMobileNo);
-//
-//        HashMap<String,Object> hashMap=new HashMap<>();
-//        hashMap.put("onlineStatus",status);
-//        reference.updateChildren(hashMap);
-//    }
 
     public void checkTypingStatus(String typing) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users Details").child("+91" + myMobileNo);
@@ -220,25 +211,21 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        checkOnlineStatus("online");
-        //checkReceiverStatus("online");
+        checkOnlineStatus("Active now");
         super.onStart();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
         String timestamp = String.valueOf(System.currentTimeMillis());
         checkOnlineStatus(timestamp);
         checkTypingStatus("noOne");
-        // checkReceiverStatus(timestamp);
     }
 
     @Override
     protected void onResume() {
-        checkOnlineStatus("online");
-        // checkReceiverStatus("online");
+        checkOnlineStatus("Active now");
         super.onResume();
     }
 
@@ -250,7 +237,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                 String getTxtMessage = userMessageInput.getText().toString().trim();
                 byte[] data = getTxtMessage.getBytes(StandardCharsets.UTF_8);
                 String encode_txt_msg = Base64.encodeToString(data, Base64.DEFAULT);
-                final Chatmodel chatmodel = new Chatmodel(myMobileNo, encode_txt_msg, "text");
+                final Chatmodel chatmodel = new Chatmodel(myMobileNo, encode_txt_msg, "text",feeling);
 
                 if (TextUtils.isEmpty(getTxtMessage)) {
                     Toast.makeText(getApplicationContext(), "Can't send empty message", Toast.LENGTH_SHORT).show();
@@ -436,7 +423,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                                     if (typing.equals(receiverMobileNo)) {
                                         user_status.setText("typing...");
                                         user_status.setTextSize(15);
-                                    } else if (online.equals("online")) {
+                                    } else if (online.equals("Active now")) {
                                         user_status.setText(online);
                                         user_status.setTextSize(15);
                                     }//the end
@@ -444,9 +431,8 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                                         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
                                         calendar.setTimeInMillis(Long.parseLong(online));
                                         String dateTime = DateFormat.format("dd/MM/yyyy hh:mm aa", calendar).toString();
-                                        user_status.setText("Last seen:" + dateTime);
+                                        user_status.setText("Last seen: " + dateTime);
                                         user_status.setTextSize(12);
-
                                     }
 
                                     user_name.setText(title);
@@ -509,7 +495,6 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
             }
         });
     }
-
 
     private void showDialog() {
         Dialog dialog = new Dialog(this);
@@ -659,7 +644,6 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
             }
         });
     }
-
 
     private void sendVideoMessage() {
         //progress

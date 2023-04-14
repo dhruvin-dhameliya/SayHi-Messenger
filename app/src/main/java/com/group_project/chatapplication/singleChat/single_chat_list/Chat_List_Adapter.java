@@ -53,7 +53,6 @@ public class Chat_List_Adapter extends RecyclerView.Adapter<Chat_List_Adapter.My
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Chat_List_Model listmodel = list.get(position);
         holder.chatName.setText(listmodel.getReceiver_name());
-//        holder.info.setText(listmodel.getReceiver_info());
         String chatIcon = listmodel.getReceiver_profileImage();
         loadLastMessage(listmodel, holder);
 
@@ -125,6 +124,10 @@ public class Chat_List_Adapter extends RecyclerView.Adapter<Chat_List_Adapter.My
                                 holder.icon.setVisibility(View.VISIBLE);
                                 holder.icon.setImageResource(R.drawable.icon_photo_msg);
                                 holder.lastMessage.setText("Photo");
+                            } else if (messageType.equals("video")) {
+                                holder.icon.setVisibility(View.VISIBLE);
+                                holder.icon.setImageResource(R.drawable.icon_video_msg);
+                                holder.lastMessage.setText("Video");
                             } else if (messageType.equals("file")) {
                                 holder.icon.setVisibility(View.VISIBLE);
                                 holder.icon.setImageResource(R.drawable.icon_file_msg);

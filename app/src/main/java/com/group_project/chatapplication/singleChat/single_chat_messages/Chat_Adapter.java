@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.text.format.DateFormat;
 import android.util.Base64;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,6 +21,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.github.pgreze.reactions.ReactionPopup;
+import com.github.pgreze.reactions.ReactionsConfig;
+import com.github.pgreze.reactions.ReactionsConfigBuilder;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -94,6 +99,40 @@ public class Chat_Adapter extends RecyclerView.Adapter {
         String message = chatmodel.getMessage();//text,image
         String sender = chatmodel.getSender();
         String messageType = chatmodel.getType();
+
+        int reactions[] = new int[]{
+                R.drawable.emoji_1_thumbs,
+                R.drawable.emoji_2_heart,
+                R.drawable.emoji_3_joy,
+                R.drawable.emoji_4_open_mouth,
+                R.drawable.emoji_5_crying,
+                R.drawable.emoji_6_hands,
+        };
+
+        ReactionsConfig config = new ReactionsConfigBuilder(context)
+                .withReactions(reactions)
+                .build();
+        ReactionPopup popup = new ReactionPopup(context, config, (pos) -> {
+            try {
+                if (holder.getClass() == SenderViewHolder.class) {
+                    SenderViewHolder viewHolder = (SenderViewHolder) holder;
+                    viewHolder.feeling.setImageResource(reactions[pos]);
+                } else {
+                    RecieverViewHolder viewHolder = (RecieverViewHolder) holder;
+                    viewHolder.feeling.setImageResource(reactions[pos]);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            chatmodel.setFeeling(pos);
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chat");
+            reference.child(myMobileNo).child(senderID).child("Messages").child(chatmodel.getTimestamp()).setValue(chatmodel);
+
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Chat");
+            ref.child(receiver).child(receiverId).child("Messages").child(chatmodel.getTimestamp()).setValue(chatmodel);
+            return true;
+        });
 
         // Text display code...
         if (messageType.equals("text")) {
@@ -293,6 +332,22 @@ public class Chat_Adapter extends RecyclerView.Adapter {
 
         //SENDER side delete code for sender text, image, video & file..
         if (holder.getClass() == SenderViewHolder.class) {
+
+            if (chatmodel.getFeeling() >= 0) {
+                //chatmodel.setFeeling(reactions[(int) chatmodel.getFeeling()]);
+                ((SenderViewHolder) holder).feeling.setImageResource(reactions[chatmodel.getFeeling()]);
+                ((SenderViewHolder) holder).feeling.setVisibility(View.VISIBLE);
+            } else {
+                ((SenderViewHolder) holder).feeling.setVisibility(View.GONE);
+            }
+
+            ((SenderViewHolder) holder).sen_message_layout.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    popup.onTouch(v, event);
+                    return false;
+                }
+            });
 
             // This message was deleted
             if (message.equals(encoded_deleted_already_msg)) {
@@ -912,6 +967,24 @@ public class Chat_Adapter extends RecyclerView.Adapter {
 
         //delete code for receiver text, image, video & file..
         if (holder.getClass() == RecieverViewHolder.class) {
+
+            if (chatmodel.getFeeling() >= 0) {
+                // chatmodel.setFeeling(reactions[(int) chatmodel.getFeeling()]);
+                ((RecieverViewHolder) holder).feeling.setImageResource(reactions[chatmodel.getFeeling()]);
+                ((RecieverViewHolder) holder).feeling.setVisibility(View.VISIBLE);
+            } else {
+                ((RecieverViewHolder) holder).feeling.setVisibility(View.GONE);
+            }
+
+            ((RecieverViewHolder) holder).rec_message_layout.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    popup.onTouch(v, event);
+                    return false;
+                }
+            });
+
+
             //delete receiver text message
             ((RecieverViewHolder) holder).single_outer_message_layout.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -1538,8 +1611,9 @@ public class Chat_Adapter extends RecyclerView.Adapter {
         RelativeLayout user_img_msg_layout, user_video_msg_layout, user_doc_msg_layout;
         TextView receiverMsg, receiverTime;
         RoundedImageView receiverImage, receiverVideo, receiverFile;
-        LinearLayout single_outer_message_layout;
+        LinearLayout single_outer_message_layout, rec_message_layout;
         ImageButton play_video;
+        ImageView feeling;
 
         public RecieverViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -1553,6 +1627,8 @@ public class Chat_Adapter extends RecyclerView.Adapter {
             receiverVideo = itemView.findViewById(R.id.single_user_video_msg);
             receiverFile = itemView.findViewById(R.id.single_user_doc_msg);
             play_video = itemView.findViewById(R.id.play_video);
+            feeling = itemView.findViewById(R.id.feeling);
+            rec_message_layout = itemView.findViewById(R.id.rec_message_layout);
         }
     }
 
@@ -1560,8 +1636,9 @@ public class Chat_Adapter extends RecyclerView.Adapter {
         RelativeLayout user_img_msg_layout, user_video_msg_layout, user_doc_msg_layout;
         TextView senderMsg, senderTime;
         RoundedImageView senderImage, senderVideo, senderFile;
-        LinearLayout single_outer_message_layout;
+        LinearLayout single_outer_message_layout, sen_message_layout;
         ImageButton play_video;
+        ImageView feeling;
 
         public SenderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -1575,6 +1652,8 @@ public class Chat_Adapter extends RecyclerView.Adapter {
             senderVideo = itemView.findViewById(R.id.single_user_video_msg);
             senderFile = itemView.findViewById(R.id.single_user_doc_msg);
             play_video = itemView.findViewById(R.id.play_video);
+            feeling = itemView.findViewById(R.id.feeling);
+            sen_message_layout = itemView.findViewById(R.id.sen_message_layout);
         }
     }
 

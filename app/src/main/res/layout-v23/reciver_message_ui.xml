@@ -17,6 +17,7 @@
         android:padding="@dimen/_6sdp">
 
         <LinearLayout
+            android:id="@+id/rec_message_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_5sdp"
@@ -132,6 +133,12 @@
                 android:textAlignment="textEnd"
                 android:textColor="#A1A5B7"
                 android:textSize="@dimen/_8sdp" />
+
+            <ImageView
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_gravity="end"
+                android:id="@+id/feeling" />
 
         </LinearLayout>
 

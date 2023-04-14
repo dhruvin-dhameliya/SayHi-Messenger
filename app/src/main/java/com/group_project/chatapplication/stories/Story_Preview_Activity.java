@@ -210,6 +210,8 @@ public class Story_Preview_Activity extends AppCompatActivity {
         if (fetch_caption.length() >= 75) {
             edit_txt_caption.setError("Story caption maximum 75 character.");
         } else {
+            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(edit_txt_caption.getWindowToken(), 0);
             progressDialog.show();
             edit_txt_caption.setFocusable(false);
             // preserve layout as image
