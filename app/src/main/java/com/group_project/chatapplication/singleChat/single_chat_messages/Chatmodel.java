@@ -3,7 +3,7 @@ package com.group_project.chatapplication.singleChat.single_chat_messages;
 public class Chatmodel {
 
     private String sender,message,timestamp ,type;
-    int feeling;
+    int feeling=-1;
 
     public Chatmodel() {
     }

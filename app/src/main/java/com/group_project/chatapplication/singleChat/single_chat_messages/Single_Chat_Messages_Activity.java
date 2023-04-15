@@ -5,6 +5,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
@@ -65,13 +67,13 @@ import java.util.Objects;
 public class Single_Chat_Messages_Activity extends AppCompatActivity {
 
     Toolbar mToolbar;
-    ImageButton sendMessageButton;
+    CardView sendMessageButton;
     EditText userMessageInput;
     ImageView back_press, profile_img, attachbtn, img_chat_wallpaper;
     TextView user_name;
     String currentContactName, myMobileNo, receiverMobileNo, getName, senderRoom, receiverRoom;
     RecyclerView chattingRecycleView;
-    RelativeLayout msgRelativeLayout;
+    ConstraintLayout msgRelativeLayout;
     RelativeLayout invite_user_layout;
     ImageView img_invite;
     TextView btn_invite_user, user_status;
@@ -82,7 +84,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
-    int feeling=-1;
+    int feeling = -1;
     Uri image_uri = null, video_uri = null, doc_uri = null;
     String picturePath;
     int IMAGE_PICK_CAMERA_CODE = 300;
@@ -229,6 +231,14 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
         super.onResume();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        String timestamp = String.valueOf(System.currentTimeMillis());
+        checkOnlineStatus(timestamp);
+        checkTypingStatus("noOne");
+    }
+
     //send message
     public void do_chat_messages() {
         sendMessageButton.setOnClickListener(new View.OnClickListener() {
@@ -237,7 +247,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                 String getTxtMessage = userMessageInput.getText().toString().trim();
                 byte[] data = getTxtMessage.getBytes(StandardCharsets.UTF_8);
                 String encode_txt_msg = Base64.encodeToString(data, Base64.DEFAULT);
-                final Chatmodel chatmodel = new Chatmodel(myMobileNo, encode_txt_msg, "text",feeling);
+                final Chatmodel chatmodel = new Chatmodel(myMobileNo, encode_txt_msg, "text", feeling);
 
                 if (TextUtils.isEmpty(getTxtMessage)) {
                     Toast.makeText(getApplicationContext(), "Can't send empty message", Toast.LENGTH_SHORT).show();
@@ -385,7 +395,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                                     }
                                 });
                                 builder.create().show();
-                            } else {
+                            } else if (item.getItemId() == R.id.clear_chat_for_everyone) {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(Single_Chat_Messages_Activity.this);
                                 builder.setTitle("Clear chat?");
                                 builder.setMessage("Are you sure to clear chat for everyone?");
@@ -404,6 +414,10 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                                     }
                                 });
                                 builder.create().show();
+                            } else if (item.getItemId() == R.id.call_user) {
+                                Intent intent = new Intent(Intent.ACTION_DIAL);
+                                intent.setData(Uri.parse("tel:" + receiverMobileNo));
+                                startActivity(intent);
                             }
                             return false;
                         }
@@ -428,11 +442,15 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                                         user_status.setTextSize(15);
                                     }//the end
                                     else {
-                                        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
-                                        calendar.setTimeInMillis(Long.parseLong(online));
-                                        String dateTime = DateFormat.format("dd/MM/yyyy hh:mm aa", calendar).toString();
-                                        user_status.setText("Last seen: " + dateTime);
-                                        user_status.setTextSize(12);
+                                        try {
+                                            Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+                                            calendar.setTimeInMillis(Long.parseLong(online));
+                                            String dateTime = DateFormat.format("dd/MM/yyyy hh:mm aa", calendar).toString();
+                                            user_status.setText("Last seen: " + dateTime);
+                                            user_status.setTextSize(12);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
                                     }
 
                                     user_name.setText(title);

@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -337,14 +338,24 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                 //chatmodel.setFeeling(reactions[(int) chatmodel.getFeeling()]);
                 ((SenderViewHolder) holder).feeling.setImageResource(reactions[chatmodel.getFeeling()]);
                 ((SenderViewHolder) holder).feeling.setVisibility(View.VISIBLE);
+                ((SenderViewHolder) holder).emoji_reaction.setVisibility(View.VISIBLE);
             } else {
                 ((SenderViewHolder) holder).feeling.setVisibility(View.GONE);
+
             }
 
             ((SenderViewHolder) holder).sen_message_layout.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     popup.onTouch(v, event);
+                    return false;
+                }
+            });
+
+            ((SenderViewHolder) holder).emoji_reaction.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    popup.onTouch(view, motionEvent);
                     return false;
                 }
             });
@@ -361,6 +372,8 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                 ((SenderViewHolder) holder).user_video_msg_layout.setVisibility(View.GONE);
                 ((SenderViewHolder) holder).senderFile.setVisibility(View.GONE);
                 ((SenderViewHolder) holder).user_doc_msg_layout.setVisibility(View.GONE);
+                ((SenderViewHolder) holder).feeling.setVisibility(View.GONE);
+                ((SenderViewHolder) holder).emoji_reaction.setVisibility(View.GONE);
             }
 
             //delete sender text message
@@ -972,11 +985,20 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                 // chatmodel.setFeeling(reactions[(int) chatmodel.getFeeling()]);
                 ((RecieverViewHolder) holder).feeling.setImageResource(reactions[chatmodel.getFeeling()]);
                 ((RecieverViewHolder) holder).feeling.setVisibility(View.VISIBLE);
+                ((RecieverViewHolder) holder).emoji_reaction.setVisibility(View.VISIBLE);
             } else {
                 ((RecieverViewHolder) holder).feeling.setVisibility(View.GONE);
             }
 
             ((RecieverViewHolder) holder).rec_message_layout.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    popup.onTouch(v, event);
+                    return false;
+                }
+            });
+
+            ((RecieverViewHolder) holder).emoji_reaction.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     popup.onTouch(v, event);
@@ -1069,6 +1091,8 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                 ((RecieverViewHolder) holder).user_video_msg_layout.setVisibility(View.GONE);
                 ((RecieverViewHolder) holder).receiverFile.setVisibility(View.GONE);
                 ((RecieverViewHolder) holder).user_doc_msg_layout.setVisibility(View.GONE);
+                ((RecieverViewHolder) holder).feeling.setVisibility(View.GONE);
+                ((RecieverViewHolder) holder).emoji_reaction.setVisibility(View.GONE);
             }
 
             //delete receiver Image code
@@ -1614,6 +1638,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
         LinearLayout single_outer_message_layout, rec_message_layout;
         ImageButton play_video;
         ImageView feeling;
+        CardView emoji_reaction;
 
         public RecieverViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -1629,6 +1654,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
             play_video = itemView.findViewById(R.id.play_video);
             feeling = itemView.findViewById(R.id.feeling);
             rec_message_layout = itemView.findViewById(R.id.rec_message_layout);
+            emoji_reaction = itemView.findViewById(R.id.emoji_reaction_card);
         }
     }
 
@@ -1639,6 +1665,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
         LinearLayout single_outer_message_layout, sen_message_layout;
         ImageButton play_video;
         ImageView feeling;
+        CardView emoji_reaction;
 
         public SenderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -1654,6 +1681,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
             play_video = itemView.findViewById(R.id.play_video);
             feeling = itemView.findViewById(R.id.feeling);
             sen_message_layout = itemView.findViewById(R.id.sen_message_layout);
+            emoji_reaction = itemView.findViewById(R.id.emoji_reaction_card);
         }
     }
 

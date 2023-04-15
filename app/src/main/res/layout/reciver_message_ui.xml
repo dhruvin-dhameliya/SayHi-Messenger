@@ -8,7 +8,7 @@
     android:paddingStart="@dimen/_4sdp"
     android:paddingEnd="0dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/single_msg_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -134,14 +134,28 @@
                 android:textColor="#A1A5B7"
                 android:textSize="@dimen/_8sdp" />
 
-            <ImageView
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:layout_gravity="end"
-                android:id="@+id/feeling" />
-
         </LinearLayout>
 
-    </LinearLayout>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/emoji_reaction_card"
+            android:layout_width="@dimen/_28sdp"
+            android:layout_height="@dimen/_28sdp"
+            android:layout_below="@id/rec_message_layout"
+            android:layout_alignStart="@id/rec_message_layout"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:layout_marginTop="-6dp"
+            android:visibility="gone"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="@dimen/_101sdp">
+
+            <ImageView
+                android:id="@+id/feeling"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_gravity="center" />
+
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
 
 </LinearLayout>

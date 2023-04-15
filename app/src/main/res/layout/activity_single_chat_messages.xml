@@ -66,6 +66,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:gravity="start|center"
+                    android:singleLine="true"
                     android:text="Chat Title"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_15sdp"
@@ -142,87 +143,77 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/msgRelativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_50sdp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="@dimen/_2sdp"
+        android:foregroundGravity="center"
         android:gravity="center"
-        android:padding="@dimen/_4sdp">
+        android:paddingHorizontal="@dimen/_4sdp"
+        android:paddingVertical="@dimen/_2sdp">
+
+        <EditText
+            android:id="@+id/input_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/_4sdp"
+            android:layout_weight="1"
+            android:background="@drawable/chat_edittext_shap_theme"
+            android:backgroundTint="@null"
+            android:fadeScrollbars="false"
+            android:hint="Type a message"
+            android:inputType="textCapSentences|textLongMessage|textMultiLine"
+            android:maxLines="5"
+            android:minLines="1"
+            android:paddingVertical="10dp"
+            android:paddingStart="@dimen/_11sdp"
+            android:paddingEnd="@dimen/_41sdp"
+            android:scrollbars="vertical"
+            android:singleLine="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/send_message_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/send_file"
+            android:layout_width="@dimen/_22sdp"
+            android:layout_height="@dimen/_22sdp"
+            android:layout_gravity="center|bottom"
+            android:layout_marginEnd="@dimen/_11sdp"
+            android:background="@drawable/icon_file_attachment"
+            android:foregroundGravity="bottom|center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/input_message"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cv1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-            android:layout_marginEnd="@dimen/_4sdp"
-            android:layout_toStartOf="@+id/send_message_button"
-            app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="@dimen/_101sdp"
-            app:cardElevation="2dp">
+            android:id="@+id/send_message_button"
+            android:layout_width="47dp"
+            android:layout_height="47dp"
+            android:layout_gravity="center|bottom|end"
+            android:layout_margin="3dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:foregroundGravity="bottom|center"
+            app:cardBackgroundColor="#2F92EF"
+            app:cardCornerRadius="540dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center">
-
-                <EditText
-                    android:id="@+id/input_message"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_40sdp"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerInParent="true"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="start|center"
-                    android:layout_marginStart="@dimen/_4sdp"
-                    android:layout_marginEnd="@dimen/_6sdp"
-                    android:layout_toStartOf="@+id/send_file"
-                    android:background="@null"
-                    android:gravity="start|center"
-                    android:hint="Type a message"
-                    android:imeOptions="actionNext"
-                    android:inputType="textCapSentences|textMultiLine|textLongMessage"
-                    android:lineSpacingExtra="@dimen/_4sdp"
-                    android:maxLines="4"
-                    android:minLines="1"
-                    android:paddingStart="@dimen/_10sdp"
-                    android:paddingEnd="0dp"
-                    android:textSize="18sp" />
-
-                <ImageButton
-                    android:id="@+id/send_file"
-                    android:layout_width="@dimen/_28sdp"
-                    android:layout_height="@dimen/_28sdp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="@dimen/_15sdp"
-                    android:background="@drawable/icon_file_attachment" />
-
-            </RelativeLayout>
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="2dp"
+                android:background="@drawable/icon_send_chat"
+                android:backgroundTint="@color/white" />
 
         </androidx.cardview.widget.CardView>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/send_message_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-            android:backgroundTint="@color/colorPrimary"
-            android:contentDescription="Chats"
-            android:foregroundGravity="center"
-            android:scaleType="center"
-            android:src="@drawable/icon_send_chat"
-            app:borderWidth="0dp"
-            app:elevation="0dp"
-            app:rippleColor="#EFEFEF"
-            app:tint="@color/white" />
-
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

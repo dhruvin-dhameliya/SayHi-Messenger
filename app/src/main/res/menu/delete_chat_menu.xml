@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/clear_chat_for_me"
@@ -8,5 +9,11 @@
     <item
         android:id="@+id/clear_chat_for_everyone"
         android:title="Clear chat for everyone" />
+
+    <item
+        android:id="@+id/call_user"
+        android:icon="@drawable/call_icon"
+        android:title="Call"
+        app:showAsAction="ifRoom" />
 
 </menu>
