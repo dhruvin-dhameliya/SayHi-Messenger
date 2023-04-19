@@ -65,5 +65,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.8.0'
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
     implementation "com.github.pgreze:android-reactions:1.6"
+    implementation 'com.orhanobut:dialogplus:1.11@aar'
+    implementation "com.daimajia.swipelayout:library:1.2.0@aar"
 
 }

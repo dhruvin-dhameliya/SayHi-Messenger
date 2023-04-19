@@ -7,7 +7,7 @@
     android:orientation="horizontal"
     android:theme="@style/Chat_Info_Theme">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/contact_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -85,6 +85,6 @@
 
         </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 </RelativeLayout>

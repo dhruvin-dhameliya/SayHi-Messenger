@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:gravity="center">
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="@dimen/_150sdp"
             android:layout_height="@dimen/_175sdp"
             app:cardCornerRadius="@dimen/_8sdp">
@@ -67,7 +67,7 @@
                 android:textSize="15sp"
                 android:textStyle="normal|bold" />
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
     </RelativeLayout>
 

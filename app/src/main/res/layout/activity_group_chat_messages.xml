@@ -121,7 +121,7 @@
             app:layout_constraintEnd_toEndOf="@+id/messageEt"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/sendbtn"
             android:layout_width="47dp"
             android:layout_height="47dp"
@@ -143,7 +143,7 @@
                 android:background="@drawable/icon_send_chat"
                 android:backgroundTint="@color/white" />
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

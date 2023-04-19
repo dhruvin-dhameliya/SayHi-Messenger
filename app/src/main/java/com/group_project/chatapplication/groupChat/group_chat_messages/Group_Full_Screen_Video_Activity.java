@@ -6,6 +6,7 @@ import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Environment;
 import android.widget.MediaController;
 import android.net.Uri;
@@ -29,6 +30,7 @@ public class Group_Full_Screen_Video_Activity extends AppCompatActivity {
     ImageView back_page, download_receiver_video;
     VideoView full_video;
     String video, senderid;
+    private static ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,8 @@ public class Group_Full_Screen_Video_Activity extends AppCompatActivity {
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(this.getResources().getColor(R.color.black));
+
+        progressDialog = ProgressDialog.show(this, "", "Loading...", true);
 
         back_page = findViewById(R.id.back_page);
         download_receiver_video = findViewById(R.id.download_receiver_video);
@@ -47,7 +51,7 @@ public class Group_Full_Screen_Video_Activity extends AppCompatActivity {
         senderid = intent.getStringExtra("sender");
 
         full_video.setVideoURI(Uri.parse(video));
-        full_video.start();
+//        full_video.start();
 
 
         MediaController mediaController = new MediaController(this);
@@ -87,5 +91,17 @@ public class Group_Full_Screen_Video_Activity extends AppCompatActivity {
             }
         });
 
+        full_video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+
+            public void onPrepared(MediaPlayer arg0) {
+                progressDialog.dismiss();
+                full_video.start();
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

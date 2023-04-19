@@ -70,7 +70,7 @@
                 android:gravity="center"
                 android:visibility="visible">
 
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="@dimen/_8sdp">
@@ -94,7 +94,7 @@
                         android:background="@drawable/icon_play_video_button"
                         android:gravity="center" />
 
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
             </RelativeLayout>
 
@@ -136,25 +136,59 @@
 
         </LinearLayout>
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/emoji_reaction_card"
-            android:layout_width="@dimen/_28sdp"
-            android:layout_height="@dimen/_28sdp"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/edit_msg_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@id/rec_message_layout"
             android:layout_alignStart="@id/rec_message_layout"
+            android:layout_gravity="end"
             android:layout_marginStart="@dimen/_4sdp"
             android:layout_marginTop="-6dp"
+            android:layout_marginEnd="@dimen/_4sdp"
+            android:elevation="0dp"
+            android:visibility="gone"
+            app:cardBackgroundColor="#000000"
+            app:cardCornerRadius="@dimen/_101sdp"
+            app:cardElevation="0dp"
+            app:cardMaxElevation="0dp">
+
+            <TextView
+                android:id="@+id/edit_msg_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingHorizontal="@dimen/_6sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                android:text="Edited"
+                android:textColor="#FFFFFF" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/emoji_reaction_card"
+            android:layout_width="@dimen/_21sdp"
+            android:layout_height="@dimen/_21sdp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginStart="-6dp"
+            android:layout_toEndOf="@+id/rec_message_layout"
+            android:elevation="0dp"
             android:visibility="gone"
             app:cardBackgroundColor="#FFFFFF"
-            app:cardCornerRadius="@dimen/_101sdp">
+            app:cardCornerRadius="@dimen/_101sdp"
+            app:cardElevation="0dp"
+            app:cardMaxElevation="0dp">
 
             <ImageView
                 android:id="@+id/feeling"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:layout_gravity="center" />
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
+                android:layout_gravity="center"
+                android:padding="@dimen/_1sdp" />
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
     </RelativeLayout>
 

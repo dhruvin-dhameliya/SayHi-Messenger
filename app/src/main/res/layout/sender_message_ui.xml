@@ -141,22 +141,54 @@
         </LinearLayout>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/emoji_reaction_card"
-            android:layout_width="@dimen/_28sdp"
-            android:layout_height="@dimen/_28sdp"
+            android:id="@+id/edit_msg_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@id/sen_message_layout"
             android:layout_alignEnd="@id/sen_message_layout"
+            android:layout_gravity="end"
             android:layout_marginTop="-4dp"
             android:layout_marginEnd="@dimen/_4sdp"
+            android:elevation="0dp"
+            android:visibility="gone"
+            app:cardBackgroundColor="#000000"
+            app:cardCornerRadius="@dimen/_101sdp"
+            app:cardElevation="0dp"
+            app:cardMaxElevation="0dp">
+
+            <TextView
+                android:id="@+id/edit_msg_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingHorizontal="@dimen/_6sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                android:text="Edited"
+                android:textColor="#FFFFFF" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/emoji_reaction_card"
+            android:layout_width="@dimen/_21sdp"
+            android:layout_height="@dimen/_21sdp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginStart="-21dp"
+            android:elevation="0dp"
             android:visibility="gone"
             app:cardBackgroundColor="#FFFFFF"
-            app:cardCornerRadius="@dimen/_101sdp">
+            app:cardCornerRadius="@dimen/_101sdp"
+            app:cardElevation="0dp"
+            app:cardMaxElevation="0dp">
 
             <ImageView
                 android:id="@+id/feeling"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:layout_gravity="center" />
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
+                android:layout_gravity="center"
+                android:padding="@dimen/_1sdp" />
 
         </androidx.cardview.widget.CardView>
 

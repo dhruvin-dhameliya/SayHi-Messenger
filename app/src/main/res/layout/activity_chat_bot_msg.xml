@@ -8,7 +8,6 @@
     android:layout_gravity="center"
     tools:context=".chatBot.Chat_Bot_Msg_Activity">
 
-
     <ImageView
         android:id="@+id/imageBG"
         android:layout_width="match_parent"
@@ -107,7 +106,7 @@
             android:scrollbars="vertical"
             android:singleLine="false" />
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/btnSendMsg"
             android:layout_width="47dp"
             android:layout_height="47dp"
@@ -126,7 +125,7 @@
                 android:background="@drawable/icon_send_chat"
                 android:backgroundTint="@color/white" />
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 

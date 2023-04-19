@@ -447,7 +447,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                                             calendar.setTimeInMillis(Long.parseLong(online));
                                             String dateTime = DateFormat.format("dd/MM/yyyy hh:mm aa", calendar).toString();
                                             user_status.setText("Last seen: " + dateTime);
-                                            user_status.setTextSize(12);
+                                            user_status.setTextSize(11);
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
