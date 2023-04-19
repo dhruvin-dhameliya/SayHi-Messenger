@@ -125,6 +125,83 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                 ((SenderViewHolder) holder).user_video_msg_layout.setVisibility(View.GONE);
                 ((SenderViewHolder) holder).user_img_msg_layout.setVisibility(View.GONE);
 
+                //EDIT sender message
+                ((SenderViewHolder) holder).single_outer_message_layout.setOnTouchListener(new View.OnTouchListener() {
+                    final GestureDetector gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+
+                        @Override
+                        public boolean onDoubleTap(@NonNull MotionEvent e) {
+
+                            if (Objects.equals(message, encoded_deleted_already_msg)) {
+                                Toast.makeText(context, "Can't edit because it's already deleted", Toast.LENGTH_SHORT).show();
+                            } else {
+                                long timestamp1 = Long.parseLong(Objects.requireNonNull(timestamp));
+                                long currentDate = new Date().getTime();
+                                long differenceDate = currentDate - timestamp1;
+
+                                if (differenceDate >= 900000L) {
+                                    Toast.makeText(context, "Can't edit message after 15 minutes", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    final DialogPlus dialogPlus = DialogPlus.newDialog(context)
+                                            .setContentHolder(new ViewHolder(R.layout.message_edit_dialogplus))
+                                            .setExpanded(true, 500)
+                                            .create();
+
+                                    View myview = dialogPlus.getHolderView();
+                                    Button btnsave = myview.findViewById(R.id.btnsave);
+                                    Button btncancel = myview.findViewById(R.id.btncancel);
+                                    EditText edit_msg = myview.findViewById(R.id.edit_msg);
+
+                                    edit_msg.requestFocus();
+
+                                    byte[] msg = Base64.decode(chatmodel.getMessage(), Base64.DEFAULT);
+                                    String text = new String(msg, StandardCharsets.UTF_8);
+                                    edit_msg.setText(text);
+                                    dialogPlus.show();
+
+                                    btnsave.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            String msg = edit_msg.getText().toString().trim();
+                                            if (msg.equals(text)) {
+//                                            Toast.makeText(context, "Can't save because message not edited", Toast.LENGTH_SHORT).show();
+                                                dialogPlus.dismiss();
+                                            } else {
+                                                byte[] data = msg.getBytes(StandardCharsets.UTF_8);
+                                                String encode_txt_msg = Base64.encodeToString(data, Base64.DEFAULT);
+
+                                                Map<String, Object> map = new HashMap<>();
+                                                map.put("message", encode_txt_msg);
+                                                map.put("edited", "yes");
+
+                                                DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
+                                                dbref.child(myMobileNo).child(senderID).child("Messages").child(timestamp).updateChildren(map);
+                                                dbref.child(receiver).child(receiverId).child("Messages").child(timestamp).updateChildren(map);
+                                                // Toast.makeText(context, "Message Edited", Toast.LENGTH_SHORT).show();
+                                                dialogPlus.dismiss();
+                                            }
+                                        }
+                                    });
+
+                                    btncancel.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialogPlus.dismiss();
+                                        }
+                                    });
+                                }
+                            }
+                            return super.onDoubleTap(e);
+                        }
+                    });
+
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        gestureDetector.onTouchEvent(event);
+                        return false;
+                    }
+                });
+
                 // sender side edit message...
                 DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
                 dbref.child(myMobileNo).child(senderID).child("Messages").child(timestamp)
@@ -449,83 +526,6 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                 ((SenderViewHolder) holder).emoji_reaction.setVisibility(View.GONE);
             }
 
-            //EDIT sender message
-            ((SenderViewHolder) holder).single_outer_message_layout.setOnTouchListener(new View.OnTouchListener() {
-                final GestureDetector gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
-
-                    @Override
-                    public boolean onDoubleTap(@NonNull MotionEvent e) {
-
-                        if (Objects.equals(message, encoded_deleted_already_msg)) {
-                            Toast.makeText(context, "Can't edit because it's already deleted", Toast.LENGTH_SHORT).show();
-                        } else {
-                            long timestamp1 = Long.parseLong(Objects.requireNonNull(timestamp));
-                            long currentDate = new Date().getTime();
-                            long differenceDate = currentDate - timestamp1;
-
-                            if (differenceDate >= 900000L) {
-                                Toast.makeText(context, "Can't edit message after 15 minutes", Toast.LENGTH_SHORT).show();
-                            } else {
-                                final DialogPlus dialogPlus = DialogPlus.newDialog(context)
-                                        .setContentHolder(new ViewHolder(R.layout.message_edit_dialogplus))
-                                        .setExpanded(true, 500)
-                                        .create();
-
-                                View myview = dialogPlus.getHolderView();
-                                Button btnsave = myview.findViewById(R.id.btnsave);
-                                Button btncancel = myview.findViewById(R.id.btncancel);
-                                EditText edit_msg = myview.findViewById(R.id.edit_msg);
-
-                                edit_msg.requestFocus();
-
-                                byte[] msg = Base64.decode(chatmodel.getMessage(), Base64.DEFAULT);
-                                String text = new String(msg, StandardCharsets.UTF_8);
-                                edit_msg.setText(text);
-                                dialogPlus.show();
-
-                                btnsave.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        String msg = edit_msg.getText().toString().trim();
-                                        if (msg.equals(text)) {
-//                                            Toast.makeText(context, "Can't save because message not edited", Toast.LENGTH_SHORT).show();
-                                            dialogPlus.dismiss();
-                                        } else {
-                                            byte[] data = msg.getBytes(StandardCharsets.UTF_8);
-                                            String encode_txt_msg = Base64.encodeToString(data, Base64.DEFAULT);
-
-                                            Map<String, Object> map = new HashMap<>();
-                                            map.put("message", encode_txt_msg);
-                                            map.put("edited", "yes");
-
-                                            DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
-                                            dbref.child(myMobileNo).child(senderID).child("Messages").child(timestamp).updateChildren(map);
-                                            dbref.child(receiver).child(receiverId).child("Messages").child(timestamp).updateChildren(map);
-                                            // Toast.makeText(context, "Message Edited", Toast.LENGTH_SHORT).show();
-                                            dialogPlus.dismiss();
-                                        }
-                                    }
-                                });
-
-                                btncancel.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        dialogPlus.dismiss();
-                                    }
-                                });
-                            }
-                        }
-                        return super.onDoubleTap(e);
-                    }
-                });
-
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    gestureDetector.onTouchEvent(event);
-                    return false;
-                }
-            });
-
             //Delete sender TEXT message
             ((SenderViewHolder) holder).single_outer_message_layout.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -535,15 +535,15 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setContentView(R.layout.msg_delete_reaction_dialog);
 
-                    ImageView emoji_1 = dialog.findViewById(R.id.emoji_1);
-                    ImageView emoji_2 = dialog.findViewById(R.id.emoji_2);
-                    ImageView emoji_3 = dialog.findViewById(R.id.emoji_3);
-                    ImageView emoji_4 = dialog.findViewById(R.id.emoji_4);
-                    ImageView emoji_5 = dialog.findViewById(R.id.emoji_5);
-                    ImageView emoji_6 = dialog.findViewById(R.id.emoji_6);
+                    MaterialCardView emoji_1 = dialog.findViewById(R.id.emoji_1);
+                    MaterialCardView emoji_2 = dialog.findViewById(R.id.emoji_2);
+                    MaterialCardView emoji_3 = dialog.findViewById(R.id.emoji_3);
+                    MaterialCardView emoji_4 = dialog.findViewById(R.id.emoji_4);
+                    MaterialCardView emoji_5 = dialog.findViewById(R.id.emoji_5);
+                    MaterialCardView emoji_6 = dialog.findViewById(R.id.emoji_6);
 
                     RelativeLayout delete = dialog.findViewById(R.id.delete);
-                    MaterialCardView reaction_layout = dialog.findViewById(R.id.reaction_layout);
+                    LinearLayout reaction_layout = dialog.findViewById(R.id.reaction_layout);
 
                     delete.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -711,12 +711,12 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setContentView(R.layout.msg_delete_reaction_dialog);
 
-                    ImageView emoji_1 = dialog.findViewById(R.id.emoji_1);
-                    ImageView emoji_2 = dialog.findViewById(R.id.emoji_2);
-                    ImageView emoji_3 = dialog.findViewById(R.id.emoji_3);
-                    ImageView emoji_4 = dialog.findViewById(R.id.emoji_4);
-                    ImageView emoji_5 = dialog.findViewById(R.id.emoji_5);
-                    ImageView emoji_6 = dialog.findViewById(R.id.emoji_6);
+                    MaterialCardView emoji_1 = dialog.findViewById(R.id.emoji_1);
+                    MaterialCardView emoji_2 = dialog.findViewById(R.id.emoji_2);
+                    MaterialCardView emoji_3 = dialog.findViewById(R.id.emoji_3);
+                    MaterialCardView emoji_4 = dialog.findViewById(R.id.emoji_4);
+                    MaterialCardView emoji_5 = dialog.findViewById(R.id.emoji_5);
+                    MaterialCardView emoji_6 = dialog.findViewById(R.id.emoji_6);
 
                     RelativeLayout delete = dialog.findViewById(R.id.delete);
                     MaterialCardView reaction_layout = dialog.findViewById(R.id.reaction_layout);
@@ -897,12 +897,12 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setContentView(R.layout.msg_delete_reaction_dialog);
 
-                    ImageView emoji_1 = dialog.findViewById(R.id.emoji_1);
-                    ImageView emoji_2 = dialog.findViewById(R.id.emoji_2);
-                    ImageView emoji_3 = dialog.findViewById(R.id.emoji_3);
-                    ImageView emoji_4 = dialog.findViewById(R.id.emoji_4);
-                    ImageView emoji_5 = dialog.findViewById(R.id.emoji_5);
-                    ImageView emoji_6 = dialog.findViewById(R.id.emoji_6);
+                    MaterialCardView emoji_1 = dialog.findViewById(R.id.emoji_1);
+                    MaterialCardView emoji_2 = dialog.findViewById(R.id.emoji_2);
+                    MaterialCardView emoji_3 = dialog.findViewById(R.id.emoji_3);
+                    MaterialCardView emoji_4 = dialog.findViewById(R.id.emoji_4);
+                    MaterialCardView emoji_5 = dialog.findViewById(R.id.emoji_5);
+                    MaterialCardView emoji_6 = dialog.findViewById(R.id.emoji_6);
 
                     RelativeLayout delete = dialog.findViewById(R.id.delete);
                     MaterialCardView reaction_layout = dialog.findViewById(R.id.reaction_layout);
@@ -1085,12 +1085,12 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setContentView(R.layout.msg_delete_reaction_dialog);
 
-                    ImageView emoji_1 = dialog.findViewById(R.id.emoji_1);
-                    ImageView emoji_2 = dialog.findViewById(R.id.emoji_2);
-                    ImageView emoji_3 = dialog.findViewById(R.id.emoji_3);
-                    ImageView emoji_4 = dialog.findViewById(R.id.emoji_4);
-                    ImageView emoji_5 = dialog.findViewById(R.id.emoji_5);
-                    ImageView emoji_6 = dialog.findViewById(R.id.emoji_6);
+                    MaterialCardView emoji_1 = dialog.findViewById(R.id.emoji_1);
+                    MaterialCardView emoji_2 = dialog.findViewById(R.id.emoji_2);
+                    MaterialCardView emoji_3 = dialog.findViewById(R.id.emoji_3);
+                    MaterialCardView emoji_4 = dialog.findViewById(R.id.emoji_4);
+                    MaterialCardView emoji_5 = dialog.findViewById(R.id.emoji_5);
+                    MaterialCardView emoji_6 = dialog.findViewById(R.id.emoji_6);
 
                     RelativeLayout delete = dialog.findViewById(R.id.delete);
                     MaterialCardView reaction_layout = dialog.findViewById(R.id.reaction_layout);
@@ -1271,12 +1271,12 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setContentView(R.layout.msg_delete_reaction_dialog);
 
-                    ImageView emoji_1 = dialog.findViewById(R.id.emoji_1);
-                    ImageView emoji_2 = dialog.findViewById(R.id.emoji_2);
-                    ImageView emoji_3 = dialog.findViewById(R.id.emoji_3);
-                    ImageView emoji_4 = dialog.findViewById(R.id.emoji_4);
-                    ImageView emoji_5 = dialog.findViewById(R.id.emoji_5);
-                    ImageView emoji_6 = dialog.findViewById(R.id.emoji_6);
+                    MaterialCardView emoji_1 = dialog.findViewById(R.id.emoji_1);
+                    MaterialCardView emoji_2 = dialog.findViewById(R.id.emoji_2);
+                    MaterialCardView emoji_3 = dialog.findViewById(R.id.emoji_3);
+                    MaterialCardView emoji_4 = dialog.findViewById(R.id.emoji_4);
+                    MaterialCardView emoji_5 = dialog.findViewById(R.id.emoji_5);
+                    MaterialCardView emoji_6 = dialog.findViewById(R.id.emoji_6);
 
                     RelativeLayout delete = dialog.findViewById(R.id.delete);
                     MaterialCardView reaction_layout = dialog.findViewById(R.id.reaction_layout);
@@ -1460,12 +1460,12 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setContentView(R.layout.msg_delete_reaction_dialog);
 
-                    ImageView emoji_1 = dialog.findViewById(R.id.emoji_1);
-                    ImageView emoji_2 = dialog.findViewById(R.id.emoji_2);
-                    ImageView emoji_3 = dialog.findViewById(R.id.emoji_3);
-                    ImageView emoji_4 = dialog.findViewById(R.id.emoji_4);
-                    ImageView emoji_5 = dialog.findViewById(R.id.emoji_5);
-                    ImageView emoji_6 = dialog.findViewById(R.id.emoji_6);
+                    MaterialCardView emoji_1 = dialog.findViewById(R.id.emoji_1);
+                    MaterialCardView emoji_2 = dialog.findViewById(R.id.emoji_2);
+                    MaterialCardView emoji_3 = dialog.findViewById(R.id.emoji_3);
+                    MaterialCardView emoji_4 = dialog.findViewById(R.id.emoji_4);
+                    MaterialCardView emoji_5 = dialog.findViewById(R.id.emoji_5);
+                    MaterialCardView emoji_6 = dialog.findViewById(R.id.emoji_6);
 
                     RelativeLayout delete = dialog.findViewById(R.id.delete);
                     MaterialCardView reaction_layout = dialog.findViewById(R.id.reaction_layout);
@@ -1646,12 +1646,12 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setContentView(R.layout.msg_delete_reaction_dialog);
 
-                    ImageView emoji_1 = dialog.findViewById(R.id.emoji_1);
-                    ImageView emoji_2 = dialog.findViewById(R.id.emoji_2);
-                    ImageView emoji_3 = dialog.findViewById(R.id.emoji_3);
-                    ImageView emoji_4 = dialog.findViewById(R.id.emoji_4);
-                    ImageView emoji_5 = dialog.findViewById(R.id.emoji_5);
-                    ImageView emoji_6 = dialog.findViewById(R.id.emoji_6);
+                    MaterialCardView emoji_1 = dialog.findViewById(R.id.emoji_1);
+                    MaterialCardView emoji_2 = dialog.findViewById(R.id.emoji_2);
+                    MaterialCardView emoji_3 = dialog.findViewById(R.id.emoji_3);
+                    MaterialCardView emoji_4 = dialog.findViewById(R.id.emoji_4);
+                    MaterialCardView emoji_5 = dialog.findViewById(R.id.emoji_5);
+                    MaterialCardView emoji_6 = dialog.findViewById(R.id.emoji_6);
 
                     RelativeLayout delete = dialog.findViewById(R.id.delete);
                     MaterialCardView reaction_layout = dialog.findViewById(R.id.reaction_layout);
@@ -1896,7 +1896,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                                 }
                             });
 
-                    TextView tap_to_remove = dialog.findViewById(R.id.tap_to_remove);
+                    RelativeLayout tap_to_remove = dialog.findViewById(R.id.tap_to_remove);
 
                     tap_to_remove.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -1943,15 +1943,15 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setContentView(R.layout.msg_delete_reaction_dialog);
 
-                    ImageView emoji_1 = dialog.findViewById(R.id.emoji_1);
-                    ImageView emoji_2 = dialog.findViewById(R.id.emoji_2);
-                    ImageView emoji_3 = dialog.findViewById(R.id.emoji_3);
-                    ImageView emoji_4 = dialog.findViewById(R.id.emoji_4);
-                    ImageView emoji_5 = dialog.findViewById(R.id.emoji_5);
-                    ImageView emoji_6 = dialog.findViewById(R.id.emoji_6);
+                    MaterialCardView emoji_1 = dialog.findViewById(R.id.emoji_1);
+                    MaterialCardView emoji_2 = dialog.findViewById(R.id.emoji_2);
+                    MaterialCardView emoji_3 = dialog.findViewById(R.id.emoji_3);
+                    MaterialCardView emoji_4 = dialog.findViewById(R.id.emoji_4);
+                    MaterialCardView emoji_5 = dialog.findViewById(R.id.emoji_5);
+                    MaterialCardView emoji_6 = dialog.findViewById(R.id.emoji_6);
 
                     RelativeLayout delete = dialog.findViewById(R.id.delete);
-                    MaterialCardView reaction_layout = dialog.findViewById(R.id.reaction_layout);
+                    LinearLayout reaction_layout = dialog.findViewById(R.id.reaction_layout);
 
                     delete.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -2116,12 +2116,12 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setContentView(R.layout.msg_delete_reaction_dialog);
 
-                    ImageView emoji_1 = dialog.findViewById(R.id.emoji_1);
-                    ImageView emoji_2 = dialog.findViewById(R.id.emoji_2);
-                    ImageView emoji_3 = dialog.findViewById(R.id.emoji_3);
-                    ImageView emoji_4 = dialog.findViewById(R.id.emoji_4);
-                    ImageView emoji_5 = dialog.findViewById(R.id.emoji_5);
-                    ImageView emoji_6 = dialog.findViewById(R.id.emoji_6);
+                    MaterialCardView emoji_1 = dialog.findViewById(R.id.emoji_1);
+                    MaterialCardView emoji_2 = dialog.findViewById(R.id.emoji_2);
+                    MaterialCardView emoji_3 = dialog.findViewById(R.id.emoji_3);
+                    MaterialCardView emoji_4 = dialog.findViewById(R.id.emoji_4);
+                    MaterialCardView emoji_5 = dialog.findViewById(R.id.emoji_5);
+                    MaterialCardView emoji_6 = dialog.findViewById(R.id.emoji_6);
 
                     RelativeLayout delete = dialog.findViewById(R.id.delete);
                     MaterialCardView reaction_layout = dialog.findViewById(R.id.reaction_layout);
@@ -2302,12 +2302,12 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setContentView(R.layout.msg_delete_reaction_dialog);
 
-                    ImageView emoji_1 = dialog.findViewById(R.id.emoji_1);
-                    ImageView emoji_2 = dialog.findViewById(R.id.emoji_2);
-                    ImageView emoji_3 = dialog.findViewById(R.id.emoji_3);
-                    ImageView emoji_4 = dialog.findViewById(R.id.emoji_4);
-                    ImageView emoji_5 = dialog.findViewById(R.id.emoji_5);
-                    ImageView emoji_6 = dialog.findViewById(R.id.emoji_6);
+                    MaterialCardView emoji_1 = dialog.findViewById(R.id.emoji_1);
+                    MaterialCardView emoji_2 = dialog.findViewById(R.id.emoji_2);
+                    MaterialCardView emoji_3 = dialog.findViewById(R.id.emoji_3);
+                    MaterialCardView emoji_4 = dialog.findViewById(R.id.emoji_4);
+                    MaterialCardView emoji_5 = dialog.findViewById(R.id.emoji_5);
+                    MaterialCardView emoji_6 = dialog.findViewById(R.id.emoji_6);
 
                     RelativeLayout delete = dialog.findViewById(R.id.delete);
                     MaterialCardView reaction_layout = dialog.findViewById(R.id.reaction_layout);
@@ -2490,12 +2490,12 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setContentView(R.layout.msg_delete_reaction_dialog);
 
-                    ImageView emoji_1 = dialog.findViewById(R.id.emoji_1);
-                    ImageView emoji_2 = dialog.findViewById(R.id.emoji_2);
-                    ImageView emoji_3 = dialog.findViewById(R.id.emoji_3);
-                    ImageView emoji_4 = dialog.findViewById(R.id.emoji_4);
-                    ImageView emoji_5 = dialog.findViewById(R.id.emoji_5);
-                    ImageView emoji_6 = dialog.findViewById(R.id.emoji_6);
+                    MaterialCardView emoji_1 = dialog.findViewById(R.id.emoji_1);
+                    MaterialCardView emoji_2 = dialog.findViewById(R.id.emoji_2);
+                    MaterialCardView emoji_3 = dialog.findViewById(R.id.emoji_3);
+                    MaterialCardView emoji_4 = dialog.findViewById(R.id.emoji_4);
+                    MaterialCardView emoji_5 = dialog.findViewById(R.id.emoji_5);
+                    MaterialCardView emoji_6 = dialog.findViewById(R.id.emoji_6);
 
                     RelativeLayout delete = dialog.findViewById(R.id.delete);
                     MaterialCardView reaction_layout = dialog.findViewById(R.id.reaction_layout);
@@ -2676,12 +2676,12 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setContentView(R.layout.msg_delete_reaction_dialog);
 
-                    ImageView emoji_1 = dialog.findViewById(R.id.emoji_1);
-                    ImageView emoji_2 = dialog.findViewById(R.id.emoji_2);
-                    ImageView emoji_3 = dialog.findViewById(R.id.emoji_3);
-                    ImageView emoji_4 = dialog.findViewById(R.id.emoji_4);
-                    ImageView emoji_5 = dialog.findViewById(R.id.emoji_5);
-                    ImageView emoji_6 = dialog.findViewById(R.id.emoji_6);
+                    MaterialCardView emoji_1 = dialog.findViewById(R.id.emoji_1);
+                    MaterialCardView emoji_2 = dialog.findViewById(R.id.emoji_2);
+                    MaterialCardView emoji_3 = dialog.findViewById(R.id.emoji_3);
+                    MaterialCardView emoji_4 = dialog.findViewById(R.id.emoji_4);
+                    MaterialCardView emoji_5 = dialog.findViewById(R.id.emoji_5);
+                    MaterialCardView emoji_6 = dialog.findViewById(R.id.emoji_6);
 
                     RelativeLayout delete = dialog.findViewById(R.id.delete);
                     MaterialCardView reaction_layout = dialog.findViewById(R.id.reaction_layout);
@@ -2865,12 +2865,12 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setContentView(R.layout.msg_delete_reaction_dialog);
 
-                    ImageView emoji_1 = dialog.findViewById(R.id.emoji_1);
-                    ImageView emoji_2 = dialog.findViewById(R.id.emoji_2);
-                    ImageView emoji_3 = dialog.findViewById(R.id.emoji_3);
-                    ImageView emoji_4 = dialog.findViewById(R.id.emoji_4);
-                    ImageView emoji_5 = dialog.findViewById(R.id.emoji_5);
-                    ImageView emoji_6 = dialog.findViewById(R.id.emoji_6);
+                    MaterialCardView emoji_1 = dialog.findViewById(R.id.emoji_1);
+                    MaterialCardView emoji_2 = dialog.findViewById(R.id.emoji_2);
+                    MaterialCardView emoji_3 = dialog.findViewById(R.id.emoji_3);
+                    MaterialCardView emoji_4 = dialog.findViewById(R.id.emoji_4);
+                    MaterialCardView emoji_5 = dialog.findViewById(R.id.emoji_5);
+                    MaterialCardView emoji_6 = dialog.findViewById(R.id.emoji_6);
 
                     RelativeLayout delete = dialog.findViewById(R.id.delete);
                     MaterialCardView reaction_layout = dialog.findViewById(R.id.reaction_layout);
@@ -3050,12 +3050,12 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setContentView(R.layout.msg_delete_reaction_dialog);
 
-                    ImageView emoji_1 = dialog.findViewById(R.id.emoji_1);
-                    ImageView emoji_2 = dialog.findViewById(R.id.emoji_2);
-                    ImageView emoji_3 = dialog.findViewById(R.id.emoji_3);
-                    ImageView emoji_4 = dialog.findViewById(R.id.emoji_4);
-                    ImageView emoji_5 = dialog.findViewById(R.id.emoji_5);
-                    ImageView emoji_6 = dialog.findViewById(R.id.emoji_6);
+                    MaterialCardView emoji_1 = dialog.findViewById(R.id.emoji_1);
+                    MaterialCardView emoji_2 = dialog.findViewById(R.id.emoji_2);
+                    MaterialCardView emoji_3 = dialog.findViewById(R.id.emoji_3);
+                    MaterialCardView emoji_4 = dialog.findViewById(R.id.emoji_4);
+                    MaterialCardView emoji_5 = dialog.findViewById(R.id.emoji_5);
+                    MaterialCardView emoji_6 = dialog.findViewById(R.id.emoji_6);
 
                     RelativeLayout delete = dialog.findViewById(R.id.delete);
                     MaterialCardView reaction_layout = dialog.findViewById(R.id.reaction_layout);

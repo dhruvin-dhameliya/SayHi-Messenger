@@ -144,7 +144,7 @@
             android:layout_alignStart="@id/rec_message_layout"
             android:layout_gravity="end"
             android:layout_marginStart="@dimen/_4sdp"
-            android:layout_marginTop="-6dp"
+            android:layout_marginTop="-4dp"
             android:layout_marginEnd="@dimen/_4sdp"
             android:elevation="0dp"
             android:visibility="gone"
@@ -162,7 +162,8 @@
                 android:paddingHorizontal="@dimen/_6sdp"
                 android:paddingVertical="@dimen/_2sdp"
                 android:text="Edited"
-                android:textColor="#FFFFFF" />
+                android:textColor="#FFFFFF"
+                android:textSize="10sp" />
 
         </com.google.android.material.card.MaterialCardView>
 

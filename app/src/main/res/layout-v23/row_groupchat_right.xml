@@ -86,7 +86,7 @@
                 android:gravity="center"
                 android:visibility="visible">
 
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="@dimen/_8sdp">
@@ -109,7 +109,7 @@
                         android:background="@drawable/icon_play_video_button"
                         android:gravity="center" />
 
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
             </RelativeLayout>
 
