@@ -25,14 +25,18 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.util.Base64;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,6 +75,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
     EditText userMessageInput;
     ImageView back_press, profile_img, attachbtn, img_chat_wallpaper;
     TextView user_name;
+    LinearLayout jump_to_single_info_layout;
     String currentContactName, myMobileNo, receiverMobileNo, getName, senderRoom, receiverRoom;
     RecyclerView chattingRecycleView;
     ConstraintLayout msgRelativeLayout;
@@ -103,6 +108,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
         back_press = findViewById(R.id.back_to_screen);
         profile_img = findViewById(R.id.profile_img);
         user_name = findViewById(R.id.user_name);
+        jump_to_single_info_layout = findViewById(R.id.jump_to_single_info_layout);
         attachbtn = findViewById(R.id.send_file);
         msgRelativeLayout = findViewById(R.id.msgRelativeLayout);
         sendMessageButton = findViewById(R.id.send_message_button);
@@ -436,18 +442,68 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                                     String typing = "" + ds.child("typing").getValue();
                                     if (typing.equals(receiverMobileNo)) {
                                         user_status.setText("typing...");
-                                        user_status.setTextSize(15);
+                                        user_status.setTextSize(13);
+                                        user_status.clearAnimation();
+                                        user_status.animate().cancel();
                                     } else if (online.equals("Active now")) {
                                         user_status.setText(online);
-                                        user_status.setTextSize(15);
+                                        user_status.setTextSize(13);
+                                        user_status.clearAnimation();
+                                        user_status.animate().cancel();
                                     }//the end
                                     else {
                                         try {
                                             Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
                                             calendar.setTimeInMillis(Long.parseLong(online));
-                                            String dateTime = DateFormat.format("dd/MM/yyyy hh:mm aa", calendar).toString();
-                                            user_status.setText("Last seen: " + dateTime);
-                                            user_status.setTextSize(11);
+                                            String dateTime = DateFormat.format("dd/MM/yyyy", calendar).toString();
+                                            String dateTime2 = DateFormat.format("hh:mm aa", calendar).toString();
+
+                                            DisplayMetrics displayMetrics = new DisplayMetrics();
+                                            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                                            int width = displayMetrics.widthPixels;
+                                            if (width < 1080) {
+                                                user_status.setTextSize(10);
+                                                TranslateAnimation animation2 = new TranslateAnimation(user_status.getWidth() + 20, -222, 0, 0);
+                                                animation2.setDuration(2000);
+                                                animation2.setAnimationListener(new Animation.AnimationListener() {
+                                                    @Override
+                                                    public void onAnimationStart(Animation animation) {
+                                                        user_status.setText("Last seen " + dateTime + " at " + dateTime2);
+                                                    }
+
+                                                    @Override
+                                                    public void onAnimationEnd(Animation animation) {
+                                                        user_status.setText(dateTime2);
+                                                    }
+
+                                                    @Override
+                                                    public void onAnimationRepeat(Animation animation) {
+                                                    }
+
+                                                });
+                                                user_status.startAnimation(animation2);
+                                            } else {
+                                                user_status.setTextSize(12);
+                                                TranslateAnimation animation = new TranslateAnimation(user_status.getWidth() + 20, -375, 0, 0);
+                                                animation.setDuration(2000);
+                                                animation.setAnimationListener(new Animation.AnimationListener() {
+                                                    @Override
+                                                    public void onAnimationStart(Animation animation) {
+                                                        user_status.setText("Last seen " + dateTime + " at " + dateTime2);
+                                                    }
+
+                                                    @Override
+                                                    public void onAnimationEnd(Animation animation) {
+                                                        user_status.setText(dateTime2);
+                                                    }
+
+                                                    @Override
+                                                    public void onAnimationRepeat(Animation animation) {
+                                                    }
+
+                                                });
+                                                user_status.startAnimation(animation);
+                                            }
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
@@ -460,7 +516,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                                         profile_img.setImageResource(R.drawable.img_default_person);
                                     }
 
-                                    user_name.setOnClickListener(new View.OnClickListener() {
+                                    jump_to_single_info_layout.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             Intent intent = new Intent(getApplicationContext(), Single_Chat_Info_Activity.class);
