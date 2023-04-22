@@ -1,42 +1,34 @@
 {
   "project_info": {
-    "project_number": "905412122108",
-    "firebase_url": "https://say-hi-chat-app-default-rtdb.firebaseio.com",
-    "project_id": "say-hi-chat-app",
-    "storage_bucket": "say-hi-chat-app.appspot.com"
+    "project_number": "294961264504",
+    "firebase_url": "https://say-hi-chat-application-7393e-default-rtdb.firebaseio.com",
+    "project_id": "say-hi-chat-application-7393e",
+    "storage_bucket": "say-hi-chat-application-7393e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:905412122108:android:7e1fd4aec340c943468e79",
+        "mobilesdk_app_id": "1:294961264504:android:09912b46ed9ea92c1afa8d",
         "android_client_info": {
           "package_name": "com.group_project.chatapplication"
         }
       },
       "oauth_client": [
         {
-          "client_id": "905412122108-3ma959t20m5esnpajtk3lvtl7nlc78ga.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.group_project.chatapplication",
-            "certificate_hash": "4278d8fbd7bcc927d146f7dc1e31eaefb22d6455"
-          }
-        },
-        {
-          "client_id": "905412122108-pj9382euehagiq86k25mqcmkln4vmhkn.apps.googleusercontent.com",
+          "client_id": "294961264504-gq8odqud840t8f37i41u4frlpi1mlnk4.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBvM67zHEnxwbr-lFJS-6JDfsBtF8x1dWw"
+          "current_key": "AIzaSyBzYtMBZuiawTSLWNwOZBpVWmoDIFxKyPM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "905412122108-pj9382euehagiq86k25mqcmkln4vmhkn.apps.googleusercontent.com",
+              "client_id": "294961264504-gq8odqud840t8f37i41u4frlpi1mlnk4.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

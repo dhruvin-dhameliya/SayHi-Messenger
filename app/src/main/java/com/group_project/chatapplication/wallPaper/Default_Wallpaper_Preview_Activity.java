@@ -54,7 +54,7 @@ public class Default_Wallpaper_Preview_Activity extends AppCompatActivity {
         fetch_phone_number = user.getPhoneNumber();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Chat Wallpaper").child(fetch_phone_number);
 
-        default_wallpaper_URI = "https://firebasestorage.googleapis.com/v0/b/say-hi-chat-app.appspot.com/o/default_wallpaper_img.jpeg?alt=media&token=b6d3532b-ca12-4488-a18c-5a61b3540d63";
+        default_wallpaper_URI = "https://firebasestorage.googleapis.com/v0/b/say-hi-chat-application-7393e.appspot.com/o/Default%20Images%2Fdefault_wallpaper_img.jpeg?alt=media&token=3984b91e-d978-4690-80a5-da7ca662c288";
 
         try {
             Glide.with(default_wallpaper_set_preaview).load(default_wallpaper_URI).into(default_wallpaper_set_preaview);

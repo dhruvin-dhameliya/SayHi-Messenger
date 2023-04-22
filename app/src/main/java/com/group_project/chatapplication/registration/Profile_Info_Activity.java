@@ -99,7 +99,7 @@ public class Profile_Info_Activity extends AppCompatActivity {
                     name = user.getDisplayName();
                     about = "";
                     phoneNumber = user.getPhoneNumber();
-                    imageUri = "https://firebasestorage.googleapis.com/v0/b/say-hi-chat-app.appspot.com/o/img_default_person.png?alt=media&token=f794b44a-0777-449c-8d0a-bc5b8087b920";
+                    imageUri = "https://firebasestorage.googleapis.com/v0/b/say-hi-chat-application-7393e.appspot.com/o/Default%20Images%2Fimg_default_person.png?alt=media&token=f9082b56-82c8-4fa8-9e3d-26acc0054d80";
                 }
             }
 
@@ -118,7 +118,7 @@ public class Profile_Info_Activity extends AppCompatActivity {
                 } else {
                     progressDialog.show();
                     if (updateImageUri == null) {
-                        String finalUpdate_ImageUri = "https://firebasestorage.googleapis.com/v0/b/say-hi-chat-app.appspot.com/o/img_default_person.png?alt=media&token=f794b44a-0777-449c-8d0a-bc5b8087b920";
+                        String finalUpdate_ImageUri = "https://firebasestorage.googleapis.com/v0/b/say-hi-chat-application-7393e.appspot.com/o/Default%20Images%2Fimg_default_person.png?alt=media&token=f9082b56-82c8-4fa8-9e3d-26acc0054d80";
                         usersModel = new User_Model(auth.getUid(), profileName, phoneNumber, about, finalUpdate_ImageUri, onlineStatus, typing);
                         databaseReference.setValue(usersModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override

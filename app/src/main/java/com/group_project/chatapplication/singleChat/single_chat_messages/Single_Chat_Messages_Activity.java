@@ -544,46 +544,10 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                                     int width = displayMetrics.widthPixels;
                                     if (width < 1080) {
                                         user_status.setTextSize(10);
-                                        TranslateAnimation animation2 = new TranslateAnimation(user_status.getWidth() + 20, -222, 0, 0);
-                                        animation2.setDuration(2000);
-                                        animation2.setAnimationListener(new Animation.AnimationListener() {
-                                            @Override
-                                            public void onAnimationStart(Animation animation) {
-                                                user_status.setText("Last seen " + dateTime + " at " + dateTime2);
-                                            }
-
-                                            @Override
-                                            public void onAnimationEnd(Animation animation) {
-                                                user_status.setText(dateTime2);
-                                            }
-
-                                            @Override
-                                            public void onAnimationRepeat(Animation animation) {
-                                            }
-
-                                        });
-                                        user_status.startAnimation(animation2);
+                                        user_status.setText("Last seen " + dateTime + " at " + dateTime2);
                                     } else {
                                         user_status.setTextSize(12);
-                                        TranslateAnimation animation = new TranslateAnimation(user_status.getWidth() + 20, -375, 0, 0);
-                                        animation.setDuration(2000);
-                                        animation.setAnimationListener(new Animation.AnimationListener() {
-                                            @Override
-                                            public void onAnimationStart(Animation animation) {
-                                                user_status.setText("Last seen " + dateTime + " at " + dateTime2);
-                                            }
-
-                                            @Override
-                                            public void onAnimationEnd(Animation animation) {
-                                                user_status.setText(dateTime2);
-                                            }
-
-                                            @Override
-                                            public void onAnimationRepeat(Animation animation) {
-                                            }
-
-                                        });
-                                        user_status.startAnimation(animation);
+                                        user_status.setText("Last seen " + dateTime + " at " + dateTime2);
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();
