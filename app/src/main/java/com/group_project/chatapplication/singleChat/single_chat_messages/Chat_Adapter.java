@@ -421,6 +421,26 @@ public class Chat_Adapter extends RecyclerView.Adapter {
         //SENDER side delete code for sender text, image, video & file..
         if (holder.getClass() == SenderViewHolder.class) {
 
+            if (chatmodel.isSeen()) {
+                ((SenderViewHolder) holder).isSeen.setText("Seen");
+            } else {
+                ((SenderViewHolder) holder).isSeen.setText("Delivered");
+            }
+
+            ((SenderViewHolder) holder).sen_message_layout.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    ((SenderViewHolder) holder).seen_msg_card.setVisibility(View.VISIBLE);
+                    return false;
+                }
+            });
+            ((SenderViewHolder) holder).sen_message_layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((SenderViewHolder) holder).seen_msg_card.setVisibility(View.GONE);
+                }
+            });
+
             int[] reactions = {
                     R.drawable.emoji_1_thumbs,
                     R.drawable.emoji_2_heart,
@@ -524,6 +544,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                 ((SenderViewHolder) holder).user_doc_msg_layout.setVisibility(View.GONE);
                 ((SenderViewHolder) holder).feeling.setVisibility(View.GONE);
                 ((SenderViewHolder) holder).emoji_reaction.setVisibility(View.GONE);
+                ((SenderViewHolder) holder).seen_msg_card.setVisibility(View.GONE);
             }
 
             //Delete sender TEXT message
@@ -3266,12 +3287,12 @@ public class Chat_Adapter extends RecyclerView.Adapter {
 
     public class SenderViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout user_img_msg_layout, user_video_msg_layout, user_doc_msg_layout;
-        TextView senderMsg, senderTime;
+        TextView senderMsg, senderTime, isSeen;
         RoundedImageView senderImage, senderVideo, senderFile;
         LinearLayout single_outer_message_layout, sen_message_layout;
         ImageButton play_video;
         ImageView feeling;
-        CardView emoji_reaction, edit_msg_card;
+        CardView emoji_reaction, edit_msg_card, seen_msg_card;
 
         public SenderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -3289,6 +3310,8 @@ public class Chat_Adapter extends RecyclerView.Adapter {
             sen_message_layout = itemView.findViewById(R.id.sen_message_layout);
             emoji_reaction = itemView.findViewById(R.id.emoji_reaction_card);
             edit_msg_card = itemView.findViewById(R.id.edit_msg_card);
+            seen_msg_card = itemView.findViewById(R.id.seen_msg_card);
+            isSeen = itemView.findViewById(R.id.seenTv);
         }
     }
 

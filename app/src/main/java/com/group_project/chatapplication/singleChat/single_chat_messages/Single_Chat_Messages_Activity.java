@@ -1,14 +1,5 @@
 package com.group_project.chatapplication.singleChat.single_chat_messages;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
@@ -26,7 +17,6 @@ import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.util.Base64;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,6 +30,15 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -89,7 +88,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
-    int feeling = -1;
+    boolean isSeen = false;
     Uri image_uri = null, video_uri = null, doc_uri = null;
     String picturePath;
     int IMAGE_PICK_CAMERA_CODE = 300;
@@ -98,6 +97,8 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
     int DOCUMENT_PICK_CODE = 500;
     long length;
     int file_size;
+    ValueEventListener eventListener;
+    DatabaseReference dbref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +138,8 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
 
         senderRoom = myMobileNo + receiverMobileNo;
         receiverRoom = receiverMobileNo + myMobileNo;
+
+        dbref = FirebaseDatabase.getInstance().getReference("Chat");
 
         back_press.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -201,6 +204,87 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
         });
     }
 
+    public void SeenMessage() {
+
+        eventListener = dbref.child(myMobileNo).child(senderRoom).child("Messages").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    String time = "" + ds.child("timestamp").getValue();
+                    DatabaseReference db = FirebaseDatabase.getInstance().getReference("Chat");
+                    db.child(myMobileNo).child(senderRoom).child("Messages").orderByKey().equalTo(time).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot ds : snapshot.getChildren()) {
+                                try {
+                                    Chatmodel chatmodel = ds.getValue(Chatmodel.class);
+                                    if (chatmodel.getReceiver().equals(myMobileNo) && chatmodel.getSender().equals(receiverMobileNo)) {
+                                        HashMap<String, Object> hashMap = new HashMap<>();
+                                        hashMap.put("seen", true);
+                                        ds.getRef().updateChildren(hashMap);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        eventListener = dbref.child(receiverMobileNo).child(receiverRoom).child("Messages").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    String time = "" + ds.child("timestamp").getValue();
+                    DatabaseReference db = FirebaseDatabase.getInstance().getReference("Chat");
+                    db.child(receiverMobileNo).child(receiverRoom).child("Messages").orderByKey().equalTo(time).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot ds : snapshot.getChildren()) {
+                                try {
+                                    Chatmodel chatmodel = ds.getValue(Chatmodel.class);
+                                    if (chatmodel.getReceiver().equals(myMobileNo) && chatmodel.getSender().equals(receiverMobileNo)) {
+                                        HashMap<String, Object> hashMap = new HashMap<>();
+                                        hashMap.put("seen", true);
+                                        ds.getRef().updateChildren(hashMap);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
     //start checking online & typing
     public void checkOnlineStatus(String status) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users Details").child("+91" + myMobileNo);
@@ -220,6 +304,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
     @Override
     protected void onStart() {
         checkOnlineStatus("Active now");
+        SeenMessage();
         super.onStart();
     }
 
@@ -245,6 +330,12 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
         checkTypingStatus("noOne");
     }
 
+    @Override
+    public void onBackPressed() {
+        dbref.removeEventListener(eventListener);
+        super.onBackPressed();
+    }
+
     //send message
     public void do_chat_messages() {
         sendMessageButton.setOnClickListener(new View.OnClickListener() {
@@ -253,32 +344,24 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                 String getTxtMessage = userMessageInput.getText().toString().trim();
                 byte[] data = getTxtMessage.getBytes(StandardCharsets.UTF_8);
                 String encode_txt_msg = Base64.encodeToString(data, Base64.DEFAULT);
-                final Chatmodel chatmodel = new Chatmodel(myMobileNo, encode_txt_msg, "text", feeling);
+                final Chatmodel chatmodel = new Chatmodel(myMobileNo, encode_txt_msg, "text", isSeen, receiverMobileNo);
 
                 if (TextUtils.isEmpty(getTxtMessage)) {
                     Toast.makeText(getApplicationContext(), "Can't send empty message", Toast.LENGTH_SHORT).show();
                 } else {
                     String currentTime = String.valueOf(new Date().getTime());
                     chatmodel.setTimestamp(currentTime);
-                    databaseReference.child(myMobileNo)
-                            .child(senderRoom)
-                            .child("Messages")
-                            .child(currentTime)
-                            .setValue(chatmodel).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    databaseReference.child(myMobileNo).child(senderRoom).child("Messages").child(currentTime).setValue(chatmodel).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            databaseReference.child(receiverMobileNo).child(receiverRoom).child("Messages").child(currentTime).setValue(chatmodel).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    databaseReference.child(receiverMobileNo)
-                                            .child(receiverRoom)
-                                            .child("Messages")
-                                            .child(currentTime)
-                                            .setValue(chatmodel).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
 
-                                                }
-                                            });
                                 }
                             });
+                        }
+                    });
                     userMessageInput.setText("");
                 }
             }
@@ -287,24 +370,23 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
 
     // display user messages
     public void display_chat_messages() {
-        databaseReference.child(myMobileNo)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        chatModel.clear();
-                        for (DataSnapshot snapshot1 : snapshot.child(senderRoom).child("Messages").getChildren()) {
-                            Chatmodel chatmodel = snapshot1.getValue(Chatmodel.class);
-                            chatModel.add(chatmodel);
-                        }
-                        chatAd = new Chat_Adapter(Single_Chat_Messages_Activity.this, chatModel, senderRoom, receiverRoom, receiverMobileNo);
-                        chattingRecycleView.setAdapter(chatAd);
-                    }
+        databaseReference.child(myMobileNo).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                chatModel.clear();
+                for (DataSnapshot snapshot1 : snapshot.child(senderRoom).child("Messages").getChildren()) {
+                    Chatmodel chatmodel = snapshot1.getValue(Chatmodel.class);
+                    chatModel.add(chatmodel);
+                }
+                chatAd = new Chat_Adapter(Single_Chat_Messages_Activity.this, chatModel, senderRoom, receiverRoom, receiverMobileNo);
+                chattingRecycleView.setAdapter(chatAd);
+            }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-                    }
-                });
+            }
+        });
     }
 
 
@@ -430,112 +512,111 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                     });
 
                     // navigate to info activity
-                    databaseReference.child(myMobileNo).child(senderRoom)
-                            .addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot ds) {
-                                    String title = "" + ds.child("receiver_name").getValue();
-                                    String profileImage = "" + ds.child("receiver_profileImage").getValue();
-                                    String mobile = "" + ds.child("receiver_no").getValue();
-                                    String about = "" + ds.child("receiver_info").getValue();
-                                    String online = "" + ds.child("onlineStatus").getValue();
-                                    String typing = "" + ds.child("typing").getValue();
-                                    if (typing.equals(receiverMobileNo)) {
-                                        user_status.setText("typing...");
-                                        user_status.setTextSize(13);
-                                        user_status.clearAnimation();
-                                        user_status.animate().cancel();
-                                    } else if (online.equals("Active now")) {
-                                        user_status.setText(online);
-                                        user_status.setTextSize(13);
-                                        user_status.clearAnimation();
-                                        user_status.animate().cancel();
-                                    }//the end
-                                    else {
-                                        try {
-                                            Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
-                                            calendar.setTimeInMillis(Long.parseLong(online));
-                                            String dateTime = DateFormat.format("dd/MM/yyyy", calendar).toString();
-                                            String dateTime2 = DateFormat.format("hh:mm aa", calendar).toString();
+                    databaseReference.child(myMobileNo).child(senderRoom).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot ds) {
+                            String title = "" + ds.child("receiver_name").getValue();
+                            String profileImage = "" + ds.child("receiver_profileImage").getValue();
+                            String mobile = "" + ds.child("receiver_no").getValue();
+                            String about = "" + ds.child("receiver_info").getValue();
+                            String online = "" + ds.child("onlineStatus").getValue();
+                            String typing = "" + ds.child("typing").getValue();
+                            if (typing.equals(receiverMobileNo)) {
+                                user_status.setText("typing...");
+                                user_status.setTextSize(13);
+                                user_status.clearAnimation();
+                                user_status.animate().cancel();
+                            } else if (online.equals("Active now")) {
+                                user_status.setText(online);
+                                user_status.setTextSize(13);
+                                user_status.clearAnimation();
+                                user_status.animate().cancel();
+                            }//the end
+                            else {
+                                try {
+                                    Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+                                    calendar.setTimeInMillis(Long.parseLong(online));
+                                    String dateTime = DateFormat.format("dd/MM/yyyy", calendar).toString();
+                                    String dateTime2 = DateFormat.format("hh:mm aa", calendar).toString();
 
-                                            DisplayMetrics displayMetrics = new DisplayMetrics();
-                                            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-                                            int width = displayMetrics.widthPixels;
-                                            if (width < 1080) {
-                                                user_status.setTextSize(10);
-                                                TranslateAnimation animation2 = new TranslateAnimation(user_status.getWidth() + 20, -222, 0, 0);
-                                                animation2.setDuration(2000);
-                                                animation2.setAnimationListener(new Animation.AnimationListener() {
-                                                    @Override
-                                                    public void onAnimationStart(Animation animation) {
-                                                        user_status.setText("Last seen " + dateTime + " at " + dateTime2);
-                                                    }
-
-                                                    @Override
-                                                    public void onAnimationEnd(Animation animation) {
-                                                        user_status.setText(dateTime2);
-                                                    }
-
-                                                    @Override
-                                                    public void onAnimationRepeat(Animation animation) {
-                                                    }
-
-                                                });
-                                                user_status.startAnimation(animation2);
-                                            } else {
-                                                user_status.setTextSize(12);
-                                                TranslateAnimation animation = new TranslateAnimation(user_status.getWidth() + 20, -375, 0, 0);
-                                                animation.setDuration(2000);
-                                                animation.setAnimationListener(new Animation.AnimationListener() {
-                                                    @Override
-                                                    public void onAnimationStart(Animation animation) {
-                                                        user_status.setText("Last seen " + dateTime + " at " + dateTime2);
-                                                    }
-
-                                                    @Override
-                                                    public void onAnimationEnd(Animation animation) {
-                                                        user_status.setText(dateTime2);
-                                                    }
-
-                                                    @Override
-                                                    public void onAnimationRepeat(Animation animation) {
-                                                    }
-
-                                                });
-                                                user_status.startAnimation(animation);
+                                    DisplayMetrics displayMetrics = new DisplayMetrics();
+                                    getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                                    int width = displayMetrics.widthPixels;
+                                    if (width < 1080) {
+                                        user_status.setTextSize(10);
+                                        TranslateAnimation animation2 = new TranslateAnimation(user_status.getWidth() + 20, -222, 0, 0);
+                                        animation2.setDuration(2000);
+                                        animation2.setAnimationListener(new Animation.AnimationListener() {
+                                            @Override
+                                            public void onAnimationStart(Animation animation) {
+                                                user_status.setText("Last seen " + dateTime + " at " + dateTime2);
                                             }
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
 
-                                    user_name.setText(title);
-                                    try {
-                                        Glide.with(profile_img).load(profileImage).into(profile_img);
-                                    } catch (Exception e) {
-                                        profile_img.setImageResource(R.drawable.img_default_person);
-                                    }
+                                            @Override
+                                            public void onAnimationEnd(Animation animation) {
+                                                user_status.setText(dateTime2);
+                                            }
 
-                                    jump_to_single_info_layout.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            Intent intent = new Intent(getApplicationContext(), Single_Chat_Info_Activity.class);
-                                            intent.putExtra("title", title);
-                                            intent.putExtra("mobile", mobile);
-                                            intent.putExtra("profileImage", profileImage);
-                                            intent.putExtra("about", about);
-                                            intent.putExtra("contactName", currentContactName);
-                                            intent.putExtra("contactNumber", receiverMobileNo);
-                                            startActivity(intent);
-                                        }
-                                    });
+                                            @Override
+                                            public void onAnimationRepeat(Animation animation) {
+                                            }
+
+                                        });
+                                        user_status.startAnimation(animation2);
+                                    } else {
+                                        user_status.setTextSize(12);
+                                        TranslateAnimation animation = new TranslateAnimation(user_status.getWidth() + 20, -375, 0, 0);
+                                        animation.setDuration(2000);
+                                        animation.setAnimationListener(new Animation.AnimationListener() {
+                                            @Override
+                                            public void onAnimationStart(Animation animation) {
+                                                user_status.setText("Last seen " + dateTime + " at " + dateTime2);
+                                            }
+
+                                            @Override
+                                            public void onAnimationEnd(Animation animation) {
+                                                user_status.setText(dateTime2);
+                                            }
+
+                                            @Override
+                                            public void onAnimationRepeat(Animation animation) {
+                                            }
+
+                                        });
+                                        user_status.startAnimation(animation);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 }
+                            }
 
+                            user_name.setText(title);
+                            try {
+                                Glide.with(profile_img).load(profileImage).into(profile_img);
+                            } catch (Exception e) {
+                                profile_img.setImageResource(R.drawable.img_default_person);
+                            }
+
+                            jump_to_single_info_layout.setOnClickListener(new View.OnClickListener() {
                                 @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(getApplicationContext(), Single_Chat_Info_Activity.class);
+                                    intent.putExtra("title", title);
+                                    intent.putExtra("mobile", mobile);
+                                    intent.putExtra("profileImage", profileImage);
+                                    intent.putExtra("about", about);
+                                    intent.putExtra("contactName", currentContactName);
+                                    intent.putExtra("contactNumber", receiverMobileNo);
+                                    startActivity(intent);
                                 }
                             });
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
 
                 } else {
                     try {
@@ -676,38 +757,32 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
 
                     HashMap<String, Object> hashMap = new HashMap<>();
                     hashMap.put("sender", "" + myMobileNo);
+                    hashMap.put("receiver", "" + receiverMobileNo);
+                    hashMap.put("seen", isSeen);
                     hashMap.put("message", "" + encode_img_msg);
                     hashMap.put("timestamp", "" + timestamp);
                     hashMap.put("type", "" + "image");//text,image,file
 
                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chat");
-                    reference.child(myMobileNo)
-                            .child(senderRoom)
-                            .child("Messages")
-                            .child(timestamp)
-                            .setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    reference.child(myMobileNo).child(senderRoom).child("Messages").child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            reference.child(receiverMobileNo).child(receiverRoom).child("Messages").child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
-                                    reference.child(receiverMobileNo)
-                                            .child(receiverRoom)
-                                            .child("Messages")
-                                            .child(timestamp)
-                                            .setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void unused) {
 
-                                                }
-                                            });
-                                    userMessageInput.setText("");
-                                    progressDialog.dismiss();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    progressDialog.dismiss();
-                                    Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
                                 }
                             });
+                            userMessageInput.setText("");
+                            progressDialog.dismiss();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -745,38 +820,32 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
 
                     HashMap<String, Object> hashMap = new HashMap<>();
                     hashMap.put("sender", "" + myMobileNo);
+                    hashMap.put("receiver", "" + receiverMobileNo);
+                    hashMap.put("seen", isSeen);
                     hashMap.put("message", "" + encode_img_msg);
                     hashMap.put("timestamp", "" + timestamp);
                     hashMap.put("type", "" + "video");//text,image,file
 
                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chat");
-                    reference.child(myMobileNo)
-                            .child(senderRoom)
-                            .child("Messages")
-                            .child(timestamp)
-                            .setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    reference.child(myMobileNo).child(senderRoom).child("Messages").child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            reference.child(receiverMobileNo).child(receiverRoom).child("Messages").child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
-                                    reference.child(receiverMobileNo)
-                                            .child(receiverRoom)
-                                            .child("Messages")
-                                            .child(timestamp)
-                                            .setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void unused) {
 
-                                                }
-                                            });
-                                    userMessageInput.setText("");
-                                    progressDialog.dismiss();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    progressDialog.dismiss();
-                                    Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
                                 }
                             });
+                            userMessageInput.setText("");
+                            progressDialog.dismiss();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -872,43 +941,36 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
 
                     HashMap<String, Object> hashMap = new HashMap<>();
                     hashMap.put("sender", "" + myMobileNo);
+                    hashMap.put("receiver", "" + receiverMobileNo);
+                    hashMap.put("seen", isSeen);
                     hashMap.put("message", "" + encode_doc_msg);
                     hashMap.put("timestamp", "" + timestamp);
                     hashMap.put("type", "" + "file");//text,image,file
 
                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chat");
-                    reference.child(myMobileNo)
-                            .child(senderRoom)
-                            .child("Messages")
-                            .child(timestamp)
-                            .setValue(hashMap)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    reference.child(myMobileNo).child(senderRoom).child("Messages").child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            //send
+                            //clear
+                            reference.child(receiverMobileNo).child(receiverRoom).child("Messages").child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
-                                    //send
-                                    //clear
-                                    reference.child(receiverMobileNo)
-                                            .child(receiverRoom)
-                                            .child("Messages")
-                                            .child(timestamp)
-                                            .setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void unused) {
 
-                                                }
-                                            });
-
-                                    userMessageInput.setText("");
-                                    progressDialog.dismiss();
-                                    Toast.makeText(getApplicationContext(), "Document sent", Toast.LENGTH_SHORT).show();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    progressDialog.dismiss();
-                                    Toast.makeText(getApplicationContext(), "Failed to send", Toast.LENGTH_SHORT).show();
                                 }
                             });
+
+                            userMessageInput.setText("");
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(), "Document sent", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(), "Failed to send", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {

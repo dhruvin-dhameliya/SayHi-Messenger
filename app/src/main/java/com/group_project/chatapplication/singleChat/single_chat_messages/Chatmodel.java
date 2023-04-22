@@ -2,25 +2,27 @@ package com.group_project.chatapplication.singleChat.single_chat_messages;
 
 public class Chatmodel {
 
-    private String sender,message,timestamp ,type;
-    int feeling=-1;
+    private String sender, message, timestamp, type, receiver;
+    boolean isSeen;
 
     public Chatmodel() {
     }
 
-    public Chatmodel(String sender, String message, String type,int feeling) {
+    public Chatmodel(String sender, String message, String type, boolean isSeen, String receiver) {
         this.sender = sender;
         this.message = message;
         this.type = type;
-        this.feeling=feeling;
+        this.isSeen = isSeen;
+        this.receiver = receiver;
+        //this.feeling=feeling;
     }
 
-    public Chatmodel(String sender, String message, String timestamp, String type,int feeling) {
+    public Chatmodel(String sender, String message, String timestamp, String type) {
         this.sender = sender;
         this.message = message;
         this.timestamp = timestamp;
         this.type = type;
-        this.feeling=feeling;
+        // this.feeling=feeling;
     }
 
     public String getSender() {
@@ -55,11 +57,23 @@ public class Chatmodel {
         this.type = type;
     }
 
-    public int getFeeling() {
-        return feeling;
+    public boolean onClick(float x, float y) {
+        return false;
     }
 
-    public void setFeeling(int feeling) {
-        this.feeling = feeling;
+    public boolean isSeen() {
+        return isSeen;
+    }
+
+    public void setSeen(boolean seen) {
+        isSeen = seen;
+    }
+
+    public String getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
 }
