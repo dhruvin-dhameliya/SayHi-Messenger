@@ -226,9 +226,10 @@ public class Group_Chat_Messages_Activity extends AppCompatActivity {
 
 
     public void pickfromGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
+        Intent intent = new Intent();
         intent.setType("image/*");
-        startActivityForResult(intent, IMAGE_PICK_GALLERY_CODE);
+        intent.setAction(Intent.ACTION_PICK);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 200);
     }
 
     public void pickFromCamera() {
@@ -417,11 +418,13 @@ public class Group_Chat_Messages_Activity extends AppCompatActivity {
                 } else {
                     Toast.makeText(this, "greater", Toast.LENGTH_SHORT).show();
                 }
-
             } else if (requestCode == IMAGE_PICK_CAMERA_CODE) {
-
                 sendImagemessage();
-
+            } else if (requestCode == 200) {
+                if (data != null) {
+                    image_uri = data.getData();
+                    sendImagemessage();
+                }
             } else if (requestCode == VIDEO_PICK_GALLERY_CODE) {
                 video_uri = data.getData();
 

@@ -17,6 +17,7 @@ import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,6 +42,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -55,7 +57,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.group_project.chatapplication.MainActivity;
 import com.group_project.chatapplication.R;
+import com.group_project.chatapplication.registration.Profile_Info_Activity;
 import com.group_project.chatapplication.registration.User_Model;
 
 import java.io.File;
@@ -89,7 +93,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     boolean isSeen = false;
-    Uri image_uri = null, video_uri = null, doc_uri = null;
+    Uri image_uri = null, video_uri = null, doc_uri = null, bitmoji_uri;
     String picturePath;
     int IMAGE_PICK_CAMERA_CODE = 300;
     int IMAGE_PICK_GALLERY_CODE = 400;
@@ -676,9 +680,10 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
     }
 
     public void pickfromGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
+        Intent intent = new Intent();
         intent.setType("image/*");
-        startActivityForResult(intent, IMAGE_PICK_GALLERY_CODE);
+        intent.setAction(Intent.ACTION_PICK);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 200);
     }
 
     public void pickfromVideos() {
@@ -828,6 +833,8 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
     }
 
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         if (resultCode == RESULT_OK) {
             if (requestCode == IMAGE_PICK_CAMERA_CODE) {
                 sendImagemessage();
@@ -850,7 +857,11 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                 } else {
                     Toast.makeText(this, "Image is Greater!", Toast.LENGTH_SHORT).show();
                 }
-
+            } else if (requestCode == 200) {
+                if (data != null) {
+                    image_uri = data.getData();
+                    sendImagemessage();
+                }
             } else if (requestCode == VIDEO_PICK_GALLERY_CODE) {
                 video_uri = data.getData();
 
@@ -876,7 +887,6 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                 sendDocument();
             }
         }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void sendDocument() {

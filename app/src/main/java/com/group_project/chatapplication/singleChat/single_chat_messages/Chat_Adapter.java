@@ -740,7 +740,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                     MaterialCardView emoji_6 = dialog.findViewById(R.id.emoji_6);
 
                     RelativeLayout delete = dialog.findViewById(R.id.delete);
-                    MaterialCardView reaction_layout = dialog.findViewById(R.id.reaction_layout);
+                    LinearLayout reaction_layout = dialog.findViewById(R.id.reaction_layout);
 
                     delete.setOnClickListener(new View.OnClickListener() {
                         @Override
