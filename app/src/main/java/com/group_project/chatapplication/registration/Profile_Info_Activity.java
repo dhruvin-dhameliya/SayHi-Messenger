@@ -125,7 +125,6 @@ public class Profile_Info_Activity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     progressDialog.dismiss();
-                                    Toast.makeText(getApplicationContext(), "Profile Uploaded.", Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(Profile_Info_Activity.this, MainActivity.class));
                                     finishAffinity();
                                 } else {
@@ -149,7 +148,6 @@ public class Profile_Info_Activity extends AppCompatActivity {
                                                 public void onSuccess(Void unused) {
                                                     if (task.isSuccessful()) {
                                                         progressDialog.dismiss();
-                                                        Toast.makeText(getApplicationContext(), "Profile Uploaded.", Toast.LENGTH_SHORT).show();
                                                         startActivity(new Intent(Profile_Info_Activity.this, MainActivity.class));
                                                         finishAffinity();
                                                     } else {
@@ -173,7 +171,6 @@ public class Profile_Info_Activity extends AppCompatActivity {
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
                                                 progressDialog.dismiss();
-                                                Toast.makeText(getApplicationContext(), "Profile Uploaded.", Toast.LENGTH_SHORT).show();
                                                 startActivity(new Intent(Profile_Info_Activity.this, MainActivity.class));
                                                 finishAffinity();
                                             } else {

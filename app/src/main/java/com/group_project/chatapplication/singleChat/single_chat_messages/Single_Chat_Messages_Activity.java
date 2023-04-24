@@ -709,58 +709,116 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
 
         //file path
         String filepath = "Single User Messages/" + myMobileNo + "/" + "Images/" + System.currentTimeMillis() + ".jpg";
-        //upload
-        StorageReference storageReference;
-        storageReference = FirebaseStorage.getInstance().getReference(filepath);
-        storageReference.putFile(image_uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Task<Uri> p_uriTasl = taskSnapshot.getStorage().getDownloadUrl();
-                while (!p_uriTasl.isSuccessful()) ;
-                Uri p_downloadUri = p_uriTasl.getResult();
-                if (p_uriTasl.isSuccessful()) {
-                    String timestamp = "" + System.currentTimeMillis();
-                    String img_uri_normal = p_downloadUri.toString();
-                    byte[] data = img_uri_normal.getBytes(StandardCharsets.UTF_8);
-                    String encode_img_msg = Base64.encodeToString(data, Base64.DEFAULT);
 
-                    HashMap<String, Object> hashMap = new HashMap<>();
-                    hashMap.put("sender", "" + myMobileNo);
-                    hashMap.put("receiver", "" + receiverMobileNo);
-                    hashMap.put("seen", isSeen);
-                    hashMap.put("message", "" + encode_img_msg);
-                    hashMap.put("timestamp", "" + timestamp);
-                    hashMap.put("type", "" + "image");//text,image,file
+        String bimoji_sticker = "content://com.bitstrips.sharing.provider/stickers";
+        boolean bool = image_uri.toString().contains(bimoji_sticker);
+        if (bool) {
+            //upload
+            StorageReference storageReference;
+            storageReference = FirebaseStorage.getInstance().getReference(filepath);
+            storageReference.putFile(image_uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Task<Uri> p_uriTasl = taskSnapshot.getStorage().getDownloadUrl();
+                    while (!p_uriTasl.isSuccessful()) ;
+                    Uri p_downloadUri = p_uriTasl.getResult();
+                    if (p_uriTasl.isSuccessful()) {
+                        String timestamp = "" + System.currentTimeMillis();
+                        String img_uri_normal = p_downloadUri.toString();
+                        byte[] data = img_uri_normal.getBytes(StandardCharsets.UTF_8);
+                        String encode_img_msg = Base64.encodeToString(data, Base64.DEFAULT);
 
-                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chat");
-                    reference.child(myMobileNo).child(senderRoom).child("Messages").child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            reference.child(receiverMobileNo).child(receiverRoom).child("Messages").child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
+                        HashMap<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("sender", "" + myMobileNo);
+                        hashMap.put("receiver", "" + receiverMobileNo);
+                        hashMap.put("seen", isSeen);
+                        hashMap.put("message", "STICKER" + encode_img_msg);
+                        hashMap.put("timestamp", "" + timestamp);
+                        hashMap.put("type", "" + "image");//text,image,file
 
-                                }
-                            });
-                            userMessageInput.setText("");
-                            progressDialog.dismiss();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            progressDialog.dismiss();
-                            Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chat");
+                        reference.child(myMobileNo).child(senderRoom).child("Messages").child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                reference.child(receiverMobileNo).child(receiverRoom).child("Messages").child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+
+                                    }
+                                });
+                                userMessageInput.setText("");
+                                progressDialog.dismiss();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                progressDialog.dismiss();
+                                Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
                 }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                progressDialog.dismiss();
-                Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            //upload
+            StorageReference storageReference;
+            storageReference = FirebaseStorage.getInstance().getReference(filepath);
+            storageReference.putFile(image_uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Task<Uri> p_uriTasl = taskSnapshot.getStorage().getDownloadUrl();
+                    while (!p_uriTasl.isSuccessful()) ;
+                    Uri p_downloadUri = p_uriTasl.getResult();
+                    if (p_uriTasl.isSuccessful()) {
+                        String timestamp = "" + System.currentTimeMillis();
+                        String img_uri_normal = p_downloadUri.toString();
+                        byte[] data = img_uri_normal.getBytes(StandardCharsets.UTF_8);
+                        String encode_img_msg = Base64.encodeToString(data, Base64.DEFAULT);
+
+                        HashMap<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("sender", "" + myMobileNo);
+                        hashMap.put("receiver", "" + receiverMobileNo);
+                        hashMap.put("seen", isSeen);
+                        hashMap.put("message", "" + encode_img_msg);
+                        hashMap.put("timestamp", "" + timestamp);
+                        hashMap.put("type", "" + "image");//text,image,file
+
+                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chat");
+                        reference.child(myMobileNo).child(senderRoom).child("Messages").child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                reference.child(receiverMobileNo).child(receiverRoom).child("Messages").child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+
+                                    }
+                                });
+                                userMessageInput.setText("");
+                                progressDialog.dismiss();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                progressDialog.dismiss();
+                                Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     private void sendVideoMessage() {
@@ -860,6 +918,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
             } else if (requestCode == 200) {
                 if (data != null) {
                     image_uri = data.getData();
+                    Log.d("BITMOJI: ", String.valueOf(image_uri));
                     sendImagemessage();
                 }
             } else if (requestCode == VIDEO_PICK_GALLERY_CODE) {

@@ -252,54 +252,98 @@ public class Chat_Adapter extends RecyclerView.Adapter {
         // Image display and image-open code...
         if (messageType.equals("image")) {
             if (holder.getClass() == SenderViewHolder.class) {
-                byte[] data = Base64.decode(message, Base64.DEFAULT);
-                String text = new String(data, StandardCharsets.UTF_8);
-                try {
-                    Glide.with(((SenderViewHolder) holder).senderImage).load(text).placeholder(R.drawable.default_image_for_chat).into(((SenderViewHolder) holder).senderImage);
-                } catch (Exception e) {
-                    ((SenderViewHolder) holder).senderImage.setImageResource(R.drawable.default_image_for_chat);
-                }
-                String senderMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "dd-MM-yy hh:mm");
-                ((SenderViewHolder) holder).senderTime.setText(senderMsgTime);
-
-                ((SenderViewHolder) holder).senderMsg.setVisibility(View.GONE);
-                ((SenderViewHolder) holder).user_video_msg_layout.setVisibility(View.GONE);
-                ((SenderViewHolder) holder).user_doc_msg_layout.setVisibility(View.GONE);
-
-
-                ((SenderViewHolder) holder).senderImage.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(context, Single_Chat_full_screen_photo_Activity.class);
-                        intent.putExtra("image", text);
-                        intent.putExtra("sender", sender);
-                        context.startActivity(intent);
+                String bimoji_sticker = "STICKER";
+                boolean bool = message.toString().contains(bimoji_sticker);
+                if (bool) {
+                    String sticker_msg = message.replace("STICKER", "");
+                    byte[] data = Base64.decode(sticker_msg, Base64.DEFAULT);
+                    String text = new String(data, StandardCharsets.UTF_8);
+                    try {
+                        Glide.with(((SenderViewHolder) holder).sticker_image).load(text).placeholder(R.drawable.default_image_for_chat).into(((SenderViewHolder) holder).sticker_image);
+                    } catch (Exception e) {
+                        ((SenderViewHolder) holder).sticker_image.setImageResource(R.drawable.default_image_for_chat);
                     }
-                });
+                    String senderMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "dd-MM-yy hh:mm");
+                    ((SenderViewHolder) holder).senderTime.setText(senderMsgTime);
+
+                    ((SenderViewHolder) holder).senderMsg.setVisibility(View.GONE);
+                    ((SenderViewHolder) holder).user_video_msg_layout.setVisibility(View.GONE);
+                    ((SenderViewHolder) holder).user_doc_msg_layout.setVisibility(View.GONE);
+                    ((SenderViewHolder) holder).user_img_msg_layout.setVisibility(View.GONE);
+                    ((SenderViewHolder) holder).sen_message_layout.setBackgroundColor(Color.parseColor("#00000000"));
+                } else {
+                    byte[] data = Base64.decode(message, Base64.DEFAULT);
+                    String text = new String(data, StandardCharsets.UTF_8);
+                    try {
+                        Glide.with(((SenderViewHolder) holder).senderImage).load(text).placeholder(R.drawable.default_image_for_chat).into(((SenderViewHolder) holder).senderImage);
+                    } catch (Exception e) {
+                        ((SenderViewHolder) holder).senderImage.setImageResource(R.drawable.default_image_for_chat);
+                    }
+                    String senderMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "dd-MM-yy hh:mm");
+                    ((SenderViewHolder) holder).senderTime.setText(senderMsgTime);
+
+                    ((SenderViewHolder) holder).senderMsg.setVisibility(View.GONE);
+                    ((SenderViewHolder) holder).user_video_msg_layout.setVisibility(View.GONE);
+                    ((SenderViewHolder) holder).user_doc_msg_layout.setVisibility(View.GONE);
+
+
+                    ((SenderViewHolder) holder).senderImage.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(context, Single_Chat_full_screen_photo_Activity.class);
+                            intent.putExtra("image", text);
+                            intent.putExtra("sender", sender);
+                            context.startActivity(intent);
+                        }
+                    });
+                }
+
             } else {
-                byte[] data = Base64.decode(message, Base64.DEFAULT);
-                String text = new String(data, StandardCharsets.UTF_8);
-                try {
-                    Glide.with(((RecieverViewHolder) holder).receiverImage).load(text).placeholder(R.drawable.default_image_for_chat).into(((RecieverViewHolder) holder).receiverImage);
-                } catch (Exception e) {
-                    ((RecieverViewHolder) holder).receiverImage.setImageResource(R.drawable.default_image_for_chat);
-                }
-                String receiverMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "dd-MM-yy hh:mm");
-                ((RecieverViewHolder) holder).receiverTime.setText(receiverMsgTime);
-
-                ((RecieverViewHolder) holder).receiverMsg.setVisibility(View.GONE);
-                ((RecieverViewHolder) holder).user_video_msg_layout.setVisibility(View.GONE);
-                ((RecieverViewHolder) holder).user_doc_msg_layout.setVisibility(View.GONE);
-
-                ((RecieverViewHolder) holder).receiverImage.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(context, Single_Chat_full_screen_photo_Activity.class);
-                        intent.putExtra("image", text);
-                        intent.putExtra("sender", sender);
-                        context.startActivity(intent);
+                String bimoji_sticker = "STICKER";
+                boolean bool = message.toString().contains(bimoji_sticker);
+                if (bool) {
+                    String sticker_msg = message.replace("STICKER", "");
+                    byte[] data = Base64.decode(sticker_msg, Base64.DEFAULT);
+                    String text = new String(data, StandardCharsets.UTF_8);
+                    try {
+                        Glide.with(((RecieverViewHolder) holder).sticker_image).load(text).placeholder(R.drawable.default_image_for_chat).into(((SenderViewHolder) holder).sticker_image);
+                    } catch (Exception e) {
+                        ((RecieverViewHolder) holder).sticker_image.setImageResource(R.drawable.default_image_for_chat);
                     }
-                });
+                    String senderMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "dd-MM-yy hh:mm");
+                    ((RecieverViewHolder) holder).receiverTime.setText(senderMsgTime);
+
+                    ((RecieverViewHolder) holder).receiverMsg.setVisibility(View.GONE);
+                    ((RecieverViewHolder) holder).user_video_msg_layout.setVisibility(View.GONE);
+                    ((RecieverViewHolder) holder).user_doc_msg_layout.setVisibility(View.GONE);
+                    ((RecieverViewHolder) holder).user_img_msg_layout.setVisibility(View.GONE);
+                    ((RecieverViewHolder) holder).user_img_msg_layout.setVisibility(View.GONE);
+                    ((RecieverViewHolder) holder).rec_message_layout.setBackgroundColor(Color.parseColor("#00000000"));
+                } else {
+                    byte[] data = Base64.decode(message, Base64.DEFAULT);
+                    String text = new String(data, StandardCharsets.UTF_8);
+                    try {
+                        Glide.with(((RecieverViewHolder) holder).receiverImage).load(text).placeholder(R.drawable.default_image_for_chat).into(((RecieverViewHolder) holder).receiverImage);
+                    } catch (Exception e) {
+                        ((RecieverViewHolder) holder).receiverImage.setImageResource(R.drawable.default_image_for_chat);
+                    }
+                    String receiverMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "dd-MM-yy hh:mm");
+                    ((RecieverViewHolder) holder).receiverTime.setText(receiverMsgTime);
+
+                    ((RecieverViewHolder) holder).receiverMsg.setVisibility(View.GONE);
+                    ((RecieverViewHolder) holder).user_video_msg_layout.setVisibility(View.GONE);
+                    ((RecieverViewHolder) holder).user_doc_msg_layout.setVisibility(View.GONE);
+
+                    ((RecieverViewHolder) holder).receiverImage.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(context, Single_Chat_full_screen_photo_Activity.class);
+                            intent.putExtra("image", text);
+                            intent.putExtra("sender", sender);
+                            context.startActivity(intent);
+                        }
+                    });
+                }
             }
         }
 
@@ -3260,7 +3304,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
     public class RecieverViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout user_img_msg_layout, user_video_msg_layout, user_doc_msg_layout;
         TextView receiverMsg, receiverTime;
-        RoundedImageView receiverImage, receiverVideo, receiverFile;
+        RoundedImageView receiverImage, receiverVideo, receiverFile, sticker_image;
         LinearLayout single_outer_message_layout, rec_message_layout;
         ImageButton play_video;
         ImageView feeling;
@@ -3277,6 +3321,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
             receiverImage = itemView.findViewById(R.id.single_user_img_msg);
             receiverVideo = itemView.findViewById(R.id.single_user_video_msg);
             receiverFile = itemView.findViewById(R.id.single_user_doc_msg);
+            sticker_image = itemView.findViewById(R.id.sticker_image);
             play_video = itemView.findViewById(R.id.play_video);
             feeling = itemView.findViewById(R.id.feeling);
             rec_message_layout = itemView.findViewById(R.id.rec_message_layout);
@@ -3288,7 +3333,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
     public class SenderViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout user_img_msg_layout, user_video_msg_layout, user_doc_msg_layout;
         TextView senderMsg, senderTime, isSeen;
-        RoundedImageView senderImage, senderVideo, senderFile;
+        RoundedImageView senderImage, senderVideo, senderFile, sticker_image;
         LinearLayout single_outer_message_layout, sen_message_layout;
         ImageButton play_video;
         ImageView feeling;
@@ -3305,6 +3350,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
             senderImage = itemView.findViewById(R.id.single_user_img_msg);
             senderVideo = itemView.findViewById(R.id.single_user_video_msg);
             senderFile = itemView.findViewById(R.id.single_user_doc_msg);
+            sticker_image = itemView.findViewById(R.id.sticker_image);
             play_video = itemView.findViewById(R.id.play_video);
             feeling = itemView.findViewById(R.id.feeling);
             sen_message_layout = itemView.findViewById(R.id.sen_message_layout);

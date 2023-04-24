@@ -126,6 +126,18 @@
 
             </RelativeLayout>
 
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/sticker_image"
+                android:layout_width="@dimen/_125sdp"
+                android:layout_height="@dimen/_125sdp"
+                android:layout_gravity="center|end"
+                android:layout_marginBottom="0dp"
+                android:scaleType="center"
+                android:src="@drawable/default_image_for_chat"
+                app:riv_corner_radius="@dimen/_8sdp"
+                app:riv_mutate_background="true"
+                app:riv_oval="false" />
+
             <TextView
                 android:id="@+id/single_msg_time"
                 android:layout_width="wrap_content"
