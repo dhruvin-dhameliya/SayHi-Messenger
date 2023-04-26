@@ -15,6 +15,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
+import android.text.format.DateUtils;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -79,7 +80,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
     ImageView back_press, profile_img, attachbtn, img_chat_wallpaper;
     TextView user_name;
     LinearLayout jump_to_single_info_layout;
-    String currentContactName, myMobileNo, receiverMobileNo, getName, senderRoom, receiverRoom;
+    String currentContactName, myMobileNo, receiverMobileNo, getName, senderRoom, receiverRoom, online;
     RecyclerView chattingRecycleView;
     ConstraintLayout msgRelativeLayout;
     RelativeLayout invite_user_layout;
@@ -468,6 +469,33 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                     mToolbar.inflateMenu(R.menu.delete_chat_menu);
                     if (myMobileNo.equals(receiverMobileNo)) {
                         mToolbar.getMenu().findItem(R.id.call_user).setVisible(false);
+                        mToolbar.getMenu().findItem(R.id.clear_chat_for_everyone).setVisible(false);
+                        mToolbar.getMenu().findItem(R.id.clear_chat_for_me).setTitle("Clear chat");
+                        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem item) {
+                                if (item.getItemId() == R.id.clear_chat_for_me) {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(Single_Chat_Messages_Activity.this);
+                                    builder.setTitle("Clear chat?");
+                                    builder.setMessage("Are you sure to clear your chat?");
+                                    builder.setPositiveButton("Clear", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            FirebaseDatabase.getInstance().getReference().child("Chat").child(myMobileNo).child(myMobileNo + myMobileNo).child("Messages").setValue(null);
+                                            Toast.makeText(Single_Chat_Messages_Activity.this, "All chat cleared for you", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                    builder.create().show();
+                                }
+                                return false;
+                            }
+                        });
                     } else {
                         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
                             @Override
@@ -527,7 +555,7 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                             String profileImage = "" + ds.child("receiver_profileImage").getValue();
                             String mobile = "" + ds.child("receiver_no").getValue();
                             String about = "" + ds.child("receiver_info").getValue();
-                            String online = "" + ds.child("onlineStatus").getValue();
+                            online = "" + ds.child("onlineStatus").getValue();
                             String typing = "" + ds.child("typing").getValue();
                             if (("+91" + myMobileNo).equals(mobile)) {
                                 if (online.equals("Active now")) {
@@ -555,14 +583,17 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                                         String dateTime = DateFormat.format("dd/MM/yyyy", calendar).toString();
                                         String dateTime2 = DateFormat.format("hh:mm aa", calendar).toString();
 
-                                        DisplayMetrics displayMetrics = new DisplayMetrics();
-                                        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-                                        int width = displayMetrics.widthPixels;
-                                        if (width < 1080) {
-                                            user_status.setTextSize(10);
-                                            user_status.setText("Last seen " + dateTime + " at " + dateTime2);
-                                        } else {
+                                        boolean today = DateUtils.isToday(Long.parseLong(online));
+                                        boolean yesterday = isYesterday(Long.parseLong(online));
+
+                                        if (today) {
                                             user_status.setTextSize(12);
+                                            user_status.setText("Last seen today at " + dateTime2);
+                                        } else if (yesterday) {
+                                            user_status.setTextSize(11.5f);
+                                            user_status.setText("Last seen yesterday at " + dateTime2);
+                                        } else {
+                                            user_status.setTextSize(10.9f);
                                             user_status.setText("Last seen " + dateTime + " at " + dateTime2);
                                         }
                                     } catch (Exception e) {
@@ -972,6 +1003,18 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                 progressDialog.setMessage((int) p + "% Document uploading...");
             }
         });
+    }
+
+    public static boolean isYesterday(long date) {
+        Calendar now = Calendar.getInstance();
+        Calendar cdate = Calendar.getInstance();
+        cdate.setTimeInMillis(date);
+
+        now.add(Calendar.DATE, -1);
+
+        return now.get(Calendar.YEAR) == cdate.get(Calendar.YEAR)
+                && now.get(Calendar.MONTH) == cdate.get(Calendar.MONTH)
+                && now.get(Calendar.DATE) == cdate.get(Calendar.DATE);
     }
 
 }

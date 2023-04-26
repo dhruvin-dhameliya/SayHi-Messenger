@@ -541,6 +541,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                 ((SenderViewHolder) holder).senderFile.setVisibility(View.GONE);
                 ((SenderViewHolder) holder).user_doc_msg_layout.setVisibility(View.GONE);
                 ((SenderViewHolder) holder).feeling.setVisibility(View.GONE);
+                ((SenderViewHolder) holder).isSeen.setVisibility(View.GONE);
                 ((SenderViewHolder) holder).emoji_reaction.setVisibility(View.GONE);
                 ((SenderViewHolder) holder).seen_msg_card.setVisibility(View.GONE);
             }
@@ -575,56 +576,73 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     String msgTimestamp = chatmodels.get(position).getTimestamp();
-                                    DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
-                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
-                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
-                                    //first entry delete code
-                                    query.addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            for (DataSnapshot ds : snapshot.getChildren()) {
-                                                String msg = ds.child("message").getValue().toString();
-                                                if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
+                                    if (myMobileNo.equals(receiver)) {
+                                        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
+                                        dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp).addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                for (DataSnapshot ds : snapshot.getChildren()) {
                                                     ds.getRef().removeValue();
-                                                } else {
-                                                    HashMap<String, Object> hashMap = new HashMap<>();
-                                                    hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
-                                                    hashMap.put("edited", null); // edited value set null
-                                                    hashMap.put("feeling", -1);
-                                                    ds.getRef().updateChildren(hashMap);
                                                 }
                                             }
-                                            //second entry delete code
-                                            query1.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                    for (DataSnapshot ds : snapshot.getChildren()) {
-                                                        String msg = ds.child("message").getValue().toString();
-                                                        if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
-                                                            ds.getRef().removeValue();
-                                                        } else {
-                                                            HashMap<String, Object> hashMap = new HashMap<>();
-                                                            hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
-                                                            hashMap.put("edited", null); // edited value set null
-                                                            hashMap.put("feeling", -1);
-                                                            ds.getRef().updateChildren(hashMap);
-                                                        }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+                                    } else {
+                                        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
+                                        Query query = dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
+                                        Query query1 = dbref.child(receiver).child(receiverId).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
+                                        //first entry delete code
+                                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                for (DataSnapshot ds : snapshot.getChildren()) {
+                                                    String msg = ds.child("message").getValue().toString();
+                                                    if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
+                                                        ds.getRef().removeValue();
+                                                    } else {
+                                                        HashMap<String, Object> hashMap = new HashMap<>();
+                                                        hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
+                                                        hashMap.put("edited", null); // edited value set null
+                                                        hashMap.put("feeling", -1);
+                                                        ds.getRef().updateChildren(hashMap);
                                                     }
                                                 }
+                                                //second entry delete code
+                                                query1.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                        for (DataSnapshot ds : snapshot.getChildren()) {
+                                                            String msg = ds.child("message").getValue().toString();
+                                                            if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
+                                                                ds.getRef().removeValue();
+                                                            } else {
+                                                                HashMap<String, Object> hashMap = new HashMap<>();
+                                                                hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
+                                                                hashMap.put("edited", null); // edited value set null
+                                                                hashMap.put("feeling", -1);
+                                                                ds.getRef().updateChildren(hashMap);
+                                                            }
+                                                        }
+                                                    }
 
-                                                @Override
-                                                public void onCancelled(@NonNull DatabaseError error) {
-                                                    Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
-                                                }
-                                            });//second entry end
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError error) {
+                                                        Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });//second entry end
 
-                                        }
+                                            }
 
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-                                            Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });//first entry end
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+                                                Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });//first entry end
+                                    }
                                 }
                             });
                             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -749,69 +767,86 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     String msgTimestamp = chatmodels.get(position).getTimestamp();
-                                    DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
-                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
-                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
-                                    //first entry delete code
-                                    query.addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            for (DataSnapshot ds : snapshot.getChildren()) {
-                                                String msg = ds.child("message").getValue().toString();
-                                                if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
+                                    if (myMobileNo.equals(receiver)) {
+                                        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
+                                        dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp).addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                for (DataSnapshot ds : snapshot.getChildren()) {
                                                     ds.getRef().removeValue();
-                                                } else {
-                                                    HashMap<String, Object> hashMap = new HashMap<>();
-                                                    hashMap.put("message", encoded_deleted_already_msg);// This message was deleted
-                                                    hashMap.put("feeling", -1);
-                                                    ds.getRef().updateChildren(hashMap);
-                                                    //image delete from the firebase storage
-                                                    byte[] data = Base64.decode(msg, Base64.DEFAULT);
-                                                    String text = new String(data, StandardCharsets.UTF_8);
-                                                    FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-                                                    StorageReference storageReference = firebaseStorage.getReferenceFromUrl(text);
-                                                    storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                        @Override
-                                                        public void onSuccess(Void aVoid) {
-                                                            //image deleted from the firebase storage
-                                                        }
-                                                    }).addOnFailureListener(new OnFailureListener() {
-                                                        @Override
-                                                        public void onFailure(@NonNull Exception exception) {
-                                                            Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
-                                                        }
-                                                    });
                                                 }
                                             }
-                                            //second entry delete code
-                                            query1.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                    for (DataSnapshot ds : snapshot.getChildren()) {
-                                                        String msg = ds.child("message").getValue().toString();
-                                                        if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
-                                                            ds.getRef().removeValue();
-                                                        } else {
-                                                            HashMap<String, Object> hashMap = new HashMap<>();
-                                                            hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
-                                                            hashMap.put("feeling", -1);
-                                                            ds.getRef().updateChildren(hashMap);
-                                                        }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+                                    } else {
+                                        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
+                                        Query query = dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
+                                        Query query1 = dbref.child(receiver).child(receiverId).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
+                                        //first entry delete code
+                                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                for (DataSnapshot ds : snapshot.getChildren()) {
+                                                    String msg = ds.child("message").getValue().toString();
+                                                    if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
+                                                        ds.getRef().removeValue();
+                                                    } else {
+                                                        HashMap<String, Object> hashMap = new HashMap<>();
+                                                        hashMap.put("message", encoded_deleted_already_msg);// This message was deleted
+                                                        hashMap.put("feeling", -1);
+                                                        ds.getRef().updateChildren(hashMap);
+                                                        //image delete from the firebase storage
+                                                        byte[] data = Base64.decode(msg, Base64.DEFAULT);
+                                                        String text = new String(data, StandardCharsets.UTF_8);
+                                                        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                                                        StorageReference storageReference = firebaseStorage.getReferenceFromUrl(text);
+                                                        storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void aVoid) {
+                                                                //image deleted from the firebase storage
+                                                            }
+                                                        }).addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception exception) {
+                                                                Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        });
                                                     }
                                                 }
+                                                //second entry delete code
+                                                query1.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                        for (DataSnapshot ds : snapshot.getChildren()) {
+                                                            String msg = ds.child("message").getValue().toString();
+                                                            if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
+                                                                ds.getRef().removeValue();
+                                                            } else {
+                                                                HashMap<String, Object> hashMap = new HashMap<>();
+                                                                hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
+                                                                hashMap.put("feeling", -1);
+                                                                ds.getRef().updateChildren(hashMap);
+                                                            }
+                                                        }
+                                                    }
 
-                                                @Override
-                                                public void onCancelled(@NonNull DatabaseError error) {
-                                                    Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
-                                                }
-                                            });//end
-                                        }
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError error) {
+                                                        Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });//end
+                                            }
 
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-                                            Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });//end
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+                                                Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });//end
+                                    }
                                 }
                             });
                             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -920,7 +955,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                     MaterialCardView emoji_6 = dialog.findViewById(R.id.emoji_6);
 
                     RelativeLayout delete = dialog.findViewById(R.id.delete);
-                    MaterialCardView reaction_layout = dialog.findViewById(R.id.reaction_layout);
+                    LinearLayout reaction_layout = dialog.findViewById(R.id.reaction_layout);
 
                     delete.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -933,69 +968,86 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     String msgTimestamp = chatmodels.get(position).getTimestamp();
-                                    DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
-                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
-                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
-                                    //first entry delete code
-                                    query.addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            for (DataSnapshot ds : snapshot.getChildren()) {
-                                                String msg = ds.child("message").getValue().toString();
-                                                if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
+                                    if (myMobileNo.equals(receiver)) {
+                                        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
+                                        dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp).addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                for (DataSnapshot ds : snapshot.getChildren()) {
                                                     ds.getRef().removeValue();
-                                                } else {
-                                                    HashMap<String, Object> hashMap = new HashMap<>();
-                                                    hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
-                                                    hashMap.put("feeling", -1);
-                                                    ds.getRef().updateChildren(hashMap);
-                                                    //image delete from the firebase storage
-                                                    byte[] data = Base64.decode(msg, Base64.DEFAULT);
-                                                    String text = new String(data, StandardCharsets.UTF_8);
-                                                    FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-                                                    StorageReference storageReference = firebaseStorage.getReferenceFromUrl(text);
-                                                    storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                        @Override
-                                                        public void onSuccess(Void aVoid) {
-                                                            //image deleted from the firebase storage
-                                                        }
-                                                    }).addOnFailureListener(new OnFailureListener() {
-                                                        @Override
-                                                        public void onFailure(@NonNull Exception exception) {
-                                                            Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
-                                                        }
-                                                    });
                                                 }
                                             }
-                                            //second entry delete code
-                                            query1.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                    for (DataSnapshot ds : snapshot.getChildren()) {
-                                                        String msg = ds.child("message").getValue().toString();
-                                                        if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
-                                                            ds.getRef().removeValue();
-                                                        } else {
-                                                            HashMap<String, Object> hashMap = new HashMap<>();
-                                                            hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
-                                                            hashMap.put("feeling", -1);
-                                                            ds.getRef().updateChildren(hashMap);
-                                                        }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+                                    } else {
+                                        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
+                                        Query query = dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
+                                        Query query1 = dbref.child(receiver).child(receiverId).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
+                                        //first entry delete code
+                                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                for (DataSnapshot ds : snapshot.getChildren()) {
+                                                    String msg = ds.child("message").getValue().toString();
+                                                    if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
+                                                        ds.getRef().removeValue();
+                                                    } else {
+                                                        HashMap<String, Object> hashMap = new HashMap<>();
+                                                        hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
+                                                        hashMap.put("feeling", -1);
+                                                        ds.getRef().updateChildren(hashMap);
+                                                        //image delete from the firebase storage
+                                                        byte[] data = Base64.decode(msg, Base64.DEFAULT);
+                                                        String text = new String(data, StandardCharsets.UTF_8);
+                                                        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                                                        StorageReference storageReference = firebaseStorage.getReferenceFromUrl(text);
+                                                        storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void aVoid) {
+                                                                //image deleted from the firebase storage
+                                                            }
+                                                        }).addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception exception) {
+                                                                Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        });
                                                     }
                                                 }
+                                                //second entry delete code
+                                                query1.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                        for (DataSnapshot ds : snapshot.getChildren()) {
+                                                            String msg = ds.child("message").getValue().toString();
+                                                            if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
+                                                                ds.getRef().removeValue();
+                                                            } else {
+                                                                HashMap<String, Object> hashMap = new HashMap<>();
+                                                                hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
+                                                                hashMap.put("feeling", -1);
+                                                                ds.getRef().updateChildren(hashMap);
+                                                            }
+                                                        }
+                                                    }
 
-                                                @Override
-                                                public void onCancelled(@NonNull DatabaseError error) {
-                                                    Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
-                                                }
-                                            });//end
-                                        }
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError error) {
+                                                        Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });//end
+                                            }
 
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-                                            Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });//end
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+                                                Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });//end
+                                    }
                                 }
                             });
                             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -1106,7 +1158,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                     MaterialCardView emoji_6 = dialog.findViewById(R.id.emoji_6);
 
                     RelativeLayout delete = dialog.findViewById(R.id.delete);
-                    MaterialCardView reaction_layout = dialog.findViewById(R.id.reaction_layout);
+                    LinearLayout reaction_layout = dialog.findViewById(R.id.reaction_layout);
 
                     delete.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -1119,69 +1171,86 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     String msgTimestamp = chatmodels.get(position).getTimestamp();
-                                    DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
-                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
-                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
-                                    //first entry delete code
-                                    query.addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            for (DataSnapshot ds : snapshot.getChildren()) {
-                                                String msg = ds.child("message").getValue().toString();
-                                                if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
+                                    if (myMobileNo.equals(receiver)) {
+                                        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
+                                        dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp).addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                for (DataSnapshot ds : snapshot.getChildren()) {
                                                     ds.getRef().removeValue();
-                                                } else {
-                                                    HashMap<String, Object> hashMap = new HashMap<>();
-                                                    hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
-                                                    hashMap.put("feeling", -1);
-                                                    ds.getRef().updateChildren(hashMap);
-                                                    //image delete from the firebase storage
-                                                    byte[] data = Base64.decode(msg, Base64.DEFAULT);
-                                                    String text = new String(data, StandardCharsets.UTF_8);
-                                                    FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-                                                    StorageReference storageReference = firebaseStorage.getReferenceFromUrl(text);
-                                                    storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                        @Override
-                                                        public void onSuccess(Void aVoid) {
-                                                            //image deleted from the firebase storage
-                                                        }
-                                                    }).addOnFailureListener(new OnFailureListener() {
-                                                        @Override
-                                                        public void onFailure(@NonNull Exception exception) {
-                                                            Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
-                                                        }
-                                                    });
                                                 }
                                             }
-                                            //second entry delete code
-                                            query1.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                    for (DataSnapshot ds : snapshot.getChildren()) {
-                                                        String msg = ds.child("message").getValue().toString();
-                                                        if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
-                                                            ds.getRef().removeValue();
-                                                        } else {
-                                                            HashMap<String, Object> hashMap = new HashMap<>();
-                                                            hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
-                                                            hashMap.put("feeling", -1);
-                                                            ds.getRef().updateChildren(hashMap);
-                                                        }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+                                    } else {
+                                        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
+                                        Query query = dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
+                                        Query query1 = dbref.child(receiver).child(receiverId).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
+                                        //first entry delete code
+                                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                for (DataSnapshot ds : snapshot.getChildren()) {
+                                                    String msg = ds.child("message").getValue().toString();
+                                                    if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
+                                                        ds.getRef().removeValue();
+                                                    } else {
+                                                        HashMap<String, Object> hashMap = new HashMap<>();
+                                                        hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
+                                                        hashMap.put("feeling", -1);
+                                                        ds.getRef().updateChildren(hashMap);
+                                                        //image delete from the firebase storage
+                                                        byte[] data = Base64.decode(msg, Base64.DEFAULT);
+                                                        String text = new String(data, StandardCharsets.UTF_8);
+                                                        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                                                        StorageReference storageReference = firebaseStorage.getReferenceFromUrl(text);
+                                                        storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void aVoid) {
+                                                                //image deleted from the firebase storage
+                                                            }
+                                                        }).addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception exception) {
+                                                                Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        });
                                                     }
                                                 }
+                                                //second entry delete code
+                                                query1.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                        for (DataSnapshot ds : snapshot.getChildren()) {
+                                                            String msg = ds.child("message").getValue().toString();
+                                                            if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
+                                                                ds.getRef().removeValue();
+                                                            } else {
+                                                                HashMap<String, Object> hashMap = new HashMap<>();
+                                                                hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
+                                                                hashMap.put("feeling", -1);
+                                                                ds.getRef().updateChildren(hashMap);
+                                                            }
+                                                        }
+                                                    }
 
-                                                @Override
-                                                public void onCancelled(@NonNull DatabaseError error) {
-                                                    Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
-                                                }
-                                            });//end
-                                        }
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError error) {
+                                                        Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });//end
+                                            }
 
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-                                            Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });//end
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+                                                Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });//end
+                                    }
                                 }
                             });
                             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -1290,7 +1359,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                     MaterialCardView emoji_6 = dialog.findViewById(R.id.emoji_6);
 
                     RelativeLayout delete = dialog.findViewById(R.id.delete);
-                    MaterialCardView reaction_layout = dialog.findViewById(R.id.reaction_layout);
+                    LinearLayout reaction_layout = dialog.findViewById(R.id.reaction_layout);
 
                     delete.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -1303,70 +1372,87 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     String msgTimestamp = chatmodels.get(position).getTimestamp();
-                                    DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
-                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
-                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
-                                    //first entry delete code
-                                    query.addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            for (DataSnapshot ds : snapshot.getChildren()) {
-                                                String msg = ds.child("message").getValue().toString();
-                                                if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
+                                    if (myMobileNo.equals(receiver)) {
+                                        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
+                                        dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp).addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                for (DataSnapshot ds : snapshot.getChildren()) {
                                                     ds.getRef().removeValue();
-                                                } else {
-                                                    HashMap<String, Object> hashMap = new HashMap<>();
-                                                    hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
-                                                    hashMap.put("feeling", -1);
-                                                    ds.getRef().updateChildren(hashMap);
-                                                    //image delete from the firebase storage
-                                                    byte[] data = Base64.decode(msg, Base64.DEFAULT);
-                                                    String text = new String(data, StandardCharsets.UTF_8);
-                                                    FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-                                                    StorageReference storageReference = firebaseStorage.getReferenceFromUrl(text);
-                                                    storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                        @Override
-                                                        public void onSuccess(Void aVoid) {
-                                                            //image deleted from the firebase storage
-                                                        }
-                                                    }).addOnFailureListener(new OnFailureListener() {
-                                                        @Override
-                                                        public void onFailure(@NonNull Exception exception) {
-                                                            Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
-                                                        }
-                                                    });
                                                 }
                                             }
-                                            //second entry delete code
-                                            query1.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                    for (DataSnapshot ds : snapshot.getChildren()) {
-                                                        String msg = ds.child("message").getValue().toString();
-                                                        if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
-                                                            ds.getRef().removeValue();
-                                                        } else {
-                                                            HashMap<String, Object> hashMap = new HashMap<>();
-                                                            hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
-                                                            hashMap.put("feeling", -1);
-                                                            ds.getRef().updateChildren(hashMap);
-                                                        }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+                                    } else {
+                                        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
+                                        Query query = dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
+                                        Query query1 = dbref.child(receiver).child(receiverId).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
+                                        //first entry delete code
+                                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                for (DataSnapshot ds : snapshot.getChildren()) {
+                                                    String msg = ds.child("message").getValue().toString();
+                                                    if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
+                                                        ds.getRef().removeValue();
+                                                    } else {
+                                                        HashMap<String, Object> hashMap = new HashMap<>();
+                                                        hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
+                                                        hashMap.put("feeling", -1);
+                                                        ds.getRef().updateChildren(hashMap);
+                                                        //image delete from the firebase storage
+                                                        byte[] data = Base64.decode(msg, Base64.DEFAULT);
+                                                        String text = new String(data, StandardCharsets.UTF_8);
+                                                        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                                                        StorageReference storageReference = firebaseStorage.getReferenceFromUrl(text);
+                                                        storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void aVoid) {
+                                                                //image deleted from the firebase storage
+                                                            }
+                                                        }).addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception exception) {
+                                                                Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        });
                                                     }
                                                 }
+                                                //second entry delete code
+                                                query1.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                        for (DataSnapshot ds : snapshot.getChildren()) {
+                                                            String msg = ds.child("message").getValue().toString();
+                                                            if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
+                                                                ds.getRef().removeValue();
+                                                            } else {
+                                                                HashMap<String, Object> hashMap = new HashMap<>();
+                                                                hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
+                                                                hashMap.put("feeling", -1);
+                                                                ds.getRef().updateChildren(hashMap);
+                                                            }
+                                                        }
+                                                    }
 
-                                                @Override
-                                                public void onCancelled(@NonNull DatabaseError error) {
-                                                    Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
-                                                }
-                                            });//end
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError error) {
+                                                        Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });//end
 
-                                        }
+                                            }
 
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-                                            Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });//end
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+                                                Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });//end
+                                    }
                                 }
                             });
                             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -1477,7 +1563,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                     MaterialCardView emoji_6 = dialog.findViewById(R.id.emoji_6);
 
                     RelativeLayout delete = dialog.findViewById(R.id.delete);
-                    MaterialCardView reaction_layout = dialog.findViewById(R.id.reaction_layout);
+                    LinearLayout reaction_layout = dialog.findViewById(R.id.reaction_layout);
 
                     delete.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -1490,69 +1576,86 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     String msgTimestamp = chatmodels.get(position).getTimestamp();
-                                    DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
-                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
-                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
-                                    //first entry delete code
-                                    query.addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            for (DataSnapshot ds : snapshot.getChildren()) {
-                                                String msg = ds.child("message").getValue().toString();
-                                                if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
+                                    if (myMobileNo.equals(receiver)) {
+                                        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
+                                        dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp).addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                for (DataSnapshot ds : snapshot.getChildren()) {
                                                     ds.getRef().removeValue();
-                                                } else {
-                                                    HashMap<String, Object> hashMap = new HashMap<>();
-                                                    hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
-                                                    hashMap.put("feeling", -1);
-                                                    ds.getRef().updateChildren(hashMap);
-                                                    //file delete from the firebase storage
-                                                    byte[] data = Base64.decode(msg, Base64.DEFAULT);
-                                                    String text = new String(data, StandardCharsets.UTF_8);
-                                                    FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-                                                    StorageReference storageReference = firebaseStorage.getReferenceFromUrl(text);
-                                                    storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                        @Override
-                                                        public void onSuccess(Void aVoid) {
-                                                            //file deleted from the firebase storage
-                                                        }
-                                                    }).addOnFailureListener(new OnFailureListener() {
-                                                        @Override
-                                                        public void onFailure(@NonNull Exception exception) {
-                                                            Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
-                                                        }
-                                                    });
                                                 }
                                             }
-                                            //second entry delete code
-                                            query1.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                    for (DataSnapshot ds : snapshot.getChildren()) {
-                                                        String msg = ds.child("message").getValue().toString();
-                                                        if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
-                                                            ds.getRef().removeValue();
-                                                        } else {
-                                                            HashMap<String, Object> hashMap = new HashMap<>();
-                                                            hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
-                                                            hashMap.put("feeling", -1);
-                                                            ds.getRef().updateChildren(hashMap);
-                                                        }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+                                    } else {
+                                        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
+                                        Query query = dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
+                                        Query query1 = dbref.child(receiver).child(receiverId).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
+                                        //first entry delete code
+                                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                for (DataSnapshot ds : snapshot.getChildren()) {
+                                                    String msg = ds.child("message").getValue().toString();
+                                                    if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
+                                                        ds.getRef().removeValue();
+                                                    } else {
+                                                        HashMap<String, Object> hashMap = new HashMap<>();
+                                                        hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
+                                                        hashMap.put("feeling", -1);
+                                                        ds.getRef().updateChildren(hashMap);
+                                                        //file delete from the firebase storage
+                                                        byte[] data = Base64.decode(msg, Base64.DEFAULT);
+                                                        String text = new String(data, StandardCharsets.UTF_8);
+                                                        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                                                        StorageReference storageReference = firebaseStorage.getReferenceFromUrl(text);
+                                                        storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void aVoid) {
+                                                                //file deleted from the firebase storage
+                                                            }
+                                                        }).addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception exception) {
+                                                                Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        });
                                                     }
                                                 }
+                                                //second entry delete code
+                                                query1.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                        for (DataSnapshot ds : snapshot.getChildren()) {
+                                                            String msg = ds.child("message").getValue().toString();
+                                                            if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
+                                                                ds.getRef().removeValue();
+                                                            } else {
+                                                                HashMap<String, Object> hashMap = new HashMap<>();
+                                                                hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
+                                                                hashMap.put("feeling", -1);
+                                                                ds.getRef().updateChildren(hashMap);
+                                                            }
+                                                        }
+                                                    }
 
-                                                @Override
-                                                public void onCancelled(@NonNull DatabaseError error) {
-                                                    Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
-                                                }
-                                            });//end
-                                        }
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError error) {
+                                                        Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });//end
+                                            }
 
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-                                            Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });//end
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+                                                Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });//end
+                                    }
                                 }
                             });
                             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -1661,7 +1764,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                     MaterialCardView emoji_6 = dialog.findViewById(R.id.emoji_6);
 
                     RelativeLayout delete = dialog.findViewById(R.id.delete);
-                    MaterialCardView reaction_layout = dialog.findViewById(R.id.reaction_layout);
+                    LinearLayout reaction_layout = dialog.findViewById(R.id.reaction_layout);
 
                     delete.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -1674,69 +1777,86 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     String msgTimestamp = chatmodels.get(position).getTimestamp();
-                                    DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
-                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
-                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
-                                    //first entry delete code
-                                    query.addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            for (DataSnapshot ds : snapshot.getChildren()) {
-                                                String msg = ds.child("message").getValue().toString();
-                                                if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
+                                    if (myMobileNo.equals(receiver)) {
+                                        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
+                                        dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp).addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                for (DataSnapshot ds : snapshot.getChildren()) {
                                                     ds.getRef().removeValue();
-                                                } else {
-                                                    HashMap<String, Object> hashMap = new HashMap<>();
-                                                    hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
-                                                    hashMap.put("feeling", -1);
-                                                    ds.getRef().updateChildren(hashMap);
-                                                    //file delete from the firebase storage
-                                                    byte[] data = Base64.decode(msg, Base64.DEFAULT);
-                                                    String text = new String(data, StandardCharsets.UTF_8);
-                                                    FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-                                                    StorageReference storageReference = firebaseStorage.getReferenceFromUrl(text);
-                                                    storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                        @Override
-                                                        public void onSuccess(Void aVoid) {
-                                                            //file deleted from the firebase storage
-                                                        }
-                                                    }).addOnFailureListener(new OnFailureListener() {
-                                                        @Override
-                                                        public void onFailure(@NonNull Exception exception) {
-                                                            Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
-                                                        }
-                                                    });
                                                 }
                                             }
-                                            //second entry delete code
-                                            query1.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                    for (DataSnapshot ds : snapshot.getChildren()) {
-                                                        String msg = ds.child("message").getValue().toString();
-                                                        if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
-                                                            ds.getRef().removeValue();
-                                                        } else {
-                                                            HashMap<String, Object> hashMap = new HashMap<>();
-                                                            hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
-                                                            hashMap.put("feeling", -1);
-                                                            ds.getRef().updateChildren(hashMap);
-                                                        }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+                                    } else {
+                                        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
+                                        Query query = dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
+                                        Query query1 = dbref.child(receiver).child(receiverId).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
+                                        //first entry delete code
+                                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                for (DataSnapshot ds : snapshot.getChildren()) {
+                                                    String msg = ds.child("message").getValue().toString();
+                                                    if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
+                                                        ds.getRef().removeValue();
+                                                    } else {
+                                                        HashMap<String, Object> hashMap = new HashMap<>();
+                                                        hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
+                                                        hashMap.put("feeling", -1);
+                                                        ds.getRef().updateChildren(hashMap);
+                                                        //file delete from the firebase storage
+                                                        byte[] data = Base64.decode(msg, Base64.DEFAULT);
+                                                        String text = new String(data, StandardCharsets.UTF_8);
+                                                        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                                                        StorageReference storageReference = firebaseStorage.getReferenceFromUrl(text);
+                                                        storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void aVoid) {
+                                                                //file deleted from the firebase storage
+                                                            }
+                                                        }).addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception exception) {
+                                                                Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        });
                                                     }
                                                 }
+                                                //second entry delete code
+                                                query1.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                        for (DataSnapshot ds : snapshot.getChildren()) {
+                                                            String msg = ds.child("message").getValue().toString();
+                                                            if (msg.equals(encoded_deleted_already_msg)) { // This message was deleted
+                                                                ds.getRef().removeValue();
+                                                            } else {
+                                                                HashMap<String, Object> hashMap = new HashMap<>();
+                                                                hashMap.put("message", encoded_deleted_already_msg); // This message was deleted
+                                                                hashMap.put("feeling", -1);
+                                                                ds.getRef().updateChildren(hashMap);
+                                                            }
+                                                        }
+                                                    }
 
-                                                @Override
-                                                public void onCancelled(@NonNull DatabaseError error) {
-                                                    Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
-                                                }
-                                            });//end
-                                        }
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError error) {
+                                                        Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });//end
+                                            }
 
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-                                            Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });//end
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+                                                Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });//end
+                                    }
                                 }
                             });
                             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -2118,7 +2238,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                     MaterialCardView emoji_6 = dialog.findViewById(R.id.emoji_6);
 
                     RelativeLayout delete = dialog.findViewById(R.id.delete);
-                    MaterialCardView reaction_layout = dialog.findViewById(R.id.reaction_layout);
+                    LinearLayout reaction_layout = dialog.findViewById(R.id.reaction_layout);
 
                     delete.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -2302,7 +2422,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                     MaterialCardView emoji_6 = dialog.findViewById(R.id.emoji_6);
 
                     RelativeLayout delete = dialog.findViewById(R.id.delete);
-                    MaterialCardView reaction_layout = dialog.findViewById(R.id.reaction_layout);
+                    LinearLayout reaction_layout = dialog.findViewById(R.id.reaction_layout);
 
                     delete.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -2488,7 +2608,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                     MaterialCardView emoji_6 = dialog.findViewById(R.id.emoji_6);
 
                     RelativeLayout delete = dialog.findViewById(R.id.delete);
-                    MaterialCardView reaction_layout = dialog.findViewById(R.id.reaction_layout);
+                    LinearLayout reaction_layout = dialog.findViewById(R.id.reaction_layout);
 
                     delete.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -2672,7 +2792,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                     MaterialCardView emoji_6 = dialog.findViewById(R.id.emoji_6);
 
                     RelativeLayout delete = dialog.findViewById(R.id.delete);
-                    MaterialCardView reaction_layout = dialog.findViewById(R.id.reaction_layout);
+                    LinearLayout reaction_layout = dialog.findViewById(R.id.reaction_layout);
 
                     delete.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -2859,7 +2979,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                     MaterialCardView emoji_6 = dialog.findViewById(R.id.emoji_6);
 
                     RelativeLayout delete = dialog.findViewById(R.id.delete);
-                    MaterialCardView reaction_layout = dialog.findViewById(R.id.reaction_layout);
+                    LinearLayout reaction_layout = dialog.findViewById(R.id.reaction_layout);
 
                     delete.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -3042,7 +3162,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                     MaterialCardView emoji_6 = dialog.findViewById(R.id.emoji_6);
 
                     RelativeLayout delete = dialog.findViewById(R.id.delete);
-                    MaterialCardView reaction_layout = dialog.findViewById(R.id.reaction_layout);
+                    LinearLayout reaction_layout = dialog.findViewById(R.id.reaction_layout);
 
                     delete.setOnClickListener(new View.OnClickListener() {
                         @Override
