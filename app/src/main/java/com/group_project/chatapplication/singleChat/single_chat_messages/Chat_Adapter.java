@@ -142,10 +142,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                                 if (differenceDate >= 900000L) {
                                     Toast.makeText(context, "Can't edit message after 15 minutes", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    final DialogPlus dialogPlus = DialogPlus.newDialog(context)
-                                            .setContentHolder(new ViewHolder(R.layout.message_edit_dialogplus))
-                                            .setExpanded(true, 500)
-                                            .create();
+                                    final DialogPlus dialogPlus = DialogPlus.newDialog(context).setContentHolder(new ViewHolder(R.layout.message_edit_dialogplus)).setExpanded(true, 500).create();
 
                                     View myview = dialogPlus.getHolderView();
                                     Button btnsave = myview.findViewById(R.id.btnsave);
@@ -204,20 +201,19 @@ public class Chat_Adapter extends RecyclerView.Adapter {
 
                 // sender side edit message...
                 DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
-                dbref.child(myMobileNo).child(senderID).child("Messages").child(timestamp)
-                        .addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                if (snapshot.hasChild("edited")) {
-                                    ((SenderViewHolder) holder).edit_msg_card.setVisibility(View.VISIBLE);
-                                }
-                            }
+                dbref.child(myMobileNo).child(senderID).child("Messages").child(timestamp).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.hasChild("edited")) {
+                            ((SenderViewHolder) holder).edit_msg_card.setVisibility(View.VISIBLE);
+                        }
+                    }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
-                            }
-                        });
+                    }
+                });
             } else {
                 byte[] data = Base64.decode(chatmodel.getMessage(), Base64.DEFAULT);
                 String text = new String(data, StandardCharsets.UTF_8);
@@ -232,118 +228,72 @@ public class Chat_Adapter extends RecyclerView.Adapter {
 
                 // Receiver side edit message...
                 DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
-                dbref.child(receiver).child(receiverId).child("Messages").child(timestamp)
-                        .addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                if (snapshot.hasChild("edited")) {
-                                    ((RecieverViewHolder) holder).edit_msg_card.setVisibility(View.VISIBLE);
-                                }
-                            }
+                dbref.child(receiver).child(receiverId).child("Messages").child(timestamp).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.hasChild("edited")) {
+                            ((RecieverViewHolder) holder).edit_msg_card.setVisibility(View.VISIBLE);
+                        }
+                    }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
-                            }
-                        });
+                    }
+                });
             }
         }
 
         // Image display and image-open code...
         if (messageType.equals("image")) {
             if (holder.getClass() == SenderViewHolder.class) {
-                String bimoji_sticker = "STICKER";
-                boolean bool = message.toString().contains(bimoji_sticker);
-                if (bool) {
-                    String sticker_msg = message.replace("STICKER", "");
-                    byte[] data = Base64.decode(sticker_msg, Base64.DEFAULT);
-                    String text = new String(data, StandardCharsets.UTF_8);
-                    try {
-                        Glide.with(((SenderViewHolder) holder).sticker_image).load(text).placeholder(R.drawable.default_image_for_chat).into(((SenderViewHolder) holder).sticker_image);
-                    } catch (Exception e) {
-                        ((SenderViewHolder) holder).sticker_image.setImageResource(R.drawable.default_image_for_chat);
-                    }
-                    String senderMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "dd-MM-yy hh:mm");
-                    ((SenderViewHolder) holder).senderTime.setText(senderMsgTime);
-
-                    ((SenderViewHolder) holder).senderMsg.setVisibility(View.GONE);
-                    ((SenderViewHolder) holder).user_video_msg_layout.setVisibility(View.GONE);
-                    ((SenderViewHolder) holder).user_doc_msg_layout.setVisibility(View.GONE);
-                    ((SenderViewHolder) holder).user_img_msg_layout.setVisibility(View.GONE);
-                    ((SenderViewHolder) holder).sen_message_layout.setBackgroundColor(Color.parseColor("#00000000"));
-                } else {
-                    byte[] data = Base64.decode(message, Base64.DEFAULT);
-                    String text = new String(data, StandardCharsets.UTF_8);
-                    try {
-                        Glide.with(((SenderViewHolder) holder).senderImage).load(text).placeholder(R.drawable.default_image_for_chat).into(((SenderViewHolder) holder).senderImage);
-                    } catch (Exception e) {
-                        ((SenderViewHolder) holder).senderImage.setImageResource(R.drawable.default_image_for_chat);
-                    }
-                    String senderMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "dd-MM-yy hh:mm");
-                    ((SenderViewHolder) holder).senderTime.setText(senderMsgTime);
-
-                    ((SenderViewHolder) holder).senderMsg.setVisibility(View.GONE);
-                    ((SenderViewHolder) holder).user_video_msg_layout.setVisibility(View.GONE);
-                    ((SenderViewHolder) holder).user_doc_msg_layout.setVisibility(View.GONE);
-
-
-                    ((SenderViewHolder) holder).senderImage.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(context, Single_Chat_full_screen_photo_Activity.class);
-                            intent.putExtra("image", text);
-                            intent.putExtra("sender", sender);
-                            context.startActivity(intent);
-                        }
-                    });
+                byte[] data = Base64.decode(message, Base64.DEFAULT);
+                String text = new String(data, StandardCharsets.UTF_8);
+                try {
+                    Glide.with(((SenderViewHolder) holder).senderImage).load(text).placeholder(R.drawable.default_image_for_chat).into(((SenderViewHolder) holder).senderImage);
+                } catch (Exception e) {
+                    ((SenderViewHolder) holder).senderImage.setImageResource(R.drawable.default_image_for_chat);
                 }
+                String senderMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "dd-MM-yy hh:mm");
+                ((SenderViewHolder) holder).senderTime.setText(senderMsgTime);
 
+                ((SenderViewHolder) holder).senderMsg.setVisibility(View.GONE);
+                ((SenderViewHolder) holder).user_video_msg_layout.setVisibility(View.GONE);
+                ((SenderViewHolder) holder).user_doc_msg_layout.setVisibility(View.GONE);
+
+                ((SenderViewHolder) holder).senderImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, Single_Chat_full_screen_photo_Activity.class);
+                        intent.putExtra("image", text);
+                        intent.putExtra("sender", sender);
+                        context.startActivity(intent);
+                    }
+                });
             } else {
-                String bimoji_sticker = "STICKER";
-                boolean bool = message.toString().contains(bimoji_sticker);
-                if (bool) {
-                    String sticker_msg = message.replace("STICKER", "");
-                    byte[] data = Base64.decode(sticker_msg, Base64.DEFAULT);
-                    String text = new String(data, StandardCharsets.UTF_8);
-                    try {
-                        Glide.with(((RecieverViewHolder) holder).sticker_image).load(text).placeholder(R.drawable.default_image_for_chat).into(((SenderViewHolder) holder).sticker_image);
-                    } catch (Exception e) {
-                        ((RecieverViewHolder) holder).sticker_image.setImageResource(R.drawable.default_image_for_chat);
-                    }
-                    String senderMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "dd-MM-yy hh:mm");
-                    ((RecieverViewHolder) holder).receiverTime.setText(senderMsgTime);
-
-                    ((RecieverViewHolder) holder).receiverMsg.setVisibility(View.GONE);
-                    ((RecieverViewHolder) holder).user_video_msg_layout.setVisibility(View.GONE);
-                    ((RecieverViewHolder) holder).user_doc_msg_layout.setVisibility(View.GONE);
-                    ((RecieverViewHolder) holder).user_img_msg_layout.setVisibility(View.GONE);
-                    ((RecieverViewHolder) holder).user_img_msg_layout.setVisibility(View.GONE);
-                    ((RecieverViewHolder) holder).rec_message_layout.setBackgroundColor(Color.parseColor("#00000000"));
-                } else {
-                    byte[] data = Base64.decode(message, Base64.DEFAULT);
-                    String text = new String(data, StandardCharsets.UTF_8);
-                    try {
-                        Glide.with(((RecieverViewHolder) holder).receiverImage).load(text).placeholder(R.drawable.default_image_for_chat).into(((RecieverViewHolder) holder).receiverImage);
-                    } catch (Exception e) {
-                        ((RecieverViewHolder) holder).receiverImage.setImageResource(R.drawable.default_image_for_chat);
-                    }
-                    String receiverMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "dd-MM-yy hh:mm");
-                    ((RecieverViewHolder) holder).receiverTime.setText(receiverMsgTime);
-
-                    ((RecieverViewHolder) holder).receiverMsg.setVisibility(View.GONE);
-                    ((RecieverViewHolder) holder).user_video_msg_layout.setVisibility(View.GONE);
-                    ((RecieverViewHolder) holder).user_doc_msg_layout.setVisibility(View.GONE);
-
-                    ((RecieverViewHolder) holder).receiverImage.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(context, Single_Chat_full_screen_photo_Activity.class);
-                            intent.putExtra("image", text);
-                            intent.putExtra("sender", sender);
-                            context.startActivity(intent);
-                        }
-                    });
+                byte[] data = Base64.decode(message, Base64.DEFAULT);
+                String text = new String(data, StandardCharsets.UTF_8);
+                try {
+                    Glide.with(((RecieverViewHolder) holder).receiverImage).load(text).placeholder(R.drawable.default_image_for_chat).into(((RecieverViewHolder) holder).receiverImage);
+                } catch (Exception e) {
+                    ((RecieverViewHolder) holder).receiverImage.setImageResource(R.drawable.default_image_for_chat);
                 }
+                String receiverMsgTime = longToDateString(Long.parseLong(chatmodel.getTimestamp()), "dd-MM-yy hh:mm");
+                ((RecieverViewHolder) holder).receiverTime.setText(receiverMsgTime);
+
+                ((RecieverViewHolder) holder).receiverMsg.setVisibility(View.GONE);
+                ((RecieverViewHolder) holder).user_video_msg_layout.setVisibility(View.GONE);
+                ((RecieverViewHolder) holder).user_doc_msg_layout.setVisibility(View.GONE);
+
+                ((RecieverViewHolder) holder).receiverImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, Single_Chat_full_screen_photo_Activity.class);
+                        intent.putExtra("image", text);
+                        intent.putExtra("sender", sender);
+                        context.startActivity(intent);
+                    }
+                });
             }
         }
 
@@ -478,35 +428,71 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                     return false;
                 }
             });
+            ((SenderViewHolder) holder).senderTime.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    ((SenderViewHolder) holder).seen_msg_card.setVisibility(View.VISIBLE);
+                    return false;
+                }
+            });
             ((SenderViewHolder) holder).sen_message_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     ((SenderViewHolder) holder).seen_msg_card.setVisibility(View.GONE);
                 }
             });
+            ((SenderViewHolder) holder).senderTime.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((SenderViewHolder) holder).seen_msg_card.setVisibility(View.GONE);
+                }
+            });
 
-            int[] reactions = {
-                    R.drawable.emoji_1_thumbs,
-                    R.drawable.emoji_2_heart,
-                    R.drawable.emoji_3_joy,
-                    R.drawable.emoji_4_open_mouth,
-                    R.drawable.emoji_5_crying,
-                    R.drawable.emoji_6_hands,
-            };
+            int[] reactions = {R.drawable.emoji_1_thumbs, R.drawable.emoji_2_heart, R.drawable.emoji_3_joy, R.drawable.emoji_4_open_mouth, R.drawable.emoji_5_crying, R.drawable.emoji_6_hands,};
             DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
-            dbref.child(myMobileNo).child(senderID).child("Messages").orderByKey().equalTo(timestamp)
-                    .addValueEventListener(new ValueEventListener() {
+            dbref.child(myMobileNo).child(senderID).child("Messages").orderByKey().equalTo(timestamp).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        try {
+                            String feel = "" + dataSnapshot.child("feeling").getValue();
+                            if (Integer.parseInt(feel) >= 0) {
+                                ((SenderViewHolder) holder).feeling.setImageResource(reactions[Integer.parseInt(feel)]);
+                                ((SenderViewHolder) holder).feeling.setVisibility(View.VISIBLE);
+                                ((SenderViewHolder) holder).emoji_reaction.setVisibility(View.VISIBLE);
+                            } else {
+                                ((SenderViewHolder) holder).feeling.setVisibility(View.GONE);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+
+            ((SenderViewHolder) holder).emoji_reaction.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Dialog dialog = new Dialog(context);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.remove_reaction_dialogue);
+                    ImageView show_reaction = dialog.findViewById(R.id.remove_reaction_img);
+
+                    DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
+                    dbref.child(myMobileNo).child(senderID).child("Messages").orderByKey().equalTo(timestamp).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                                 try {
                                     String feel = "" + dataSnapshot.child("feeling").getValue();
                                     if (Integer.parseInt(feel) >= 0) {
-                                        ((SenderViewHolder) holder).feeling.setImageResource(reactions[Integer.parseInt(feel)]);
-                                        ((SenderViewHolder) holder).feeling.setVisibility(View.VISIBLE);
-                                        ((SenderViewHolder) holder).emoji_reaction.setVisibility(View.VISIBLE);
-                                    } else {
-                                        ((SenderViewHolder) holder).feeling.setVisibility(View.GONE);
+                                        show_reaction.setImageResource(reactions[Integer.parseInt(feel)]);
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -519,38 +505,6 @@ public class Chat_Adapter extends RecyclerView.Adapter {
 
                         }
                     });
-
-
-            ((SenderViewHolder) holder).emoji_reaction.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Dialog dialog = new Dialog(context);
-                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    dialog.setContentView(R.layout.remove_reaction_dialogue);
-                    ImageView show_reaction = dialog.findViewById(R.id.remove_reaction_img);
-
-                    DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
-                    dbref.child(myMobileNo).child(senderID).child("Messages").orderByKey().equalTo(timestamp)
-                            .addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                        try {
-                                            String feel = "" + dataSnapshot.child("feeling").getValue();
-                                            if (Integer.parseInt(feel) >= 0) {
-                                                show_reaction.setImageResource(reactions[Integer.parseInt(feel)]);
-                                            }
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
 
                     RelativeLayout tap_to_remove = dialog.findViewById(R.id.tap_to_remove);
 
@@ -622,10 +576,8 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     String msgTimestamp = chatmodels.get(position).getTimestamp();
                                     DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
-                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages")
-                                            .orderByChild("timestamp").equalTo(msgTimestamp);
-                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages")
-                                            .orderByChild("timestamp").equalTo(msgTimestamp);
+                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
+                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
                                     //first entry delete code
                                     query.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
@@ -798,10 +750,8 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     String msgTimestamp = chatmodels.get(position).getTimestamp();
                                     DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
-                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages")
-                                            .orderByChild("timestamp").equalTo(msgTimestamp);
-                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages")
-                                            .orderByChild("timestamp").equalTo(msgTimestamp);
+                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
+                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
                                     //first entry delete code
                                     query.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
@@ -984,10 +934,8 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     String msgTimestamp = chatmodels.get(position).getTimestamp();
                                     DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
-                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages")
-                                            .orderByChild("timestamp").equalTo(msgTimestamp);
-                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages")
-                                            .orderByChild("timestamp").equalTo(msgTimestamp);
+                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
+                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
                                     //first entry delete code
                                     query.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
@@ -1172,10 +1120,8 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     String msgTimestamp = chatmodels.get(position).getTimestamp();
                                     DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
-                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages")
-                                            .orderByChild("timestamp").equalTo(msgTimestamp);
-                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages")
-                                            .orderByChild("timestamp").equalTo(msgTimestamp);
+                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
+                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
                                     //first entry delete code
                                     query.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
@@ -1358,10 +1304,8 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     String msgTimestamp = chatmodels.get(position).getTimestamp();
                                     DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
-                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages")
-                                            .orderByChild("timestamp").equalTo(msgTimestamp);
-                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages")
-                                            .orderByChild("timestamp").equalTo(msgTimestamp);
+                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
+                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
                                     //first entry delete code
                                     query.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
@@ -1547,10 +1491,8 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     String msgTimestamp = chatmodels.get(position).getTimestamp();
                                     DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
-                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages")
-                                            .orderByChild("timestamp").equalTo(msgTimestamp);
-                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages")
-                                            .orderByChild("timestamp").equalTo(msgTimestamp);
+                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
+                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
                                     //first entry delete code
                                     query.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
@@ -1733,10 +1675,8 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     String msgTimestamp = chatmodels.get(position).getTimestamp();
                                     DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
-                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages")
-                                            .orderByChild("timestamp").equalTo(msgTimestamp);
-                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages")
-                                            .orderByChild("timestamp").equalTo(msgTimestamp);
+                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
+                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
                                     //first entry delete code
                                     query.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
@@ -1894,29 +1834,51 @@ public class Chat_Adapter extends RecyclerView.Adapter {
         //delete code for receiver text, image, video & file..
         if (holder.getClass() == RecieverViewHolder.class) {
 
-            int[] reactions = {
-                    R.drawable.emoji_1_thumbs,
-                    R.drawable.emoji_2_heart,
-                    R.drawable.emoji_3_joy,
-                    R.drawable.emoji_4_open_mouth,
-                    R.drawable.emoji_5_crying,
-                    R.drawable.emoji_6_hands
-            };
+            int[] reactions = {R.drawable.emoji_1_thumbs, R.drawable.emoji_2_heart, R.drawable.emoji_3_joy, R.drawable.emoji_4_open_mouth, R.drawable.emoji_5_crying, R.drawable.emoji_6_hands};
 
             DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
-            dbref.child(myMobileNo).child(senderID).child("Messages").orderByKey().equalTo(timestamp)
-                    .addValueEventListener(new ValueEventListener() {
+            dbref.child(myMobileNo).child(senderID).child("Messages").orderByKey().equalTo(timestamp).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        try {
+                            String feel = "" + dataSnapshot.child("feeling").getValue();
+                            if (Integer.parseInt(feel) >= 0) {
+                                ((RecieverViewHolder) holder).feeling.setImageResource(reactions[Integer.parseInt(feel)]);
+                                ((RecieverViewHolder) holder).feeling.setVisibility(View.VISIBLE);
+                                ((RecieverViewHolder) holder).emoji_reaction.setVisibility(View.VISIBLE);
+                            } else {
+                                ((RecieverViewHolder) holder).feeling.setVisibility(View.GONE);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+            ((RecieverViewHolder) holder).emoji_reaction.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Dialog dialog = new Dialog(context);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.remove_reaction_dialogue);
+                    ImageView show_reaction = dialog.findViewById(R.id.remove_reaction_img);
+
+                    DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
+                    dbref.child(myMobileNo).child(senderID).child("Messages").orderByKey().equalTo(timestamp).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                                 try {
                                     String feel = "" + dataSnapshot.child("feeling").getValue();
                                     if (Integer.parseInt(feel) >= 0) {
-                                        ((RecieverViewHolder) holder).feeling.setImageResource(reactions[Integer.parseInt(feel)]);
-                                        ((RecieverViewHolder) holder).feeling.setVisibility(View.VISIBLE);
-                                        ((RecieverViewHolder) holder).emoji_reaction.setVisibility(View.VISIBLE);
-                                    } else {
-                                        ((RecieverViewHolder) holder).feeling.setVisibility(View.GONE);
+                                        show_reaction.setImageResource(reactions[Integer.parseInt(feel)]);
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -1929,37 +1891,6 @@ public class Chat_Adapter extends RecyclerView.Adapter {
 
                         }
                     });
-
-            ((RecieverViewHolder) holder).emoji_reaction.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Dialog dialog = new Dialog(context);
-                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    dialog.setContentView(R.layout.remove_reaction_dialogue);
-                    ImageView show_reaction = dialog.findViewById(R.id.remove_reaction_img);
-
-                    DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
-                    dbref.child(myMobileNo).child(senderID).child("Messages").orderByKey().equalTo(timestamp)
-                            .addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                        try {
-                                            String feel = "" + dataSnapshot.child("feeling").getValue();
-                                            if (Integer.parseInt(feel) >= 0) {
-                                                show_reaction.setImageResource(reactions[Integer.parseInt(feel)]);
-                                            }
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
 
                     RelativeLayout tap_to_remove = dialog.findViewById(R.id.tap_to_remove);
 
@@ -2031,10 +1962,8 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     String msgTimestamp = chatmodels.get(position).getTimestamp();
                                     DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
-                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages")
-                                            .orderByChild("timestamp").equalTo(msgTimestamp);
-                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages")
-                                            .orderByChild("timestamp").equalTo(msgTimestamp);
+                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
+                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
                                     //first entry delete code
                                     query.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
@@ -2204,10 +2133,8 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     String msgTimestamp = chatmodels.get(position).getTimestamp();
                                     DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
-                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages")
-                                            .orderByChild("timestamp").equalTo(msgTimestamp);
-                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages")
-                                            .orderByChild("timestamp").equalTo(msgTimestamp);
+                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
+                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
                                     //first entry delete code
                                     query.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
@@ -2390,10 +2317,8 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     String msgTimestamp = chatmodels.get(position).getTimestamp();
                                     DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
-                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages")
-                                            .orderByChild("timestamp").equalTo(msgTimestamp);
-                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages")
-                                            .orderByChild("timestamp").equalTo(msgTimestamp);
+                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
+                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
                                     //first entry delete code
                                     query.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
@@ -2578,10 +2503,8 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     String msgTimestamp = chatmodels.get(position).getTimestamp();
                                     DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
-                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages")
-                                            .orderByChild("timestamp").equalTo(msgTimestamp);
-                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages")
-                                            .orderByChild("timestamp").equalTo(msgTimestamp);
+                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
+                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
                                     //first entry delete code
                                     query.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
@@ -2764,10 +2687,8 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     String msgTimestamp = chatmodels.get(position).getTimestamp();
                                     DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
-                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages")
-                                            .orderByChild("timestamp").equalTo(msgTimestamp);
-                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages")
-                                            .orderByChild("timestamp").equalTo(msgTimestamp);
+                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
+                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
                                     //first entry delete code
                                     query.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
@@ -2952,10 +2873,8 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     String msgTimestamp = chatmodels.get(position).getTimestamp();
                                     DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
-                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages")
-                                            .orderByChild("timestamp").equalTo(msgTimestamp);
-                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages")
-                                            .orderByChild("timestamp").equalTo(msgTimestamp);
+                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
+                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
                                     //first entry delete code
                                     query.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
@@ -3138,10 +3057,8 @@ public class Chat_Adapter extends RecyclerView.Adapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     String msgTimestamp = chatmodels.get(position).getTimestamp();
                                     DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chat");
-                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages")
-                                            .orderByChild("timestamp").equalTo(msgTimestamp);
-                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages")
-                                            .orderByChild("timestamp").equalTo(msgTimestamp);
+                                    Query query = dbref.child(myMobileNo).child(senderID).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
+                                    Query query1 = dbref.child(receiver).child(receiverId).child("Messages").orderByChild("timestamp").equalTo(msgTimestamp);
                                     //first entry delete code
                                     query.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
@@ -3304,7 +3221,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
     public class RecieverViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout user_img_msg_layout, user_video_msg_layout, user_doc_msg_layout;
         TextView receiverMsg, receiverTime;
-        RoundedImageView receiverImage, receiverVideo, receiverFile, sticker_image;
+        RoundedImageView receiverImage, receiverVideo, receiverFile;
         LinearLayout single_outer_message_layout, rec_message_layout;
         ImageButton play_video;
         ImageView feeling;
@@ -3321,7 +3238,6 @@ public class Chat_Adapter extends RecyclerView.Adapter {
             receiverImage = itemView.findViewById(R.id.single_user_img_msg);
             receiverVideo = itemView.findViewById(R.id.single_user_video_msg);
             receiverFile = itemView.findViewById(R.id.single_user_doc_msg);
-            sticker_image = itemView.findViewById(R.id.sticker_image);
             play_video = itemView.findViewById(R.id.play_video);
             feeling = itemView.findViewById(R.id.feeling);
             rec_message_layout = itemView.findViewById(R.id.rec_message_layout);
@@ -3333,7 +3249,7 @@ public class Chat_Adapter extends RecyclerView.Adapter {
     public class SenderViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout user_img_msg_layout, user_video_msg_layout, user_doc_msg_layout;
         TextView senderMsg, senderTime, isSeen;
-        RoundedImageView senderImage, senderVideo, senderFile, sticker_image;
+        RoundedImageView senderImage, senderVideo, senderFile;
         LinearLayout single_outer_message_layout, sen_message_layout;
         ImageButton play_video;
         ImageView feeling;
@@ -3350,7 +3266,6 @@ public class Chat_Adapter extends RecyclerView.Adapter {
             senderImage = itemView.findViewById(R.id.single_user_img_msg);
             senderVideo = itemView.findViewById(R.id.single_user_video_msg);
             senderFile = itemView.findViewById(R.id.single_user_doc_msg);
-            sticker_image = itemView.findViewById(R.id.sticker_image);
             play_video = itemView.findViewById(R.id.play_video);
             feeling = itemView.findViewById(R.id.feeling);
             sen_message_layout = itemView.findViewById(R.id.sen_message_layout);

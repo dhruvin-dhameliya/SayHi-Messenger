@@ -160,6 +160,28 @@
 
         </LinearLayout>
 
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/emoji_reaction_card"
+            android:layout_width="@dimen/_21sdp"
+            android:layout_height="@dimen/_21sdp"
+            android:layout_gravity="center"
+            android:layout_marginStart="-6dp"
+            android:elevation="0dp"
+            android:visibility="gone"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="@dimen/_101sdp"
+            app:cardElevation="0dp"
+            app:cardMaxElevation="0dp">
+
+            <ImageView
+                android:id="@+id/feeling"
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
+                android:layout_gravity="center"
+                android:padding="@dimen/_1sdp" />
+
+        </com.google.android.material.card.MaterialCardView>
+
     </LinearLayout>
 
 </LinearLayout>

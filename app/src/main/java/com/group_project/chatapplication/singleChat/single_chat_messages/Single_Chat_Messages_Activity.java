@@ -466,54 +466,58 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
 
                     //inflate menu for clear chat
                     mToolbar.inflateMenu(R.menu.delete_chat_menu);
-                    mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            if (item.getItemId() == R.id.clear_chat_for_me) {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(Single_Chat_Messages_Activity.this);
-                                builder.setTitle("Clear chat?");
-                                builder.setMessage("Are you sure to clear your chat?");
-                                builder.setPositiveButton("Clear", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        FirebaseDatabase.getInstance().getReference().child("Chat").child(myMobileNo).child(senderRoom).child("Messages").setValue(null);
-                                        Toast.makeText(Single_Chat_Messages_Activity.this, "All chat cleared for you", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
-                                builder.create().show();
-                            } else if (item.getItemId() == R.id.clear_chat_for_everyone) {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(Single_Chat_Messages_Activity.this);
-                                builder.setTitle("Clear chat?");
-                                builder.setMessage("Are you sure to clear chat for everyone?");
-                                builder.setPositiveButton("Clear", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        FirebaseDatabase.getInstance().getReference().child("Chat").child(myMobileNo).child(senderRoom).child("Messages").setValue(null);
-                                        FirebaseDatabase.getInstance().getReference().child("Chat").child(receiverMobileNo).child(receiverRoom).child("Messages").setValue(null);
-                                        Toast.makeText(Single_Chat_Messages_Activity.this, "All chat cleared for everyone", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
-                                builder.create().show();
-                            } else if (item.getItemId() == R.id.call_user) {
-                                Intent intent = new Intent(Intent.ACTION_DIAL);
-                                intent.setData(Uri.parse("tel:" + receiverMobileNo));
-                                startActivity(intent);
+                    if (myMobileNo.equals(receiverMobileNo)) {
+                        mToolbar.getMenu().findItem(R.id.call_user).setVisible(false);
+                    } else {
+                        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem item) {
+                                if (item.getItemId() == R.id.clear_chat_for_me) {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(Single_Chat_Messages_Activity.this);
+                                    builder.setTitle("Clear chat?");
+                                    builder.setMessage("Are you sure to clear your chat?");
+                                    builder.setPositiveButton("Clear", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            FirebaseDatabase.getInstance().getReference().child("Chat").child(myMobileNo).child(senderRoom).child("Messages").setValue(null);
+                                            Toast.makeText(Single_Chat_Messages_Activity.this, "All chat cleared for you", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                    builder.create().show();
+                                } else if (item.getItemId() == R.id.clear_chat_for_everyone) {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(Single_Chat_Messages_Activity.this);
+                                    builder.setTitle("Clear chat?");
+                                    builder.setMessage("Are you sure to clear chat for everyone?");
+                                    builder.setPositiveButton("Clear", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            FirebaseDatabase.getInstance().getReference().child("Chat").child(myMobileNo).child(senderRoom).child("Messages").setValue(null);
+                                            FirebaseDatabase.getInstance().getReference().child("Chat").child(receiverMobileNo).child(receiverRoom).child("Messages").setValue(null);
+                                            Toast.makeText(Single_Chat_Messages_Activity.this, "All chat cleared for everyone", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                    builder.create().show();
+                                } else if (item.getItemId() == R.id.call_user) {
+                                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                                    intent.setData(Uri.parse("tel:" + receiverMobileNo));
+                                    startActivity(intent);
+                                }
+                                return false;
                             }
-                            return false;
-                        }
-                    });
+                        });
+                    }
 
                     // navigate to info activity
                     databaseReference.child(myMobileNo).child(senderRoom).addValueEventListener(new ValueEventListener() {
@@ -525,39 +529,47 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
                             String about = "" + ds.child("receiver_info").getValue();
                             String online = "" + ds.child("onlineStatus").getValue();
                             String typing = "" + ds.child("typing").getValue();
-                            if (typing.equals(receiverMobileNo)) {
-                                user_status.setText("typing...");
-                                user_status.setTextSize(13);
-                                user_status.clearAnimation();
-                                user_status.animate().cancel();
-                            } else if (online.equals("Active now")) {
-                                user_status.setText(online);
-                                user_status.setTextSize(13);
-                                user_status.clearAnimation();
-                                user_status.animate().cancel();
-                            }//the end
-                            else {
-                                try {
-                                    Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
-                                    calendar.setTimeInMillis(Long.parseLong(online));
-                                    String dateTime = DateFormat.format("dd/MM/yyyy", calendar).toString();
-                                    String dateTime2 = DateFormat.format("hh:mm aa", calendar).toString();
+                            if (("+91" + myMobileNo).equals(mobile)) {
+                                if (online.equals("Active now")) {
+                                    user_status.setText(online);
+                                    user_status.setTextSize(13);
+                                    user_status.clearAnimation();
+                                    user_status.animate().cancel();
+                                }
+                            } else {
+                                if (typing.equals(receiverMobileNo)) {
+                                    user_status.setText("typing...");
+                                    user_status.setTextSize(13);
+                                    user_status.clearAnimation();
+                                    user_status.animate().cancel();
+                                } else if (online.equals("Active now")) {
+                                    user_status.setText(online);
+                                    user_status.setTextSize(13);
+                                    user_status.clearAnimation();
+                                    user_status.animate().cancel();
+                                }//the end
+                                else {
+                                    try {
+                                        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+                                        calendar.setTimeInMillis(Long.parseLong(online));
+                                        String dateTime = DateFormat.format("dd/MM/yyyy", calendar).toString();
+                                        String dateTime2 = DateFormat.format("hh:mm aa", calendar).toString();
 
-                                    DisplayMetrics displayMetrics = new DisplayMetrics();
-                                    getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-                                    int width = displayMetrics.widthPixels;
-                                    if (width < 1080) {
-                                        user_status.setTextSize(10);
-                                        user_status.setText("Last seen " + dateTime + " at " + dateTime2);
-                                    } else {
-                                        user_status.setTextSize(12);
-                                        user_status.setText("Last seen " + dateTime + " at " + dateTime2);
+                                        DisplayMetrics displayMetrics = new DisplayMetrics();
+                                        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                                        int width = displayMetrics.widthPixels;
+                                        if (width < 1080) {
+                                            user_status.setTextSize(10);
+                                            user_status.setText("Last seen " + dateTime + " at " + dateTime2);
+                                        } else {
+                                            user_status.setTextSize(12);
+                                            user_status.setText("Last seen " + dateTime + " at " + dateTime2);
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
                                 }
                             }
-
                             user_name.setText(title);
                             try {
                                 Glide.with(profile_img).load(profileImage).into(profile_img);
@@ -710,115 +722,58 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
         //file path
         String filepath = "Single User Messages/" + myMobileNo + "/" + "Images/" + System.currentTimeMillis() + ".jpg";
 
-        String bimoji_sticker = "content://com.bitstrips.sharing.provider/stickers";
-        boolean bool = image_uri.toString().contains(bimoji_sticker);
-        if (bool) {
-            //upload
-            StorageReference storageReference;
-            storageReference = FirebaseStorage.getInstance().getReference(filepath);
-            storageReference.putFile(image_uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Task<Uri> p_uriTasl = taskSnapshot.getStorage().getDownloadUrl();
-                    while (!p_uriTasl.isSuccessful()) ;
-                    Uri p_downloadUri = p_uriTasl.getResult();
-                    if (p_uriTasl.isSuccessful()) {
-                        String timestamp = "" + System.currentTimeMillis();
-                        String img_uri_normal = p_downloadUri.toString();
-                        byte[] data = img_uri_normal.getBytes(StandardCharsets.UTF_8);
-                        String encode_img_msg = Base64.encodeToString(data, Base64.DEFAULT);
+        //upload
+        StorageReference storageReference;
+        storageReference = FirebaseStorage.getInstance().getReference(filepath);
+        storageReference.putFile(image_uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Task<Uri> p_uriTasl = taskSnapshot.getStorage().getDownloadUrl();
+                while (!p_uriTasl.isSuccessful()) ;
+                Uri p_downloadUri = p_uriTasl.getResult();
+                if (p_uriTasl.isSuccessful()) {
+                    String timestamp = "" + System.currentTimeMillis();
+                    String img_uri_normal = p_downloadUri.toString();
+                    byte[] data = img_uri_normal.getBytes(StandardCharsets.UTF_8);
+                    String encode_img_msg = Base64.encodeToString(data, Base64.DEFAULT);
 
-                        HashMap<String, Object> hashMap = new HashMap<>();
-                        hashMap.put("sender", "" + myMobileNo);
-                        hashMap.put("receiver", "" + receiverMobileNo);
-                        hashMap.put("seen", isSeen);
-                        hashMap.put("message", "STICKER" + encode_img_msg);
-                        hashMap.put("timestamp", "" + timestamp);
-                        hashMap.put("type", "" + "image");//text,image,file
+                    HashMap<String, Object> hashMap = new HashMap<>();
+                    hashMap.put("sender", "" + myMobileNo);
+                    hashMap.put("receiver", "" + receiverMobileNo);
+                    hashMap.put("seen", isSeen);
+                    hashMap.put("message", "" + encode_img_msg);
+                    hashMap.put("timestamp", "" + timestamp);
+                    hashMap.put("type", "" + "image");//text,image,file
 
-                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chat");
-                        reference.child(myMobileNo).child(senderRoom).child("Messages").child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                reference.child(receiverMobileNo).child(receiverRoom).child("Messages").child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chat");
+                    reference.child(myMobileNo).child(senderRoom).child("Messages").child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            reference.child(receiverMobileNo).child(receiverRoom).child("Messages").child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
 
-                                    }
-                                });
-                                userMessageInput.setText("");
-                                progressDialog.dismiss();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                progressDialog.dismiss();
-                                Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
+                                }
+                            });
+                            userMessageInput.setText("");
+                            progressDialog.dismiss();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    progressDialog.dismiss();
-                    Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
-                }
-            });
-        } else {
-            //upload
-            StorageReference storageReference;
-            storageReference = FirebaseStorage.getInstance().getReference(filepath);
-            storageReference.putFile(image_uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Task<Uri> p_uriTasl = taskSnapshot.getStorage().getDownloadUrl();
-                    while (!p_uriTasl.isSuccessful()) ;
-                    Uri p_downloadUri = p_uriTasl.getResult();
-                    if (p_uriTasl.isSuccessful()) {
-                        String timestamp = "" + System.currentTimeMillis();
-                        String img_uri_normal = p_downloadUri.toString();
-                        byte[] data = img_uri_normal.getBytes(StandardCharsets.UTF_8);
-                        String encode_img_msg = Base64.encodeToString(data, Base64.DEFAULT);
-
-                        HashMap<String, Object> hashMap = new HashMap<>();
-                        hashMap.put("sender", "" + myMobileNo);
-                        hashMap.put("receiver", "" + receiverMobileNo);
-                        hashMap.put("seen", isSeen);
-                        hashMap.put("message", "" + encode_img_msg);
-                        hashMap.put("timestamp", "" + timestamp);
-                        hashMap.put("type", "" + "image");//text,image,file
-
-                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chat");
-                        reference.child(myMobileNo).child(senderRoom).child("Messages").child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                reference.child(receiverMobileNo).child(receiverRoom).child("Messages").child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-
-                                    }
-                                });
-                                userMessageInput.setText("");
-                                progressDialog.dismiss();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                progressDialog.dismiss();
-                                Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    progressDialog.dismiss();
-                    Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progressDialog.dismiss();
+                Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void sendVideoMessage() {
@@ -918,7 +873,6 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
             } else if (requestCode == 200) {
                 if (data != null) {
                     image_uri = data.getData();
-                    Log.d("BITMOJI: ", String.valueOf(image_uri));
                     sendImagemessage();
                 }
             } else if (requestCode == VIDEO_PICK_GALLERY_CODE) {
@@ -995,7 +949,6 @@ public class Single_Chat_Messages_Activity extends AppCompatActivity {
 
                             userMessageInput.setText("");
                             progressDialog.dismiss();
-                            Toast.makeText(getApplicationContext(), "Document sent", Toast.LENGTH_SHORT).show();
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
