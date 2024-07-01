@@ -7,7 +7,7 @@
 ---
 
 ## Aims behind Developing this Application
-We're a team that's passionate about making communication easy. We created Say Hi to simplify how people connect globally. Whether it's chatting one-on-one or in groups, Say Hi enhances your messaging experience with privacy and reliability.
+We're a team that's passionate about making communication easy. We created SayHi to simplify how people connect globally. Whether it's chatting one-on-one or in groups, SayHi enhances your messaging experience with privacy and reliability.
 
 
 ## Features
@@ -37,17 +37,17 @@ We're a team that's passionate about making communication easy. We created Say H
 | --- |
 | ![Login Signup Screen](https://github.com/dhruvin-dhameliya/SayHi-Messenger/assets/75801262/388d7181-07a7-4516-b240-577e53c032e3) |
 
-| Edit Profile Screen |
+| Private Chat, Stories, Group Chats, and Contacts Screen |
 | --- |
-| ![Edit Profile Screen](https://github.com/dhruvin-dhameliya/SayHi-Messenger/assets/75801262/a4266625-c6f9-4999-8219-440fa06e79c8) |
-
-| Contacts, Private Chats, Group Chats, and Status Screen |
-| --- |
-| ![Screen](https://github.com/dhruvin-dhameliya/SayHi-Messenger/assets/75801262/ecaaf497-99ab-4d09-b00b-2a589bc2941f) |
+| ![Screen](https://github.com/dhruvin-dhameliya/SayHi-Messenger/assets/75801262/2cddffae-bc27-42bc-86ca-26170be26143) |
 
 | Edit Message, User Status, and Message Reaction Screen |
 | --- |
 | ![Messages](https://github.com/dhruvin-dhameliya/SayHi-Messenger/assets/75801262/4349a07a-532c-4de8-aa0d-71e5f1ecfcba) |
+
+| Edit Profile Screen |
+| --- |
+| ![Edit Profile Screen](https://github.com/dhruvin-dhameliya/SayHi-Messenger/assets/75801262/a4266625-c6f9-4999-8219-440fa06e79c8) |
 
 | Chat Wallpaper, and SayHi Bot Screen |
 | --- |
@@ -60,4 +60,4 @@ If you find any bugs or issues with the project, please report them by opening a
 
 
 ## Show your support 
-Follow me for more projects and dont forget to Give a ⭐ if you like this application!
+Follow me for more projects and don't forget to Give a ⭐ if you like this application!
